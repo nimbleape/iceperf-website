@@ -2350,6 +2350,7 @@ __metadata:
     react-dom: "npm:^18.2.0"
     tailwindcss: "npm:^3.4.3"
     vite: "npm:^5.2.0"
+    vite-plugin-posthog: "npm:^2.0.5"
   languageName: unknown
   linkType: soft
 
@@ -4258,6 +4259,19 @@ __metadata:
   version: 1.0.2
   resolution: "util-deprecate@npm:1.0.2"
   checksum: 10c0/41a5bdd214df2f6c3ecf8622745e4a366c4adced864bc3c833739791aeeeb1838119af7daed4ba36428114b5c67dcda034a79c882e97e43c03e66a4dd7389942
+  languageName: node
+  linkType: hard
+
+"vite-plugin-posthog@npm:^2.0.5":
+  version: 2.0.5
+  resolution: "vite-plugin-posthog@npm:2.0.5"
+  peerDependencies:
+    "@types/react": ">=16.8.0"
+    react: ">=16.8.0"
+  peerDependenciesMeta:
+    "@types/react":
+      optional: true
+  checksum: 10c0/1d63881b4b8d3650b2b333b472c6b612e664810ca6e3837c4fda56d1e6c2bc2671387019d4b2c035909bd73cd9ba6e66bd3d49f4dcde563f27d56d582b071b8a
   languageName: node
   linkType: hard
 
