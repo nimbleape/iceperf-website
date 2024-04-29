@@ -8,7 +8,6 @@ import { Footer } from './components/Footer';
 import { Home } from './Pages/Home';
 import { Results } from './Pages/Results';
 import { Provider } from './Pages/Provider';
-import { Providers } from './Pages/Providers';
 
 function App() {
   const location = useLocation();
@@ -23,8 +22,8 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/results" element={<Results />} />
-        <Route path="/providers" element={<Providers />} />
         <Route path="/providers/:id" element={<Provider />} />
+        <Route path="/projects/:id" element={<Provider />} />
       </Routes>
       <Footer />
     </>
