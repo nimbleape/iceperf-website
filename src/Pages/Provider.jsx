@@ -1,5 +1,6 @@
 import { useParams } from 'react-router-dom';
 
+import { Blocks } from "../components/Blocks"
 import { providers } from "../constants";
 
 export function Provider() {
@@ -7,12 +8,15 @@ export function Provider() {
 
   const provider = providers.find((p) => p.id === id);
 
-  console.log('>>', provider, id)
   if (!provider) {
     return <></>;
   }
 
   return (
-    <h1>{provider.name}</h1>
+    <Blocks>
+      <a href={provider.url} target='_blank' rel='noreferrer'>
+        <h1 className='text-4xl'>{provider.name}</h1>
+      </a>
+    </Blocks>
   )
 }
