@@ -2,7 +2,7 @@ import { NavMenuItem } from "./NavMenuItem";
 import { NavMenu } from "./NavMenu";
 import { NavItem } from "./NavItem";
 import { Link } from "react-router-dom";
-import Logo from "../assets/iceperfLogoSide.svg"
+// import Logo from "../assets/iceperfLogoSide.svg"
 
 import { providers } from "../constants";
 import { IcePerfLogo } from "./IcePerfLogo";
@@ -31,7 +31,7 @@ export function Header() {
 
             <NavMenu label="Providers">
               {providers.map((provider, i) => (
-                <NavMenuItem key={i} label={provider} to={`/providers/${provider.toLowerCase()}`}/>
+                <NavMenuItem key={i} label={provider.name} to={`/providers/${provider.name?.toLowerCase()}`}/>
               ))}
               {/* <div className="hs-dropdown [--strategy:static] sm:[--strategy:absolute] [--adaptive:none] sm:[--trigger:hover] relative">
                 <button type="button" className="w-full flex justify-between items-center text-sm text-gray-800 rounded-lg py-2 px-3 hover:bg-gray-100 focus:ring-2 focus:ring-blue-500 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300">
