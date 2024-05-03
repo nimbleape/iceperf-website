@@ -6,7 +6,7 @@ export function About() {
     <Layout>
       <Typography style='h2'>About ICEPerf.com</Typography>
       <Typography style='body'>
-        Which TURN servers provider should you use? The answer depends on each specific needs, the quality of the network and, most importantly, the location. To our knowledge, there is no tool out there that helps you compare how each TURN provider will perform in each scenario, so we decided to build it!
+        Which TURN server provider should you use? The answer depends on the specific needs of the users and applications using them, the quality of the network and, most importantly, the location. To our knowledge, there is no tool out there that helps you compare how each TURN provider will perform in each scenario, so we decided to build it!
       </Typography>
       <Typography style='body'>
         ICEPerf runs a series of tests with each of the TURN providers mentioned above and exports metrics to compare the results.
