@@ -1,0 +1,6 @@
+name = "iceperf-website"
+pages_build_output_dir = "dist"
+compatibility_date = "2024-04-22"
+
+[env.production]
+compatibility_date = "2024-04-22"
