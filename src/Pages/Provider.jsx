@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
+import { Layout } from '../layout/Layout'
 import { ProviderTitleAndBlurb } from "../components/ProviderTitleAndBlurb"
 import { providerData, explanations } from "../constants"
 
@@ -21,7 +22,7 @@ export function Provider() {
   }, [id])
 
   return (
-    <div className="max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14 mx-auto">
+    <Layout>
       {/* Grid */}
       <ProviderTitleAndBlurb provider={id} />
       {Object.keys(data.data).map((o) => {
@@ -133,6 +134,6 @@ export function Provider() {
       <div>
         <img src={currentImage} />
       </div>
-    </div>
+      </Layout>
   )
 }
