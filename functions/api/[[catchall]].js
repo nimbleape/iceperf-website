@@ -29,6 +29,9 @@ export function onRequest(context) {
 
 	const providerData = {
 		'cloudflare': {
+			title: 'Cloudflare',
+			description: '',
+			project: false,
 			data: {
 				avgTurnLatency: {
 					udp: 24.6,
@@ -36,12 +39,12 @@ export function onRequest(context) {
 					tls: 23.2,
 				},
 				avgStunCandidate: {
-					udp: 86.4
+					udp: 71.8
 				},
 				avgTurnCandidate: {
-					udp: 135,
-					tcp: 143,
-					tls: 190
+					udp: 97.1,
+					tcp: 150,
+					tls: 200
 				},
 				maxTurnThroughput: {
 					udp: 60.2,
@@ -51,28 +54,34 @@ export function onRequest(context) {
 			}
 		},
 		'xirsys': {
+			title: 'Xirsys',
+			description: '',
+			project: false,
 			data: {
 				avgTurnLatency: {
-					udp: null,
-					tcp: null,
-					tls: null,
+					udp: 38.1,
+					tcp: 35.7,
+					tls: 36.4,
 				},
 				avgStunCandidate: {
-					udp: 72.7
+					udp: 61.4
 				},
 				avgTurnCandidate: {
-					udp: null,
-					tcp: null,
-					tls: null
+					udp: 499,
+					tcp: 334,
+					tls: 379
 				},
 				maxTurnThroughput: {
-					udp: null,
-					tcp: null,
-					tls: null
+					udp: 54.4,
+					tcp: 35.5,
+					tls: 35.3
 				}
 			}
 		},
 		'twilio': {
+			title: 'Twilio',
+			description: '',
+			project: false,
 			data: {
 				avgTurnLatency: {
 					udp: 38.5,
@@ -88,57 +97,66 @@ export function onRequest(context) {
 					tls: 364
 				},
 				maxTurnThroughput: {
-					udp: 48.8,
-					tcp: 10.6,
-					tls: 10.9
+					udp: 54.1,
+					tcp: 20.6,
+					tls: 20.1
 				}
 			}
 		},
 		'metered': {
+			title: 'Metered',
+			description: '',
+			project: false,
 			data: {
 				avgTurnLatency: {
-					udp: 52.4,
-					tcp: 44.6,
-					tls: 43.6,
+					udp: 30.2,
+					tcp: 28,
+					tls: 29,
 				},
 				avgStunCandidate: {
-					udp: 60.6
+					udp: 65
 				},
 				avgTurnCandidate: {
-					udp: 173,
-					tcp: 193,
-					tls: 326
+					udp: 187,
+					tcp: 154,
+					tls: 276
 				},
 				maxTurnThroughput: {
-					udp: 46.2,
-					tcp: 1.0,
-					tls: 0.9
+					udp: 59.1,
+					tcp: 1.7,
+					tls: 1.6
 				}
 			}
 		},
 		'expressturn': {
+			title: 'ExpressTURN',
+			description: '',
+			project: false,
 			data: {
 				avgTurnLatency: {
-					udp: 164.4,
-					tcp: 239.0,
+					udp: 151.7,
+					tcp: 151.5,
 					tls: null,
 				},
 				avgStunCandidate: {
-					udp: 88.4
+					udp: 80.5
 				},
 				avgTurnCandidate: {
-					udp: 609,
-					tcp: 628,
+					udp: 406,
+					tcp: 513,
 					tls: null
 				},
 				maxTurnThroughput: {
-					udp: 0.1,
-					tcp: 1.3,
+					udp: 12.5,
+					tcp: 3,
 					tls: null
 				}
 			}
 		},
 		'google': {
+			title: 'Google',
+			description: '',
+			project: false,
 			data: {
 				avgStunCandidate: {
 					udp: 54.9
@@ -146,9 +164,12 @@ export function onRequest(context) {
 			}
 		},
 		'elixr-webrtc': {
+			title: 'Elixr-WebRTC',
+			description: '',
+			project: true,
 			data: {
 				avgTurnLatency: {
-					udp:46.3,
+					udp: 46.3,
 					tcp: null,
 					tls: null,
 				},
@@ -167,7 +188,7 @@ export function onRequest(context) {
 				}
 			}
 		}
-	}
+	};
 
 	const response = new Response(JSON.stringify({
 		minsAndMaxes: {
