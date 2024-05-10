@@ -1,11 +1,13 @@
 import PropTypes from 'prop-types'
 import { ProviderLogo } from "../components/ProviderLogo"
 // import Chart from "react-apexcharts";
-import { providers, providerData, explanations } from "../constants"
+import { explanations } from "../constants"
 
-export function TableCard({ title, description, field }) {
+export function TableCard({ title, description, field, providerData }) {
 
-  //go and get the data
+  if (!title || !field || !providerData) {
+    return <></>;
+  }
 
   return (
     <div className="max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14 mx-auto">
@@ -38,7 +40,7 @@ export function TableCard({ title, description, field }) {
                       </span>
                     </th>
 
-                    {Object.keys(providerData.cloudflare.data[field]).map((i) => {
+                    {Object.keys(providerData.cloudflare).map((i) => {
                       return (
                         <th key={i} scope="col" className="px-6 py-3 text-start whitespace-nowrap">
                           <span className="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-neutral-200">
@@ -57,9 +59,9 @@ export function TableCard({ title, description, field }) {
                 </thead>
 
                 <tbody className="divide-y divide-gray-200 dark:divide-neutral-700">
-                  {providers.map((provider) => {
+                  {Object.keys(providerData).map((provider) => {
                     const lcp = provider.toLowerCase();
-                    const data = providerData[lcp].data[field]
+                    const data = providerData[lcp];
 
                     if (!data) {
                       return null
@@ -157,11 +159,13 @@ export function TableCard({ title, description, field }) {
 TableCard.defaultProps = {
   title: '',
   description: '',
-  field: ''
+  field: '',
+  providerData: null,
 };
 
 TableCard.propTypes = {
   title: PropTypes.string,
   description: PropTypes.string,
-  field: PropTypes.string
+  field: PropTypes.string,
+  providerData: PropTypes.object,
 };
