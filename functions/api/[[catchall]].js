@@ -190,6 +190,91 @@ export function onRequest(context) {
 		}
 	};
 
+	// TODO work out best/worst provider and percentages
+	const calculateBestAndWorst = () => {
+		const bestAndWorst = {};
+		const tests = [
+			{
+				testName: 'avgTurnLatency',
+				protocols: ['udp', 'tcp', 'tls'],
+				best: 'min', // define what best value means
+				worst: 'max', // define what worst value means
+			},
+			{
+				testName: 'avgTurnCandidate',
+				protocols: ['udp', 'tcp', 'tls'],
+				best: 'min',
+				worst: 'max',
+			},
+			{
+				testName: 'avgStunCandidate',
+				protocols: ['udp'],
+				best: 'min',
+				worst: 'max',
+			},
+			{
+				testName: 'maxTurnThroughput',
+				protocols: ['udp', 'tcp', 'tls'],
+				best: 'max',
+				worst: 'min',
+			},
+		];
+
+		const compareFunc = {
+			min: (a, b) => {
+				if (!a?.value) {
+					return b?.value || {};
+				}
+				if (a.value <= b.value) {
+					return a;
+				}
+				return b;
+			},
+			max: (a, b) => {
+				if (!a?.value) return b;
+				if (a.value >= b.value) {
+					return a;
+				}
+				return b;
+			},
+		};
+
+		tests.map(({ testName, protocols, best, worst }) => {
+			protocols.map((protocol) => {
+				for (const provider in providerData) {
+					if (!providerData[provider].data[testName]) {
+						continue;
+					}
+
+					if (!bestAndWorst[testName]) {
+						bestAndWorst[testName] = {};
+					}
+					if (!bestAndWorst[testName][protocol]) {
+						bestAndWorst[testName][protocol] = {};
+					}
+					console.log('compare', provider, testName, providerData[provider].data[testName])
+					bestAndWorst[testName][protocol].best = compareFunc[best](
+						bestAndWorst[testName][protocol].best,
+						{
+							name: provider,
+							value: providerData[provider].data[testName][protocol],
+						},
+					);
+					bestAndWorst[testName][protocol].worst = compareFunc[worst](
+						bestAndWorst[testName][protocol].worst,
+						{
+							name: provider,
+							value: providerData[provider]?.data?.[testName]?.[protocol],
+						},
+					);
+				}
+			})
+		});
+
+		return bestAndWorst;
+	};
+
+
 	const response = new Response(JSON.stringify({
 		minsAndMaxes: {
 			avgTurnLatency: {
@@ -211,6 +296,7 @@ export function onRequest(context) {
 				tls: {min: 'metered', max: 'cloudflare'}
 			}
 		},
+		bestAndWorst: calculateBestAndWorst(),
 		providerData: providerData
 	}), {
 		headers: {
