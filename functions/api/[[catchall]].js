@@ -190,7 +190,7 @@ export function onRequest(context) {
 		}
 	};
 
-	// TODO work out best/worst provider and percentages
+	// work out best/worst provider and percentages
 	const calculateBestAndWorst = () => {
 		const bestAndWorst = {};
 		const tests = [
@@ -223,7 +223,7 @@ export function onRequest(context) {
 		const compareFunc = {
 			min: (a, b) => {
 				if (!a?.value) {
-					return b?.value || {};
+					return b;
 				}
 				if (a.value <= b.value) {
 					return a;
@@ -242,7 +242,7 @@ export function onRequest(context) {
 		tests.map(({ testName, protocols, best, worst }) => {
 			protocols.map((protocol) => {
 				for (const provider in providerData) {
-					if (!providerData[provider].data[testName]) {
+					if (!providerData[provider].data[testName]?.[protocol]) {
 						continue;
 					}
 
@@ -252,7 +252,6 @@ export function onRequest(context) {
 					if (!bestAndWorst[testName][protocol]) {
 						bestAndWorst[testName][protocol] = {};
 					}
-					console.log('compare', provider, testName, providerData[provider].data[testName])
 					bestAndWorst[testName][protocol].best = compareFunc[best](
 						bestAndWorst[testName][protocol].best,
 						{
