@@ -36,8 +36,6 @@ export function Results() {
         return;
       }
 
-      console.log('got data', postsResp);
-
       const providerResults = {};
       fields.forEach((field) => {
         providerResults[field] = {};
@@ -50,8 +48,6 @@ export function Results() {
 
     getPosts();
   }, []);
-
-  console.log(providerData);
 
   if (!providerData) {
     return <></>;
