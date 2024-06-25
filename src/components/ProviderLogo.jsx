@@ -13,7 +13,7 @@ export function ProviderLogo({ provider }) {
     case 'google':
       return <GoogleLogo />
     case 'expressturn':
-      return <img src={ExpressTurnLogo} />
+      return <img src={ExpressTurnLogo} style={{ height: 40, maxHeight: '100%', maxWidth: '100%' }} />
     case 'twilio':
       return <TwilioLogo />
     default:

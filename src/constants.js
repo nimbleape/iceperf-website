@@ -161,10 +161,22 @@ export const providerData = {
   }
 }
 
+export const fields = ['avgTurnLatency', 'maxTurnThroughput', 'avgTurnCandidate', 'avgStunCandidate'];
+
 export const explanations = {
   avgTurnLatency: {
     title: "Average TURN Latency",
     description: "The average time to first byte through a TURN server",
+    measure: "ms"
+  },
+  maxTurnThroughput: {
+    title: "Max TURN Throughput",
+    description: "The max amount of throughput through a TURN server",
+    measure: "Mb/s"
+  },
+  avgTurnCandidate: {
+    title: "Average TURN Candidate Latency",
+    description: "The average time to get a Relay candidate from the server",
     measure: "ms"
   },
   avgStunCandidate: {
@@ -172,16 +184,6 @@ export const explanations = {
     description: "The average time to get a STUN candidate from the server",
     measure: "ms"
   },
-  avgTurnCandidate: {
-    title: "Average TURN Candidate Latency",
-    description: "The average time to get a Relay candidate from the server",
-    measure: "ms"
-  },
-  maxTurnThroughput: {
-    title: "Max TURN Throughput",
-    description: "The max amount of throughput through a TURN server",
-    measure: "Mb/s"
-  }
 }
 
 export const providers = Object.keys(providerData).map((i) => providerData[i].project === false ? providerData[i].title : undefined).filter(notUndefined => notUndefined !== undefined)

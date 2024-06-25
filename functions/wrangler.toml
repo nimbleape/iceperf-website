@@ -1,6 +1,0 @@
-name = "iceperf"
-compatibility_date = "2023-10-26"
-main = "index.js"
-
-[[migrations]]
-tag = "v1"
