@@ -163,36 +163,52 @@ export function onRequest(context) {
 				},
 			}
 		},
-		'elixr-webrtc': {
-			title: 'Elixr-WebRTC',
-			description: '',
-			project: true,
-			data: {
-				avgTurnLatency: {
-					udp: 46.3,
-					tcp: null,
-					tls: null,
-				},
-				avgStunCandidate: {
-					udp: 103.7
-				},
-				avgTurnCandidate: {
-					udp: 160,
-					tcp: null,
-					tls: null
-				},
-				maxTurnThroughput: {
-					udp: 47,
-					tcp: null,
-					tls: null
-				}
-			}
-		}
+		// Rel is what we used to  call elixir-webrtc. Commented out because
+		// OSS projects will go in a separate section
+		// 'rel': {
+		// 	title: 'Rel',
+		// 	description: '',
+		// 	project: true,
+		// 	data: {
+		// 		avgTurnLatency: {
+		// 			udp: 46.3,
+		// 			tcp: null,
+		// 			tls: null,
+		// 		},
+		// 		avgStunCandidate: {
+		// 			udp: 103.7
+		// 		},
+		// 		avgTurnCandidate: {
+		// 			udp: 160,
+		// 			tcp: null,
+		// 			tls: null
+		// 		},
+		// 		maxTurnThroughput: {
+		// 			udp: 47,
+		// 			tcp: null,
+		// 			tls: null
+		// 		}
+		// 	}
+		// }
 	};
 
 	// work out best/worst provider and percentages
 	const calculateBestAndWorst = () => {
 		const bestAndWorst = {};
+		// it will look like this
+		// bestAndWorst = {
+		// 	avgTurnLatency: {
+		// 		udp: {
+		// 			best: {
+		// 				name: 'cloudflare',
+		// 				value: 123,
+		// 			},
+		// 			worst: {...},
+		// 		},
+		// 		tcp: {...},
+		// 		tls: {...},
+		// 	},
+		// }
 		const tests = [
 			{
 				testName: 'avgTurnLatency',
@@ -270,31 +286,47 @@ export function onRequest(context) {
 			})
 		});
 
+		// calculate percentages off the best
+		Array.from(Object.values(providerData)).map(({ data }) => {
+			Array.from(Object.entries(data)).map(([testName, results]) => {
+				const protocols = Array.from(Object.keys(results));
+				results.offsetFromBestPercent = {};
+				protocols.map((protocol) => {
+					if (!results[protocol]) {
+						return;
+					}
+					const { value: benchmark } = bestAndWorst[testName][protocol].best;
+					results.offsetFromBestPercent[protocol] = (results[protocol] - benchmark) / benchmark * 100;
+				});
+			});
+		});
+
 		return bestAndWorst;
 	};
 
 
 	const response = new Response(JSON.stringify({
-		minsAndMaxes: {
-			avgTurnLatency: {
-				udp: {min: 'cloudflare', max: 'expressturn'},
-				tcp: {min: 'cloudflare', max: 'expressturn'},
-				tls: {min: 'cloudflare', max: 'expressturn'},
-			},
-			avgStunCandidate: {
-				udp: {min: 'google', max: 'expressturn'}
-			},
-			avgTurnCandidate: {
-				udp: {min: 'cloudflare', max: 'expressturn'},
-				tcp: {min: 'cloudflare', max: 'expressturn'},
-				tls: {min: 'cloudflare', max: 'twilio'}
-			},
-			maxTurnThroughput: {
-				udp: {min: 'expressturn', max: 'cloudflare'},
-				tcp: {min: 'metered', max: 'cloudflare' },
-				tls: {min: 'metered', max: 'cloudflare'}
-			}
-		},
+		// TODO remove minsAndMaxes
+		// minsAndMaxes: {
+		// 	avgTurnLatency: {
+		// 		udp: {min: 'cloudflare', max: 'expressturn'},
+		// 		tcp: {min: 'cloudflare', max: 'expressturn'},
+		// 		tls: {min: 'cloudflare', max: 'expressturn'},
+		// 	},
+		// 	avgStunCandidate: {
+		// 		udp: {min: 'google', max: 'expressturn'}
+		// 	},
+		// 	avgTurnCandidate: {
+		// 		udp: {min: 'cloudflare', max: 'expressturn'},
+		// 		tcp: {min: 'cloudflare', max: 'expressturn'},
+		// 		tls: {min: 'cloudflare', max: 'twilio'}
+		// 	},
+		// 	maxTurnThroughput: {
+		// 		udp: {min: 'expressturn', max: 'cloudflare'},
+		// 		tcp: {min: 'metered', max: 'cloudflare' },
+		// 		tls: {min: 'metered', max: 'cloudflare'}
+		// 	}
+		// },
 		bestAndWorst: calculateBestAndWorst(),
 		providerData: providerData
 	}), {
