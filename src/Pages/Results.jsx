@@ -5,6 +5,7 @@ import { explanations, fields } from "../constants"
 
 export function Results() {
   const [providerData, setProviderData] = useState();
+  const [bestAndWorst, setBestAndWorst] = useState();
 
   useEffect(() => {
     const getPosts = async () => {
@@ -44,6 +45,7 @@ export function Results() {
         });
       });
       setProviderData(providerResults);
+      setBestAndWorst(postsResp.bestAndWorst);
     };
 
     getPosts();
@@ -64,6 +66,7 @@ export function Results() {
           description={metric.description}
           field={field}
           providerData={providerData[field]}
+          bestAndWorst={bestAndWorst[field]}
         />
       )})}
     </Layout>
