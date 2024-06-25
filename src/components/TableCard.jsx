@@ -70,7 +70,7 @@ export function TableCard({ title, description, field, providerData }) {
                     return (
                       <tr key={provider} className='max-h-16'>
                         <td className="size-px whitespace-nowrap px-6 py-3">
-                          <div className="flex items-center gap-x-3">
+                          <div className="flex items-center gap-x-3 max-h-14">
                             <ProviderLogo provider={lcp} />
                           </div>
                         </td>
