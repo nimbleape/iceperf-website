@@ -34,22 +34,22 @@ export function onRequest(context) {
 			project: false,
 			data: {
 				avgTurnLatency: {
-					udp: 24.6,
-					tcp: 24.7,
-					tls: 23.2,
+					udp: { value: 24.6 },
+					tcp: { value: 24.7 },
+					tls: { value: 23.2 },
 				},
 				avgStunCandidate: {
-					udp: 71.8
+					udp: { value: 71.8 },
 				},
 				avgTurnCandidate: {
-					udp: 97.1,
-					tcp: 150,
-					tls: 200
+					udp: { value: 97.1 },
+					tcp: { value: 150 },
+					tls: { value: 200 },
 				},
 				maxTurnThroughput: {
-					udp: 60.2,
-					tcp: 61.6,
-					tls: 70.7
+					udp: { value: 60.2 },
+					tcp: { value: 61.6 },
+					tls: { value: 70.7 },
 				}
 			}
 		},
@@ -59,22 +59,22 @@ export function onRequest(context) {
 			project: false,
 			data: {
 				avgTurnLatency: {
-					udp: 38.1,
-					tcp: 35.7,
-					tls: 36.4,
+					udp: { value: 38.1 },
+					tcp: { value: 35.7 },
+					tls: { value: 36.4 },
 				},
 				avgStunCandidate: {
-					udp: 61.4
+					udp: { value: 61.4 },
 				},
 				avgTurnCandidate: {
-					udp: 499,
-					tcp: 334,
-					tls: 379
+					udp: { value: 499 },
+					tcp: { value: 334 },
+					tls: { value: 379 },
 				},
 				maxTurnThroughput: {
-					udp: 54.4,
-					tcp: 35.5,
-					tls: 35.3
+					udp: { value: 54.4 },
+					tcp: { value: 35.5 },
+					tls: { value: 35.3 },
 				}
 			}
 		},
@@ -84,22 +84,22 @@ export function onRequest(context) {
 			project: false,
 			data: {
 				avgTurnLatency: {
-					udp: 38.5,
-					tcp: 38.6,
-					tls: 37.4,
+					udp: { value: 38.5 },
+					tcp: { value: 38.6 },
+					tls: { value: 37.4 },
 				},
 				avgStunCandidate: {
-					udp: 60.4,
+					udp: { value: 60.4 },
 				},
 				avgTurnCandidate: {
-					udp: 241,
-					tcp: 244,
-					tls: 364
+					udp: { value: 241 },
+					tcp: { value: 244 },
+					tls: { value: 364 },
 				},
 				maxTurnThroughput: {
-					udp: 54.1,
-					tcp: 20.6,
-					tls: 20.1
+					udp: { value: 54.1 },
+					tcp: { value: 20.6 },
+					tls: { value: 20.1 },
 				}
 			}
 		},
@@ -109,22 +109,22 @@ export function onRequest(context) {
 			project: false,
 			data: {
 				avgTurnLatency: {
-					udp: 30.2,
-					tcp: 28,
-					tls: 29,
+					udp: { value: 30.2 },
+					tcp: { value: 28 },
+					tls: { value: 29 },
 				},
 				avgStunCandidate: {
-					udp: 65
+					udp: { value: 65 },
 				},
 				avgTurnCandidate: {
-					udp: 187,
-					tcp: 154,
-					tls: 276
+					udp: { value: 187 },
+					tcp: { value: 154 },
+					tls: { value: 276 },
 				},
 				maxTurnThroughput: {
-					udp: 59.1,
-					tcp: 1.7,
-					tls: 1.6
+					udp: { value: 59.1 },
+					tcp: { value: 1.7 },
+					tls: { value: 1.6 },
 				}
 			}
 		},
@@ -134,22 +134,22 @@ export function onRequest(context) {
 			project: false,
 			data: {
 				avgTurnLatency: {
-					udp: 151.7,
-					tcp: 151.5,
+					udp: { value: 151.7 },
+					tcp: { value: 151.5 },
 					tls: null,
 				},
 				avgStunCandidate: {
-					udp: 80.5
+					udp: { value: 80.5 },
 				},
 				avgTurnCandidate: {
-					udp: 406,
-					tcp: 513,
-					tls: null
+					udp: { value: 406 },
+					tcp: { value: 513 },
+					tls: null,
 				},
 				maxTurnThroughput: {
-					udp: 12.5,
-					tcp: 3,
-					tls: null
+					udp: { value: 12.5 },
+					tcp: { value: 3 },
+					tls: null,
 				}
 			}
 		},
@@ -159,7 +159,7 @@ export function onRequest(context) {
 			project: false,
 			data: {
 				avgStunCandidate: {
-					udp: 54.9
+					udp: { value: 54.9 },
 				},
 			}
 		},
@@ -171,22 +171,22 @@ export function onRequest(context) {
 		// 	project: true,
 		// 	data: {
 		// 		avgTurnLatency: {
-		// 			udp: 46.3,
+		// 			udp: { value: 46.3 },
 		// 			tcp: null,
 		// 			tls: null,
 		// 		},
 		// 		avgStunCandidate: {
-		// 			udp: 103.7
+		// 			udp: { value: 103.7 },
 		// 		},
 		// 		avgTurnCandidate: {
-		// 			udp: 160,
+		// 			udp: { value: 160 },
 		// 			tcp: null,
-		// 			tls: null
+		// 			tls: null,
 		// 		},
 		// 		maxTurnThroughput: {
-		// 			udp: 47,
+		// 			udp: { value: 47 },
 		// 			tcp: null,
-		// 			tls: null
+		// 			tls: null,
 		// 		}
 		// 	}
 		// }
@@ -272,14 +272,14 @@ export function onRequest(context) {
 						bestAndWorst[testName][protocol].best,
 						{
 							name: provider,
-							value: providerData[provider].data[testName][protocol],
+							value: providerData[provider]?.data?.[testName]?.[protocol]?.value,
 						},
 					);
 					bestAndWorst[testName][protocol].worst = compareFunc[worst](
 						bestAndWorst[testName][protocol].worst,
 						{
 							name: provider,
-							value: providerData[provider]?.data?.[testName]?.[protocol],
+							value: providerData[provider]?.data?.[testName]?.[protocol]?.value,
 						},
 					);
 				}
@@ -290,13 +290,12 @@ export function onRequest(context) {
 		Array.from(Object.values(providerData)).map(({ data }) => {
 			Array.from(Object.entries(data)).map(([testName, results]) => {
 				const protocols = Array.from(Object.keys(results));
-				results.offsetFromBestPercent = {};
 				protocols.map((protocol) => {
-					if (!results[protocol]) {
+					if (!results[protocol]?.value) {
 						return;
 					}
 					const { value: benchmark } = bestAndWorst[testName][protocol].best;
-					results.offsetFromBestPercent[protocol] = (results[protocol] - benchmark) / benchmark * 100;
+					results[protocol].offsetFromBestPercent = (results[protocol].value - benchmark) / benchmark * 100;
 				});
 			});
 		});
