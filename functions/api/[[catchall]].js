@@ -1,4 +1,6 @@
-export function onRequest(context) {
+import { calculateBestAndWorst, refactorData } from './util';
+
+export async function onRequest(context) {
 	// Initialize the default cache
 	//const cache = caches.default
 
@@ -26,6 +28,10 @@ export function onRequest(context) {
 
 	// // before returning the response we put a clone of our response object into the cache so it can be resolved later
 	// event.waitUntil(cache.put(event.request, response.clone()))
+
+	const providerData_kv = await context.env['iceperf-cache'].get('7-day-average');
+
+	const refactoredData = refactorData(JSON.parse(providerData_kv));
 
 	const providerData = {
 		'cloudflare': {
@@ -192,142 +198,9 @@ export function onRequest(context) {
 		// }
 	};
 
-	// work out best/worst provider and percentages
-	const calculateBestAndWorst = () => {
-		const bestAndWorst = {};
-		// it will look like this
-		// bestAndWorst = {
-		// 	avgTurnLatency: {
-		// 		udp: {
-		// 			best: {
-		// 				name: 'cloudflare',
-		// 				value: 123,
-		// 			},
-		// 			worst: {...},
-		// 		},
-		// 		tcp: {...},
-		// 		tls: {...},
-		// 	},
-		// }
-		const tests = [
-			{
-				testName: 'avgTurnLatency',
-				protocols: ['udp', 'tcp', 'tls'],
-				best: 'min', // define what best value means
-				worst: 'max', // define what worst value means
-			},
-			{
-				testName: 'avgTurnCandidate',
-				protocols: ['udp', 'tcp', 'tls'],
-				best: 'min',
-				worst: 'max',
-			},
-			{
-				testName: 'avgStunCandidate',
-				protocols: ['udp'],
-				best: 'min',
-				worst: 'max',
-			},
-			{
-				testName: 'maxTurnThroughput',
-				protocols: ['udp', 'tcp', 'tls'],
-				best: 'max',
-				worst: 'min',
-			},
-		];
-
-		const compareFunc = {
-			min: (a, b) => {
-				if (!a?.value) {
-					return b;
-				}
-				if (a.value <= b.value) {
-					return a;
-				}
-				return b;
-			},
-			max: (a, b) => {
-				if (!a?.value) return b;
-				if (a.value >= b.value) {
-					return a;
-				}
-				return b;
-			},
-		};
-
-		tests.map(({ testName, protocols, best, worst }) => {
-			protocols.map((protocol) => {
-				for (const provider in providerData) {
-					if (!providerData[provider].data[testName]?.[protocol]) {
-						continue;
-					}
-
-					if (!bestAndWorst[testName]) {
-						bestAndWorst[testName] = {};
-					}
-					if (!bestAndWorst[testName][protocol]) {
-						bestAndWorst[testName][protocol] = {};
-					}
-					bestAndWorst[testName][protocol].best = compareFunc[best](
-						bestAndWorst[testName][protocol].best,
-						{
-							name: provider,
-							value: providerData[provider]?.data?.[testName]?.[protocol]?.value,
-						},
-					);
-					bestAndWorst[testName][protocol].worst = compareFunc[worst](
-						bestAndWorst[testName][protocol].worst,
-						{
-							name: provider,
-							value: providerData[provider]?.data?.[testName]?.[protocol]?.value,
-						},
-					);
-				}
-			})
-		});
-
-		// calculate percentages off the best
-		Array.from(Object.values(providerData)).map(({ data }) => {
-			Array.from(Object.entries(data)).map(([testName, results]) => {
-				const protocols = Array.from(Object.keys(results));
-				protocols.map((protocol) => {
-					if (!results[protocol]?.value) {
-						return;
-					}
-					const { value: benchmark } = bestAndWorst[testName][protocol].best;
-					results[protocol].offsetFromBestPercent = (results[protocol].value - benchmark) / benchmark * 100;
-				});
-			});
-		});
-
-		return bestAndWorst;
-	};
-
-
 	const response = new Response(JSON.stringify({
-		// TODO remove minsAndMaxes
-		// minsAndMaxes: {
-		// 	avgTurnLatency: {
-		// 		udp: {min: 'cloudflare', max: 'expressturn'},
-		// 		tcp: {min: 'cloudflare', max: 'expressturn'},
-		// 		tls: {min: 'cloudflare', max: 'expressturn'},
-		// 	},
-		// 	avgStunCandidate: {
-		// 		udp: {min: 'google', max: 'expressturn'}
-		// 	},
-		// 	avgTurnCandidate: {
-		// 		udp: {min: 'cloudflare', max: 'expressturn'},
-		// 		tcp: {min: 'cloudflare', max: 'expressturn'},
-		// 		tls: {min: 'cloudflare', max: 'twilio'}
-		// 	},
-		// 	maxTurnThroughput: {
-		// 		udp: {min: 'expressturn', max: 'cloudflare'},
-		// 		tcp: {min: 'metered', max: 'cloudflare' },
-		// 		tls: {min: 'metered', max: 'cloudflare'}
-		// 	}
-		// },
-		bestAndWorst: calculateBestAndWorst(),
-		providerData: providerData
+		bestAndWorst: calculateBestAndWorst(refactoredData),
+		providerData: refactoredData
 	}), {
 		headers: {
 			'Access-Control-Allow-Origin': '*',
