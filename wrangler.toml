@@ -4,3 +4,10 @@ compatibility_date = "2024-04-22"
 
 [env.production]
 compatibility_date = "2024-04-22"
+
+# Bind a KV Namespace. Use KV as persistent storage for small key-value pairs.
+# Docs: https://developers.cloudflare.com/workers/wrangler/configuration/#kv-namespaces
+[[kv_namespaces]]
+binding = "iceperf-cache"
+id = "aa575584b93c47298f2901efb92d7d72"
+preview_id = "19cf2c87584a4bcbbdc22a99f288f938"
