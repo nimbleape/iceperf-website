@@ -65,7 +65,7 @@ export const calculateBestAndWorst = (providerData) => {
   icePerfTests.map(({ testName, protocols, best, worst }) => {
     protocols.map((protocol) => {
       for (const provider in providerData) {
-        if (!providerData[provider].data[testName]?.[protocol]) {
+        if (!providerData[provider].data[testName]?.[protocol]?.value) {
           continue;
         }
 
@@ -79,14 +79,14 @@ export const calculateBestAndWorst = (providerData) => {
           bestAndWorst[testName][protocol].best,
           {
             name: provider,
-            value: providerData[provider]?.data?.[testName]?.[protocol]?.value,
+            value: providerData[provider].data[testName][protocol].value,
           },
         );
         bestAndWorst[testName][protocol].worst = compareFunc[worst](
           bestAndWorst[testName][protocol].worst,
           {
             name: provider,
-            value: providerData[provider]?.data?.[testName]?.[protocol]?.value,
+            value: providerData[provider].data[testName][protocol].value,
           },
         );
       }
@@ -161,10 +161,13 @@ export const refactorData = (inputData) => {
     const turnUdp = providerDataArr.find(({ scheme, protocol }) => scheme === 'turn' && protocol === 'udp');
     const turnTcp = providerDataArr.find(({ scheme, protocol }) => scheme === 'turn' && protocol === 'tcp');
     const turnTls = providerDataArr.find(({ scheme, protocol }) => scheme === 'turns' && protocol === 'tcp');
-    data.avgStunCandidate.udp.value = stunUdp?.answererTimeToReceiveCandidate;
-    data.avgTurnCandidate.udp.value = turnUdp?.answererTimeToReceiveCandidate;
-    data.avgTurnCandidate.tcp.value = turnTcp?.answererTimeToReceiveCandidate;
-    data.avgTurnCandidate.tls.value = turnTls?.answererTimeToReceiveCandidate;
+    data.avgStunCandidate.udp.value = stunUdp?.offererTimeToReceiveCandidate;
+    data.avgTurnCandidate.udp.value = turnUdp?.offererTimeToReceiveCandidate;
+    data.avgTurnCandidate.tcp.value = turnTcp?.offererTimeToReceiveCandidate;
+    data.avgTurnCandidate.tls.value = turnTls?.offererTimeToReceiveCandidate;
+    data.avgTurnLatency.udp.value = turnUdp?.latencyFirstPacket;
+    data.avgTurnLatency.tcp.value = turnTcp?.latencyFirstPacket;
+    data.avgTurnLatency.tls.value = turnTls?.latencyFirstPacket;
 
     refactored[provider] = {
       title,

@@ -84,9 +84,9 @@ export function TableCard({ title, description, field, providerData, bestAndWors
                         </td>
                         {Object.keys(data).map((protocol) => {
                           let textColorClass = 'text-gray-800 dark:text-white';
-                          if (bestAndWorst[protocol]?.best?.name === provider) {
+                          if (bestAndWorst && bestAndWorst[protocol]?.best?.name === provider) {
                             textColorClass = 'text-greenGood dark:text-greenGood-dark font-semibold';
-                          } else if (bestAndWorst[protocol]?.worst?.name === provider) {
+                          } else if (bestAndWorst && bestAndWorst[protocol]?.worst?.name === provider) {
                             textColorClass = 'text-redBad dark:text-redBad-dark font-semibold';
                           }
                           return (
