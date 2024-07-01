@@ -2,8 +2,8 @@ import PropTypes from 'prop-types'
 import { ProviderLogo } from '../components/ProviderLogo'
 // import Chart from 'react-apexcharts';
 import { explanations } from '../constants'
-import TrendingUp from './icons/TrendingUp';
-import TrendingDown from './icons/TrendingDown';
+import TrendingUp from '../icons/TrendingUp';
+import TrendingDown from '../icons/TrendingDown';
 
 export function TableCard({ title, description, field, providerData, bestAndWorst }) {
 
