@@ -1,9 +1,10 @@
 import PropTypes from 'prop-types'
 import { ProviderLogo } from '../components/ProviderLogo'
 // import Chart from 'react-apexcharts';
-import { explanations } from '../constants'
 import TrendingUp from '../icons/TrendingUp';
 import TrendingDown from '../icons/TrendingDown';
+import { explanations } from '../constants'
+import { fixedDecimals } from '../util/maths';
 
 export function TableCard({ title, description, field, providerData, bestAndWorst }) {
 
@@ -92,7 +93,7 @@ export function TableCard({ title, description, field, providerData, bestAndWors
                           return (
                             <td key={protocol} className='size-px whitespace-nowrap px-6 py-3'>
                               <span className={`text-sm ${textColorClass}`}>
-                                {data[protocol]?.value ? `${data[protocol].value} ${explanations[field].measure}` : 'N/A'}
+                                {data[protocol]?.value ? `${fixedDecimals(data[protocol].value, 1)} ${explanations[field].measure}` : 'N/A'}
                               </span>
                               {!!data[protocol]?.offsetFromBestPercent && (
                                 <span className={`flex items-center gap-x-1 ${textColorClass}`}>

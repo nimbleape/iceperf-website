@@ -2,9 +2,10 @@ import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { Layout } from '../layout/Layout'
 import { ProviderTitleAndBlurb } from '../components/ProviderTitleAndBlurb'
-import { explanations } from '../constants'
 import TrendingUp from '../icons/TrendingUp';
 import TrendingDown from '../icons/TrendingDown';
+import { explanations } from '../constants'
+import { fixedDecimals } from '../util/maths';
 
 export function Provider() {
   const { id } = useParams();
@@ -72,7 +73,7 @@ export function Provider() {
 
                       <div className='mt-1 flex items-center gap-x-2'>
                         <h3 className='text-xl sm:text-2xl font-medium text-gray-800 dark:text-neutral-200'>
-                          {data[test][protocol].value ? `${data[test][protocol].value} ${explanations[test].measure}` : 'N/A'}
+                          {data[test][protocol].value ? `${fixedDecimals(data[test][protocol].value, 1)} ${explanations[test].measure}` : 'N/A'}
                         </h3>
                         {!!data[test][protocol].offsetFromBestPercent && (
                           <span className='flex items-center gap-x-1 text-redBad dark:text-redBad-dark leading-8'>
