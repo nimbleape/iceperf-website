@@ -151,7 +151,7 @@ export const calculateBestAndWorst = (providerData) => {
  * }
  */
 export const refactorData = (inputData) => {
-  const refactored = {};
+  const refactored = { commercial: {}, oss: {} };
   const providers = Array.from(Object.keys(inputData));
 
   providers.map((provider) => {
@@ -172,11 +172,11 @@ export const refactorData = (inputData) => {
       });
     });
 
-    const { title, description, isProject } = providersList[provider];
-    refactored[provider] = {
+    const { title, description, isOSSProject } = providersList[provider];
+    refactored[isOSSProject ? 'oss' : 'commercial'][provider] = {
       title,
       description,
-      isProject,
+      isOSSProject,
       data,
     };
   });

@@ -2,36 +2,36 @@ export const providersList = {
   cloudflare: {
     title: 'Cloudflare',
     description: '',
-    isProject: 'false',
+    isOSSProject: false,
   },
   xirsys: {
     title: 'Xirsys',
     description: '',
-    isProject: 'false',
+    isOSSProject: false,
   },
   twilio: {
     title: 'Twilio',
     description: '',
-    isProject: 'false',
+    isOSSProject: false,
   },
   metered: {
     title: 'Metered',
     description: '',
-    isProject: 'false',
+    isOSSProject: false,
   },
   expressturn: {
     title: 'ExpressTURN',
     description: '',
-    isProject: 'false',
+    isOSSProject: false,
   },
   google: {
     title: 'Google',
     description: '',
-    isProject: 'false',
+    isOSSProject: false,
   },
   elixir: {
     title: 'Rel',
     description: '',
-    isProject: 'true',
+    isOSSProject: true,
   },
 };

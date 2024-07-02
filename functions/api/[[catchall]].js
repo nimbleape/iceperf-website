@@ -34,8 +34,10 @@ export async function onRequest(context) {
 	const refactoredData = refactorData(JSON.parse(providerData_kv));
 
 	const response = new Response(JSON.stringify({
-		bestAndWorst: calculateBestAndWorst(refactoredData),
-		providerData: refactoredData
+		bestAndWorstProvider: calculateBestAndWorst(refactoredData.commercial),
+		bestAndWorstOSS: calculateBestAndWorst(refactoredData.oss),
+		providerData: refactoredData.commercial,
+		ossData: refactoredData.oss,
 	}), {
 		headers: {
 			'Access-Control-Allow-Origin': '*',

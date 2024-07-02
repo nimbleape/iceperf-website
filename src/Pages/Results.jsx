@@ -45,7 +45,7 @@ export function Results() {
         });
       });
       setProviderData(providerResults);
-      setBestAndWorst(postsResp.bestAndWorst);
+      setBestAndWorst(postsResp.bestAndWorstProvider);
     };
 
     getPosts();

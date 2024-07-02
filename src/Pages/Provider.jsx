@@ -40,7 +40,6 @@ export function Provider() {
     return <></>;
   }
 
-  console.log(data)
   return (
     <Layout>
       {/* Grid */}
