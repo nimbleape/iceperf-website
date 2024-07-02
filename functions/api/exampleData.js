@@ -1,67 +1,315 @@
 export const exampleData = {
   "cloudflare": {
     "udp - stun": {
-      "provider": "cloudflare", "scheme": "stun", "protocol": "udp", "answererTimeToReceiveCandidate": 66, "offererTimeToReceiveCandidate": 92, "offererDcBytesSentTotal": 0, "offererIceTransportBytesSentTotal": 0, "answererDcBytesReceivedTotal": 0, "answererIceTransportBytesReceivedTotal": 0, "latencyFirstPacket": 0
+      "provider": "cloudflare",
+      "scheme": "stun",
+      "protocol": "udp",
+      "answererTimeToReceiveCandidate": 87,
+      "offererTimeToReceiveCandidate": 239.5,
+      "offererDcBytesSentTotal": null,
+      "offererIceTransportBytesSentTotal": null,
+      "answererDcBytesReceivedTotal": null,
+      "answererIceTransportBytesReceivedTotal": null,
+      "latencyFirstPacket": null,
+      "maxTurnThroughput": null
     },
     "tcp - turn": {
-      "provider": "cloudflare", "scheme": "turn", "protocol": "tcp", "answererTimeToReceiveCandidate": 40, "offererTimeToReceiveCandidate": 383, "offererDcBytesSentTotal": 83645440, "offererIceTransportBytesSentTotal": 89426627, "answererDcBytesReceivedTotal": 83645440, "answererIceTransportBytesReceivedTotal": 89423634, "latencyFirstPacket": 30
+      "provider": "cloudflare",
+      "scheme": "turn",
+      "protocol": "tcp",
+      "answererTimeToReceiveCandidate": 59,
+      "offererTimeToReceiveCandidate": 278,
+      "offererDcBytesSentTotal": 29227520,
+      "offererIceTransportBytesSentTotal": 31111144.5,
+      "answererDcBytesReceivedTotal": 38563840,
+      "answererIceTransportBytesReceivedTotal": 41061644,
+      "latencyFirstPacket": 35,
+      "maxTurnThroughput": 21.740489965766688
     },
     "udp - turn": {
-      "provider": "cloudflare", "scheme": "turn", "protocol": "udp", "answererTimeToReceiveCandidate": 42, "offererTimeToReceiveCandidate": 147, "offererDcBytesSentTotal": 78163968, "offererIceTransportBytesSentTotal": 83428788, "answererDcBytesReceivedTotal": 77294592, "answererIceTransportBytesReceivedTotal": 82501478, "latencyFirstPacket": 27
+      "provider": "cloudflare",
+      "scheme": "turn",
+      "protocol": "udp",
+      "answererTimeToReceiveCandidate": 72.5,
+      "offererTimeToReceiveCandidate": 380.5,
+      "offererDcBytesSentTotal": 70813696,
+      "offererIceTransportBytesSentTotal": 75547498.5,
+      "answererDcBytesReceivedTotal": 70288384,
+      "answererIceTransportBytesReceivedTotal": 74982922.5,
+      "latencyFirstPacket": 33,
+      "maxTurnThroughput": 30.69333381459803
     },
     "tcp - turns": {
-      "provider": "cloudflare", "scheme": "turns", "protocol": "tcp", "answererTimeToReceiveCandidate": 38, "offererTimeToReceiveCandidate": 328, "offererDcBytesSentTotal": 75272192, "offererIceTransportBytesSentTotal": 80361750, "answererDcBytesReceivedTotal": 75272192, "answererIceTransportBytesReceivedTotal": 80353816, "latencyFirstPacket": 28
+      "provider": "cloudflare",
+      "scheme": "turns",
+      "protocol": "tcp",
+      "answererTimeToReceiveCandidate": 56.5,
+      "offererTimeToReceiveCandidate": 310.5,
+      "offererDcBytesSentTotal": 7689728,
+      "offererIceTransportBytesSentTotal": 8202864.5,
+      "answererDcBytesReceivedTotal": 7689728,
+      "answererIceTransportBytesReceivedTotal": 8202252.5,
+      "latencyFirstPacket": 30,
+      "maxTurnThroughput": 4.2941251927541995
     }
   },
   "elixir": {
     "udp - stun": {
-      "provider": "elixir", "scheme": "stun", "protocol": "udp", "answererTimeToReceiveCandidate": 38, "offererTimeToReceiveCandidate": 52, "offererDcBytesSentTotal": 0, "offererIceTransportBytesSentTotal": 0, "answererDcBytesReceivedTotal": 0, "answererIceTransportBytesReceivedTotal": 0, "latencyFirstPacket": 0
+      "provider": "elixir",
+      "scheme": "stun",
+      "protocol": "udp",
+      "answererTimeToReceiveCandidate": 53.5,
+      "offererTimeToReceiveCandidate": 82.5,
+      "offererDcBytesSentTotal": null,
+      "offererIceTransportBytesSentTotal": null,
+      "answererDcBytesReceivedTotal": null,
+      "answererIceTransportBytesReceivedTotal": null,
+      "latencyFirstPacket": null,
+      "maxTurnThroughput": null
     },
     "udp - turn": {
-      "provider": "elixir", "scheme": "turn", "protocol": "udp", "answererTimeToReceiveCandidate": 34, "offererTimeToReceiveCandidate": 119, "offererDcBytesSentTotal": 52815872, "offererIceTransportBytesSentTotal": 56492118, "answererDcBytesReceivedTotal": 52593664, "answererIceTransportBytesReceivedTotal": 56249884, "latencyFirstPacket": 46
+      "provider": "elixir",
+      "scheme": "turn",
+      "protocol": "udp",
+      "answererTimeToReceiveCandidate": 86,
+      "offererTimeToReceiveCandidate": 221,
+      "offererDcBytesSentTotal": 56223744,
+      "offererIceTransportBytesSentTotal": 59998090.5,
+      "answererDcBytesReceivedTotal": 55936000,
+      "answererIceTransportBytesReceivedTotal": 59707720,
+      "latencyFirstPacket": 134.5,
+      "maxTurnThroughput": 28.383112763131944
     }
   },
   "expressturn": {
     "udp - stun": {
-      "provider": "expressturn", "scheme": "stun", "protocol": "udp", "answererTimeToReceiveCandidate": 42, "offererTimeToReceiveCandidate": 1, "offererDcBytesSentTotal": 0, "offererIceTransportBytesSentTotal": 0, "answererDcBytesReceivedTotal": 0, "answererIceTransportBytesReceivedTotal": 0, "latencyFirstPacket": 0
+      "provider": "expressturn",
+      "scheme": "stun",
+      "protocol": "udp",
+      "answererTimeToReceiveCandidate": 62,
+      "offererTimeToReceiveCandidate": null,
+      "offererDcBytesSentTotal": null,
+      "offererIceTransportBytesSentTotal": null,
+      "answererDcBytesReceivedTotal": null,
+      "answererIceTransportBytesReceivedTotal": null,
+      "latencyFirstPacket": null,
+      "maxTurnThroughput": null
     },
-    "tcp - turn":
-      { "provider": "expressturn", "scheme": "turn", "protocol": "tcp", "answererTimeToReceiveCandidate": 39, "offererTimeToReceiveCandidate": 526, "offererDcBytesSentTotal": 1048576, "offererIceTransportBytesSentTotal": 523380, "answererDcBytesReceivedTotal": 315392, "answererIceTransportBytesReceivedTotal": 337906, "latencyFirstPacket": 158 },
+    "tcp - turn": {
+      "provider": "expressturn",
+      "scheme": "turn",
+      "protocol": "tcp",
+      "answererTimeToReceiveCandidate": 123.5,
+      "offererTimeToReceiveCandidate": null,
+      "offererDcBytesSentTotal": null,
+      "offererIceTransportBytesSentTotal": null,
+      "answererDcBytesReceivedTotal": null,
+      "answererIceTransportBytesReceivedTotal": null,
+      "latencyFirstPacket": null,
+      "maxTurnThroughput": null
+    },
     "udp - turn": {
-      "provider": "expressturn", "scheme": "turn", "protocol": "udp", "answererTimeToReceiveCandidate": 82, "offererTimeToReceiveCandidate": 0, "offererDcBytesSentTotal": 0, "offererIceTransportBytesSentTotal": 0, "answererDcBytesReceivedTotal": 0, "answererIceTransportBytesReceivedTotal": 0, "latencyFirstPacket": 0
+      "provider": "expressturn",
+      "scheme": "turn",
+      "protocol": "udp",
+      "answererTimeToReceiveCandidate": 69,
+      "offererTimeToReceiveCandidate": 1004,
+      "offererDcBytesSentTotal": 1574912,
+      "offererIceTransportBytesSentTotal": 1188717,
+      "answererDcBytesReceivedTotal": null,
+      "answererIceTransportBytesReceivedTotal": null,
+      "latencyFirstPacket": 160,
+      "maxTurnThroughput": 0.4961815332050494
     },
     "tcp - turns": {
-      "provider": "expressturn", "scheme": "turns", "protocol": "tcp", "answererTimeToReceiveCandidate": 35, "offererTimeToReceiveCandidate": 0, "offererDcBytesSentTotal": 0, "offererIceTransportBytesSentTotal": 0, "answererDcBytesReceivedTotal": 0, "answererIceTransportBytesReceivedTotal": 0, "latencyFirstPacket": 0
+      "provider": "expressturn",
+      "scheme": "turns",
+      "protocol": "tcp",
+      "answererTimeToReceiveCandidate": 47,
+      "offererTimeToReceiveCandidate": null,
+      "offererDcBytesSentTotal": null,
+      "offererIceTransportBytesSentTotal": null,
+      "answererDcBytesReceivedTotal": null,
+      "answererIceTransportBytesReceivedTotal": null,
+      "latencyFirstPacket": null,
+      "maxTurnThroughput": null
     }
   },
   "google": {
     "udp - stun": {
-      "provider": "google", "scheme": "stun", "protocol": "udp", "answererTimeToReceiveCandidate": 43, "offererTimeToReceiveCandidate": 2, "offererDcBytesSentTotal": 0, "offererIceTransportBytesSentTotal": 0, "answererDcBytesReceivedTotal": 0, "answererIceTransportBytesReceivedTotal": 0, "latencyFirstPacket": 0
+      "provider": "google",
+      "scheme": "stun",
+      "protocol": "udp",
+      "answererTimeToReceiveCandidate": 101.33333333333333,
+      "offererTimeToReceiveCandidate": 97.75,
+      "offererDcBytesSentTotal": null,
+      "offererIceTransportBytesSentTotal": null,
+      "answererDcBytesReceivedTotal": null,
+      "answererIceTransportBytesReceivedTotal": null,
+      "latencyFirstPacket": null,
+      "maxTurnThroughput": null
+    }
+  },
+  "metered": {
+    "udp - stun": {
+      "provider": "metered",
+      "scheme": "stun",
+      "protocol": "udp",
+      "answererTimeToReceiveCandidate": 101,
+      "offererTimeToReceiveCandidate": 214.5,
+      "offererDcBytesSentTotal": null,
+      "offererIceTransportBytesSentTotal": null,
+      "answererDcBytesReceivedTotal": null,
+      "answererIceTransportBytesReceivedTotal": null,
+      "latencyFirstPacket": null,
+      "maxTurnThroughput": null
+    },
+    "tcp - turn": {
+      "provider": "metered",
+      "scheme": "turn",
+      "protocol": "tcp",
+      "answererTimeToReceiveCandidate": 53,
+      "offererTimeToReceiveCandidate": 345.5,
+      "offererDcBytesSentTotal": 2629120,
+      "offererIceTransportBytesSentTotal": 2341170.5,
+      "answererDcBytesReceivedTotal": null,
+      "answererIceTransportBytesReceivedTotal": null,
+      "latencyFirstPacket": 30.5,
+      "maxTurnThroughput": 1.079117636473243
+    },
+    "udp - turn": {
+      "provider": "metered",
+      "scheme": "turn",
+      "protocol": "udp",
+      "answererTimeToReceiveCandidate": 62,
+      "offererTimeToReceiveCandidate": 133,
+      "offererDcBytesSentTotal": 66096384,
+      "offererIceTransportBytesSentTotal": 70522785.25,
+      "answererDcBytesReceivedTotal": 65312512,
+      "answererIceTransportBytesReceivedTotal": 69682064.5,
+      "latencyFirstPacket": 80,
+      "maxTurnThroughput": 36.02262031031848
+    },
+    "tcp - turns": {
+      "provider": "metered",
+      "scheme": "turns",
+      "protocol": "tcp",
+      "answererTimeToReceiveCandidate": 69,
+      "offererTimeToReceiveCandidate": 315,
+      "offererDcBytesSentTotal": 2370048,
+      "offererIceTransportBytesSentTotal": 1871530,
+      "answererDcBytesReceivedTotal": 1429504,
+      "answererIceTransportBytesReceivedTotal": 1527265,
+      "latencyFirstPacket": 37,
+      "maxTurnThroughput": 0.9666134977402008
     }
   },
   "twilio": {
     "udp - stun": {
-      "provider": "twilio", "scheme": "stun", "protocol": "udp", "answererTimeToReceiveCandidate": 106, "offererTimeToReceiveCandidate": 110, "offererDcBytesSentTotal": 0, "offererIceTransportBytesSentTotal": 0, "answererDcBytesReceivedTotal": 0, "answererIceTransportBytesReceivedTotal": 0, "latencyFirstPacket": 0
+      "provider": "twilio",
+      "scheme": "stun",
+      "protocol": "udp",
+      "answererTimeToReceiveCandidate": 118,
+      "offererTimeToReceiveCandidate": 165.5,
+      "offererDcBytesSentTotal": null,
+      "offererIceTransportBytesSentTotal": null,
+      "answererDcBytesReceivedTotal": null,
+      "answererIceTransportBytesReceivedTotal": null,
+      "latencyFirstPacket": null,
+      "maxTurnThroughput": null
     },
     "tcp - turn": {
-      "provider": "twilio", "scheme": "turn", "protocol": "tcp", "answererTimeToReceiveCandidate": 66, "offererTimeToReceiveCandidate": 257, "offererDcBytesSentTotal": 14221312, "offererIceTransportBytesSentTotal": 15130051, "answererDcBytesReceivedTotal": 14221312, "answererIceTransportBytesReceivedTotal": 15129132, "latencyFirstPacket": 83
+      "provider": "twilio",
+      "scheme": "turn",
+      "protocol": "tcp",
+      "answererTimeToReceiveCandidate": 109.75,
+      "offererTimeToReceiveCandidate": 348.75,
+      "offererDcBytesSentTotal": 12510720,
+      "offererIceTransportBytesSentTotal": 13266615.5,
+      "answererDcBytesReceivedTotal": 14016853.333333334,
+      "answererIceTransportBytesReceivedTotal": 14911216,
+      "latencyFirstPacket": 58.25,
+      "maxTurnThroughput": 8.303562628477165
     },
     "udp - turn": {
-      "provider": "twilio", "scheme": "turn", "protocol": "udp", "answererTimeToReceiveCandidate": 55, "offererTimeToReceiveCandidate": 240, "offererDcBytesSentTotal": 68897792, "offererIceTransportBytesSentTotal": 73574729, "answererDcBytesReceivedTotal": 68623360, "answererIceTransportBytesReceivedTotal": 73278851, "latencyFirstPacket": 122
+      "provider": "twilio",
+      "scheme": "turn",
+      "protocol": "udp",
+      "answererTimeToReceiveCandidate": 64,
+      "offererTimeToReceiveCandidate": 284,
+      "offererDcBytesSentTotal": 60079616,
+      "offererIceTransportBytesSentTotal": 64102456.5,
+      "answererDcBytesReceivedTotal": 59573248,
+      "answererIceTransportBytesReceivedTotal": 63557173,
+      "latencyFirstPacket": 72.5,
+      "maxTurnThroughput": 30.93952847232622
     },
     "tcp - turns": {
-      "provider": "twilio", "scheme": "turns", "protocol": "tcp", "answererTimeToReceiveCandidate": 81, "offererTimeToReceiveCandidate": 409, "offererDcBytesSentTotal": 10266624, "offererIceTransportBytesSentTotal": 10923447, "answererDcBytesReceivedTotal": 10266624, "answererIceTransportBytesReceivedTotal": 10922711, "latencyFirstPacket": 146
+      "provider": "twilio",
+      "scheme": "turns",
+      "protocol": "tcp",
+      "answererTimeToReceiveCandidate": 63,
+      "offererTimeToReceiveCandidate": 312,
+      "offererDcBytesSentTotal": 15448064,
+      "offererIceTransportBytesSentTotal": 16340897.5,
+      "answererDcBytesReceivedTotal": 14981120,
+      "answererIceTransportBytesReceivedTotal": 15936651,
+      "latencyFirstPacket": 47,
+      "maxTurnThroughput": 7.032689358495806
     }
   },
   "xirsys": {
     "udp - stun": {
-      "provider": "xirsys", "scheme": "stun", "protocol": "udp", "answererTimeToReceiveCandidate": 46, "offererTimeToReceiveCandidate": 180, "offererDcBytesSentTotal": 0, "offererIceTransportBytesSentTotal": 0, "answererDcBytesReceivedTotal": 0, "answererIceTransportBytesReceivedTotal": 0, "latencyFirstPacket": 0
+      "provider": "xirsys",
+      "scheme": "stun",
+      "protocol": "udp",
+      "answererTimeToReceiveCandidate": 83.5,
+      "offererTimeToReceiveCandidate": 130.5,
+      "offererDcBytesSentTotal": null,
+      "offererIceTransportBytesSentTotal": null,
+      "answererDcBytesReceivedTotal": null,
+      "answererIceTransportBytesReceivedTotal": null,
+      "latencyFirstPacket": null,
+      "maxTurnThroughput": null
     },
     "tcp - turn": {
-      "provider": "xirsys", "scheme": "turn", "protocol": "tcp", "answererTimeToReceiveCandidate": 51, "offererTimeToReceiveCandidate": 145, "offererDcBytesSentTotal": 12335104, "offererIceTransportBytesSentTotal": 13123224, "answererDcBytesReceivedTotal": 12335104, "answererIceTransportBytesReceivedTotal": 13121943, "latencyFirstPacket": 36
+      "provider": "xirsys",
+      "scheme": "turn",
+      "protocol": "tcp",
+      "answererTimeToReceiveCandidate": 46,
+      "offererTimeToReceiveCandidate": 158.5,
+      "offererDcBytesSentTotal": 14345728,
+      "offererIceTransportBytesSentTotal": 15262451,
+      "answererDcBytesReceivedTotal": 14345728,
+      "answererIceTransportBytesReceivedTotal": 15261749.5,
+      "latencyFirstPacket": 33.5,
+      "maxTurnThroughput": 7.857143731659862
+    },
+    "udp - turn": {
+      "provider": "xirsys",
+      "scheme": "turn",
+      "protocol": "udp",
+      "answererTimeToReceiveCandidate": 49,
+      "offererTimeToReceiveCandidate": 343.5,
+      "offererDcBytesSentTotal": 36735488,
+      "offererIceTransportBytesSentTotal": 39206175.5,
+      "answererDcBytesReceivedTotal": 33262080,
+      "answererIceTransportBytesReceivedTotal": 35500571.5,
+      "latencyFirstPacket": 110.5,
+      "maxTurnThroughput": 26.19686486921168
     },
     "tcp - turns": {
-      "provider": "xirsys", "scheme": "turns", "protocol": "tcp", "answererTimeToReceiveCandidate": 196, "offererTimeToReceiveCandidate": 715, "offererDcBytesSentTotal": 13984768, "offererIceTransportBytesSentTotal": 14878400, "answererDcBytesReceivedTotal": 13984768, "answererIceTransportBytesReceivedTotal": 14877115, "latencyFirstPacket": 60
+      "provider": "xirsys",
+      "scheme": "turns",
+      "protocol": "tcp",
+      "answererTimeToReceiveCandidate": 53.5,
+      "offererTimeToReceiveCandidate": 603.5,
+      "offererDcBytesSentTotal": 10875392,
+      "offererIceTransportBytesSentTotal": 11440096.5,
+      "answererDcBytesReceivedTotal": 13253632,
+      "answererIceTransportBytesReceivedTotal": 14100482,
+      "latencyFirstPacket": 79,
+      "maxTurnThroughput": 6.159296014491155
     }
   }
 };

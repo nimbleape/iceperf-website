@@ -3,24 +3,32 @@ import { providersList } from './providersList';
 const icePerfTests = [
   {
     testName: 'avgTurnLatency',
+    rawDataName: 'latencyFirstPacket', // map the test name to the name in the raw data
+    scheme: 'turn',
     protocols: ['udp', 'tcp', 'tls'],
     best: 'min', // define what best value means
     worst: 'max', // define what worst value means
   },
   {
     testName: 'avgTurnCandidate',
+    rawDataName: 'offererTimeToReceiveCandidate',
+    scheme: 'turn',
     protocols: ['udp', 'tcp', 'tls'],
     best: 'min',
     worst: 'max',
   },
   {
     testName: 'avgStunCandidate',
+    rawDataName: 'offererTimeToReceiveCandidate',
+    scheme: 'stun',
     protocols: ['udp'],
     best: 'min',
     worst: 'max',
   },
   {
     testName: 'maxTurnThroughput',
+    rawDataName: 'maxTurnThroughput',
+    scheme: 'turn',
     protocols: ['udp', 'tcp', 'tls'],
     best: 'max',
     worst: 'min',
@@ -147,28 +155,24 @@ export const refactorData = (inputData) => {
   const providers = Array.from(Object.keys(inputData));
 
   providers.map((provider) => {
-    const providerData = inputData[provider];
-    const { title, description, isProject } = providersList[provider];
+    const providerDataArr = Array.from(Object.values(inputData[provider]));
+    const providerData = { stun: {}, turn: {}};
+    providerData.stun.udp = providerDataArr.find(({ scheme, protocol }) => scheme === 'stun' && protocol === 'udp');
+    providerData.turn.udp = providerDataArr.find(({ scheme, protocol }) => scheme === 'turn' && protocol === 'udp');
+    providerData.turn.tcp = providerDataArr.find(({ scheme, protocol }) => scheme === 'turn' && protocol === 'tcp');
+    providerData.turn.tls = providerDataArr.find(({ scheme, protocol }) => scheme === 'turns' && protocol === 'tcp');
+
     const data = {};
-    icePerfTests.map(({ testName, protocols }) => {
+    icePerfTests.map(({ testName, scheme, protocols, rawDataName }) => {
       data[testName] = {};
       protocols.map((p) => {
-        data[testName][p] = { value: null };
+        data[testName][p] = {
+          value: providerData[scheme]?.[p]?.[rawDataName],
+        };
       });
     });
-    const providerDataArr = Array.from(Object.values(providerData));
-    const stunUdp = providerDataArr.find(({ scheme, protocol }) => scheme === 'stun' && protocol === 'udp');
-    const turnUdp = providerDataArr.find(({ scheme, protocol }) => scheme === 'turn' && protocol === 'udp');
-    const turnTcp = providerDataArr.find(({ scheme, protocol }) => scheme === 'turn' && protocol === 'tcp');
-    const turnTls = providerDataArr.find(({ scheme, protocol }) => scheme === 'turns' && protocol === 'tcp');
-    data.avgStunCandidate.udp.value = stunUdp?.offererTimeToReceiveCandidate;
-    data.avgTurnCandidate.udp.value = turnUdp?.offererTimeToReceiveCandidate;
-    data.avgTurnCandidate.tcp.value = turnTcp?.offererTimeToReceiveCandidate;
-    data.avgTurnCandidate.tls.value = turnTls?.offererTimeToReceiveCandidate;
-    data.avgTurnLatency.udp.value = turnUdp?.latencyFirstPacket;
-    data.avgTurnLatency.tcp.value = turnTcp?.latencyFirstPacket;
-    data.avgTurnLatency.tls.value = turnTls?.latencyFirstPacket;
 
+    const { title, description, isProject } = providersList[provider];
     refactored[provider] = {
       title,
       description,
