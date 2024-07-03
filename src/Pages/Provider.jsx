@@ -148,7 +148,6 @@ export function Provider({ isOSSProject }) {
             xaxis: {
               type: 'numeric',
               min: 0,
-              categories: throughputData.udp.x,
               labels: {
                 formatter: (value) => fixedDecimals(value / 1000, 1),
               },
@@ -185,15 +184,15 @@ export function Provider({ isOSSProject }) {
           series={[
             {
               name: 'TURN - UDP',
-              data: throughputData.udp.y,
+              data: throughputData.udp.data,
             },
             {
               name: 'TURN - TCP',
-              data: throughputData.tcp.y,
+              data: throughputData.tcp.data,
             },
             {
               name: 'TURNS - TCP',
-              data: throughputData.tls.y,
+              data: throughputData.tls.data,
             },
           ]}
           type='line'

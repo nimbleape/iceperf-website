@@ -222,6 +222,7 @@ export const refactorThroughput = (inputData) => {
         date: latestDate,
         x: Object.keys(inputData[label][latestDate]).map((s) => Number(s)),
         y: Object.values(inputData[label][latestDate]),
+        data: Object.entries(inputData[label][latestDate]).map(([ t, val ]) => [Number(t), val])
       };
     });
   }
