@@ -13,6 +13,7 @@
     "@headlessui/react": "^1.7.19",
     "@heroicons/react": "^2.1.3",
     "apexcharts": "^3.49.0",
+    "itty-router": "^5.0.17",
     "preline": "^2.1.0",
     "react": "^18.2.0",
     "react-apexcharts": "^1.4.1",
