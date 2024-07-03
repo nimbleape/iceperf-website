@@ -222,10 +222,23 @@ export const refactorThroughput = (inputData) => {
         date: latestDate,
         x: Object.keys(inputData[label][latestDate]).map((s) => Number(s)),
         y: Object.values(inputData[label][latestDate]),
-        data: Object.entries(inputData[label][latestDate]).map(([ t, val ]) => [Number(t), val])
+        data: Object.entries(inputData[label][latestDate]).map(([t, val]) => [Number(t), val])
       };
     });
   }
+
+  // Align all results on the same X axis (the longer one) and fill in shorter Y arrays with `null`.
+  // result.protocol.x and result.protocol.data retain the original data.
+   result.xAxis = Object.values(result).reduce((a, b) => a.x?.length > b.x?.length ? a : b ).x;
+  ['udp', 'tcp', 'tls'].map((protocol) => {
+    const { y } = result[protocol];
+    if (y.length < result.xAxis.length) {
+      const padLen = result.xAxis.length - y.length;
+      for (let i = 0; i < padLen; i++) {
+        y.push(null);
+      }
+    }
+  })
 
   return result;
 };
