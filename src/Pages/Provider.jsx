@@ -13,7 +13,6 @@ import { fixedDecimals } from '../util/maths';
 export function Provider({ isOSSProject }) {
   const { name } = useParams();
 
-  const [currentImage, setCurrentImage] = useState();
   const [data, setData] = useState();
   const [id, setId] = useState();
   const [throughputData, setThroughputData] = useState();
@@ -39,14 +38,6 @@ export function Provider({ isOSSProject }) {
     };
 
     getPosts();
-
-    if (id !== 'xirsys' && id !== 'google' && id !== 'elixir') {
-      import(`../assets/throughput/${id}.png`).then((image) =>
-        setCurrentImage(image.default)
-      )
-    } else {
-      setCurrentImage(undefined)
-    }
     setId(id);
   }, [name, isOSSProject])
 
@@ -177,11 +168,7 @@ export function Provider({ isOSSProject }) {
           height='400px'
         />
       </div>
-
-      <div className='mt-10'>
-        <img src={currentImage} />
-      </div>
-      </Layout>
+    </Layout>
   )
 }
 
