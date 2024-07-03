@@ -133,7 +133,7 @@ export function Provider({ isOSSProject }) {
             },
             xaxis: {
               type: 'numeric',
-              stepSize: 500,
+              tickAmount: 100,
               min: 0,
               max: throughputData.udp.x[throughputData.udp.x.length - 1],
               crosshairs: {
