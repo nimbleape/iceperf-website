@@ -1,40 +1,45 @@
+import PropTypes from 'prop-types'
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { Layout } from '../layout/Layout'
 import { ProviderTitleAndBlurb } from '../components/ProviderTitleAndBlurb'
 import TrendingUp from '../icons/TrendingUp';
 import TrendingDown from '../icons/TrendingDown';
-import { explanations } from '../constants'
+import { explanations, getProviderIdFromName } from '../constants'
 import { fixedDecimals } from '../util/maths';
 
-export function Provider() {
-  const { id } = useParams();
+export function Provider({ isOSSProject }) {
+  const { name } = useParams();
 
   const [currentImage, setCurrentImage] = useState();
   const [data, setData] = useState();
+  const [id, setId] = useState();
 
   useEffect(() => {
+    const id = getProviderIdFromName(name);
+
     const getPosts = async () => {
       const resp = await fetch('/api/posts');
       const postsResp = await resp.json();
 
-      if (!postsResp?.providerData?.[id]?.data) {
-        return;
+      if (isOSSProject) {
+        setData(postsResp?.ossData?.[id]?.data);
+      } else {
+        setData(postsResp?.providerData?.[id]?.data);
       }
-
-      setData(postsResp.providerData[id].data);
     };
 
     getPosts();
 
-    if (id !== 'xirsys' && id !== 'google') {
+    if (id !== 'xirsys' && id !== 'google' && id !== 'elixir') {
       import(`../assets/throughput/${id}.png`).then((image) =>
         setCurrentImage(image.default)
       )
     } else {
       setCurrentImage(undefined)
     }
-  }, [id])
+    setId(id);
+  }, [name, isOSSProject])
 
   if (!data) {
     return <></>;
@@ -107,3 +112,11 @@ export function Provider() {
       </Layout>
   )
 }
+
+Provider.defaultProps = {
+  isOSSProject: false,
+};
+
+Provider.propTypes = {
+  isOSSProject: PropTypes.boolean,
+};

@@ -69,9 +69,20 @@ export const projects = Object.values(providersList)
   .filter(notUndefined => notUndefined !== undefined);
 
 export function getProviderTitleFromId(id) {
-  return providersList[id].name;
+  return providersList[id]?.name || '';
 }
 
 export function getProviderBlurbFromId(id) {
-  return providersList[id].description;
+  return providersList[id]?.description || '';
+}
+
+// This solves the problem of Rel being called elixir in the data
+export function getProviderIdFromName(n) {
+  if (!n) {
+    return;
+  }
+  const found = Object.entries(providersList).find(([id, value]) => value.name.toLocaleLowerCase() === n);
+  if (found) {
+    return found[0];
+  }
 }
