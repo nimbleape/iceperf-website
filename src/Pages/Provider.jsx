@@ -50,8 +50,6 @@ export function Provider({ isOSSProject }) {
     return <></>;
   }
 
-  console.log(data, throughputData)
-
   return (
     <Layout>
       {/* Grid */}
@@ -127,6 +125,9 @@ export function Provider({ isOSSProject }) {
                 }
               },
               chart: {
+                animations: {
+                  enabled: false,
+                },
                 toolbar: {
                   show: false,
                   offsetY: 50,
