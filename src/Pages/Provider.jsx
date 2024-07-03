@@ -16,6 +16,7 @@ export function Provider({ isOSSProject }) {
   const [data, setData] = useState();
   const [id, setId] = useState();
   const [throughputData, setThroughputData] = useState();
+  const [dataSeries, setDataSeries] = useState([]);
 
 
   useEffect(() => {
@@ -36,7 +37,27 @@ export function Provider({ isOSSProject }) {
 
       if (postsResp.throughput) {
         const { udp, tcp, tls } = postsResp.throughput;
-        if (udp?.data?.length || tcp?.data?.length || tls?.data?.length) {
+        if (udp?.y?.length || tcp?.y?.length || tls?.y?.length) {
+          const series = [];
+          if (udp?.y?.length) {
+            series.push({
+              name: 'TURN - UDP',
+              data: udp.y,
+            });
+          }
+          if (tcp?.y?.length) {
+            series.push({
+              name: 'TURN - TCP',
+              data: tcp.y,
+            });
+          }
+          if (tls?.y?.length) {
+            series.push({
+              name: 'TURNS - TCP',
+              data: tls.y,
+            });
+          }
+          setDataSeries(series);
           setThroughputData(postsResp.throughput);
         }
       }
@@ -111,7 +132,7 @@ export function Provider({ isOSSProject }) {
         )
       })}
 
-      {throughputData ? (
+      {throughputData && !!dataSeries.length && (
         <div className='mt-20 w-full h-96'>
           <Chart
             style={{display: 'inline-block' }}
@@ -189,26 +210,13 @@ export function Provider({ isOSSProject }) {
                 followCursor: true,
               },
             }}
-            series={[
-              {
-                name: 'TURN - UDP',
-                data: throughputData.udp.y,
-              },
-              {
-                name: 'TURN - TCP',
-                data: throughputData.tcp.y,
-              },
-              {
-                name: 'TURNS - TCP',
-                data: throughputData.tls.y,
-              },
-            ]}
+            series={dataSeries}
             type='line'
             width='600px'
             height='400px'
           />
         </div>
-      ) : null}
+      )}
     </Layout>
   )
 }
