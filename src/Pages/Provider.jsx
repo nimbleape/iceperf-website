@@ -14,12 +14,14 @@ export function Provider({ isOSSProject }) {
   const [currentImage, setCurrentImage] = useState();
   const [data, setData] = useState();
   const [id, setId] = useState();
+  const [throughputData, setThroughputData] = useState();
+
 
   useEffect(() => {
     const id = getProviderIdFromName(name);
 
     const getPosts = async () => {
-      const resp = await fetch('/api/posts');
+      const resp = await fetch(`/api/${id}`);
       const postsResp = await resp.json();
 
       if (isOSSProject) {
@@ -27,6 +29,11 @@ export function Provider({ isOSSProject }) {
       } else {
         setData(postsResp?.providerData?.[id]?.data);
       }
+      if (!postsResp?.providerData?.[id]?.data) {
+        return;
+      }
+
+      setThroughputData(postsResp.throughput);
     };
 
     getPosts();
@@ -45,6 +52,7 @@ export function Provider({ isOSSProject }) {
     return <></>;
   }
 
+  console.log(data, throughputData)
   return (
     <Layout>
       {/* Grid */}
