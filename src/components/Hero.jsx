@@ -11,11 +11,11 @@ export function Hero() {
           <p className="mt-3 text-lg text-gray-800 dark:text-neutral-400">Which is the best TURN network for you? ICEPerf shows you the facts.</p>
 
           {/* Buttons */}
-          <div className="mt-7 grid gap-3 w-full sm:inline-flex">
+          {/* <div className="mt-7 grid gap-3 w-full sm:inline-flex">
             <Button label="Get Started" icon={
               <svg className="flex-shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>
             }/>
-          </div>
+          </div> */}
           {/* End Buttons */}
         </div>
         {/* End Col */}
