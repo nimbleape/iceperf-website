@@ -34,7 +34,12 @@ export function Provider({ isOSSProject }) {
         return;
       }
 
-      setThroughputData(postsResp.throughput);
+      if (postsResp.throughput) {
+        const { udp, tcp, tls } = postsResp.throughput;
+        if (udp?.data?.length || tcp?.data?.length || tls?.data?.length) {
+          setThroughputData(postsResp.throughput);
+        }
+      }
     };
 
     getPosts();
@@ -108,98 +113,100 @@ export function Provider({ isOSSProject }) {
         )
       })}
 
-      <div className='mt-20 w-full h-96'>
-        <Chart
-          style={{display: 'inline-block' }}
-          options={{
-            title: {
-              text: 'TURN Throughput',
-              style: {
-                fontSize: 16,
-                fontWeight: 'normal',
-                fontFamily: 'ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", Segoe UI Symbol, "Noto Color Emoji"',
-              }
-            },
-            chart: {
-              toolbar: {
-                show: false,
-                offsetY: 50,
-                tools: {
-                  download: false,
-                  selection: false,
-                  zoom: false,
-                  zoomin: false,
-                  zoomout: false,
-                  pan: false,
-                  reset: false,
+      {throughputData && (
+        <div className='mt-20 w-full h-96'>
+          <Chart
+            style={{display: 'inline-block' }}
+            options={{
+              title: {
+                text: 'TURN Throughput',
+                style: {
+                  fontSize: 16,
+                  fontWeight: 'normal',
+                  fontFamily: 'ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", Segoe UI Symbol, "Noto Color Emoji"',
+                }
+              },
+              chart: {
+                toolbar: {
+                  show: false,
+                  offsetY: 50,
+                  tools: {
+                    download: false,
+                    selection: false,
+                    zoom: false,
+                    zoomin: false,
+                    zoomout: false,
+                    pan: false,
+                    reset: false,
+                  },
                 },
               },
-            },
-            stroke: {
-              curve: 'straight',
-              width: 2
-            },
-            legend: {
-              show: true,
-              showForSingleSeries: true,
-              position: 'top',
-              horizontalAlign: 'right',
-            },
-            xaxis: {
-              type: 'numeric',
-              min: 0,
-              labels: {
-                formatter: (value) => fixedDecimals(value / 1000, 1),
+              stroke: {
+                curve: 'straight',
+                width: 2
               },
-              title: {
-                text: 'Test time [s]',
-              },
-              crosshairs: {
+              legend: {
                 show: true,
+                showForSingleSeries: true,
+                position: 'top',
+                horizontalAlign: 'right',
+              },
+              xaxis: {
+                type: 'numeric',
+                min: 0,
+                labels: {
+                  formatter: (value) => fixedDecimals(value / 1000, 1),
+                },
+                title: {
+                  text: 'Test time [s]',
+                },
+                crosshairs: {
+                  show: true,
+                },
+                tooltip: {
+                  formatter: (value) => `${fixedDecimals(value / 1000, 1)} s`,
+                },
+              },
+              yaxis: {
+                labels: {
+                  formatter: (value) => `${value} Mb/s`,
+                },
+              },
+              markers: {
+                hover: {
+                  size: 0
+                }
               },
               tooltip: {
-                formatter: (value) => `${fixedDecimals(value / 1000, 1)} s`,
+                x: {
+                  show: false,
+                },
+                y: {
+                  formatter: (value) => `${fixedDecimals(value, 2)} Mb/s`,
+                },
+                followCursor: true,
               },
-            },
-            yaxis: {
-              labels: {
-                formatter: (value) => `${value} Mb/s`,
+            }}
+            series={[
+              {
+                name: 'TURN - UDP',
+                data: throughputData.udp.data,
               },
-            },
-            markers: {
-              hover: {
-                size: 0
-              }
-            },
-            tooltip: {
-              x: {
-                show: false,
+              {
+                name: 'TURN - TCP',
+                data: throughputData.tcp.data,
               },
-              y: {
-                formatter: (value) => `${fixedDecimals(value, 2)} Mb/s`,
+              {
+                name: 'TURNS - TCP',
+                data: throughputData.tls.data,
               },
-              followCursor: true,
-            },
-          }}
-          series={[
-            {
-              name: 'TURN - UDP',
-              data: throughputData.udp.data,
-            },
-            {
-              name: 'TURN - TCP',
-              data: throughputData.tcp.data,
-            },
-            {
-              name: 'TURNS - TCP',
-              data: throughputData.tls.data,
-            },
-          ]}
-          type='line'
-          width='600px'
-          height='400px'
-        />
-      </div>
+            ]}
+            type='line'
+            width='600px'
+            height='400px'
+          />
+        </div>
+      )}
     </Layout>
   )
 }
