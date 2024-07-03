@@ -1,4 +1,4 @@
-import { providersList } from './providersList';
+import { providersList } from '../../src/constants';
 
 const icePerfTests = [
   {
@@ -172,9 +172,9 @@ export const refactorData = (inputData) => {
       });
     });
 
-    const { title, description, isOSSProject } = providersList[provider];
+    const { name, description, isOSSProject } = providersList[provider];
     refactored[isOSSProject ? 'oss' : 'commercial'][provider] = {
-      title,
+      name,
       description,
       isOSSProject,
       data,

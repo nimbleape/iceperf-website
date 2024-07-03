@@ -3,7 +3,7 @@ import { ProviderLogo } from '../components/ProviderLogo'
 // import Chart from 'react-apexcharts';
 import TrendingUp from '../icons/TrendingUp';
 import TrendingDown from '../icons/TrendingDown';
-import { explanations } from '../constants'
+import { explanations, providersList } from '../constants'
 import { fixedDecimals } from '../util/maths';
 
 export function TableCard({ title, description, field, providerData, bestAndWorst }) {
@@ -79,7 +79,9 @@ export function TableCard({ title, description, field, providerData, bestAndWors
                         </td>
                         <td className='size-px whitespace-nowrap px-6 py-3'>
                           <div className='flex items-center gap-x-3'>
-                            <span className='font-semibold text-sm text-gray-800 dark:text-white'>{provider}</span>
+                            <span className='font-semibold text-sm text-gray-800 dark:text-white'>
+                              {providersList[provider]?.name || provider}
+                            </span>
                             {/* <span className='text-xs text-gray-500 dark:text-neutral-500'>ETH</span> */}
                           </div>
                         </td>

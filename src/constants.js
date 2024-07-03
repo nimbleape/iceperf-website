@@ -161,6 +161,44 @@ export const providerData = {
   }
 }
 
+export const providersList = {
+  cloudflare: {
+    name: 'Cloudflare',
+    description: '',
+    isOSSProject: false,
+  },
+  xirsys: {
+    name: 'Xirsys',
+    description: '',
+    isOSSProject: false,
+  },
+  twilio: {
+    name: 'Twilio',
+    description: '',
+    isOSSProject: false,
+  },
+  metered: {
+    name: 'Metered',
+    description: '',
+    isOSSProject: false,
+  },
+  expressturn: {
+    name: 'ExpressTURN',
+    description: '',
+    isOSSProject: false,
+  },
+  google: {
+    name: 'Google',
+    description: '',
+    isOSSProject: false,
+  },
+  elixir: {
+    name: 'Rel',
+    description: '',
+    isOSSProject: true,
+  },
+};
+
 export const fields = ['avgTurnLatency', 'maxTurnThroughput', 'avgTurnCandidate', 'avgStunCandidate'];
 
 export const explanations = {
