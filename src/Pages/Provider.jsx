@@ -31,9 +31,6 @@ export function Provider({ isOSSProject }) {
       } else {
         setData(postsResp?.providerData?.[id]?.data);
       }
-      if (!postsResp?.providerData?.[id]?.data) {
-        return;
-      }
 
       if (postsResp.throughput) {
         const { udp, tcp, tls } = postsResp.throughput;
