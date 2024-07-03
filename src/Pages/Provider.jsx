@@ -154,15 +154,15 @@ export function Provider({ isOSSProject }) {
           series={[
             {
               name: 'TURN - UDP',
-              data: throughputData.udp.y,
+              data: throughputData.udp.y.splice(-2),
             },
             {
               name: 'TURN - TCP',
-              data: throughputData.tcp.y,
+              data: throughputData.tcp.y.splice(-2),
             },
             {
               name: 'TURNS - TCP',
-              data: throughputData.tls.y,
+              data: throughputData.tls.y.splice(-2),
             },
           ]}
           type='line'
