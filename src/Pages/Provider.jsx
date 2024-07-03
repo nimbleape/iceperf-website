@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types'
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
+import Chart from 'react-apexcharts';
+
 import { Layout } from '../layout/Layout'
 import { ProviderTitleAndBlurb } from '../components/ProviderTitleAndBlurb'
 import TrendingUp from '../icons/TrendingUp';
@@ -53,6 +55,7 @@ export function Provider({ isOSSProject }) {
   }
 
   console.log(data, throughputData)
+
   return (
     <Layout>
       {/* Grid */}
@@ -113,6 +116,67 @@ export function Provider({ isOSSProject }) {
           </div>
         )
       })}
+
+      <div className='mt-20 w-full h-96'>
+        <Chart
+          style={{display: 'inline-block' }}
+          options={{
+            title: {
+              text: 'Throughput'
+            },
+            chart: {
+              toolbar: {
+                offsetY: 50,
+              },
+              // sparkline: {
+              //   enabled: true
+              // }
+            },
+            stroke: {
+              curve: 'straight',
+              width: 2
+            },
+            legend: {
+              show: true,
+              showForSingleSeries: true,
+            },
+            xaxis: {
+              type: 'category',
+              categories: throughputData.udp.x,
+              crosshairs: {
+                show: true,
+              }
+            },
+            yaxis: {
+              labels: {
+                formatter: (value) => `${value} Mb/s`,
+              },
+            },
+            markers: {
+              hover: {
+                size: 0
+              }
+            },
+          }}
+          series={[
+            {
+              name: 'TURN - UDP',
+              data: throughputData.udp.y,
+            },
+            {
+              name: 'TURN - TCP',
+              data: throughputData.tcp.y,
+            },
+            {
+              name: 'TURNS - TCP',
+              data: throughputData.tls.y,
+            },
+          ]}
+          type='line'
+          width='600px'
+          height='400px'
+        />
+      </div>
 
       <div className='mt-10'>
         <img src={currentImage} />

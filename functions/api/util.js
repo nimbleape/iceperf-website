@@ -183,3 +183,48 @@ export const refactorData = (inputData) => {
 
   return refactored;
 };
+
+/**
+ *
+ * @param {*} inputData Throughput from one provider
+ *
+ * For each schema/protocol, take the latest non-empty data.
+ * Return object with the usual turn.tcp format
+ * with separate arrays for X and Y axis.
+ *
+ * There is no throughput for STUN.
+ */
+export const refactorThroughput = (inputData) => {
+  const result = {
+    udp: {},
+    tcp: {},
+    tls: {},
+  };
+
+  if (inputData) {
+    [
+      {
+        protocol: 'udp',
+        label: 'udp - turn',
+      },
+      {
+        protocol: 'tcp',
+        label: 'tcp - turn',
+      },
+      {
+        protocol: 'tls',
+        label: 'tcp - turns',
+      },
+    ].map(({ protocol, label }) => {
+      if (!inputData[label]) return;
+      const latestDate = Object.keys(inputData[label]).reduce((a, b) => new Date(a) > new Date(b) ? a : b, '');
+      result[protocol] = {
+        date: latestDate,
+        x: Object.keys(inputData[label][latestDate]),
+        y: Object.values(inputData[label][latestDate]),
+      };
+    });
+  }
+
+  return result;
+};

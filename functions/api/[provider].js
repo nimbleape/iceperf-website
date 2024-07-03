@@ -1,4 +1,4 @@
-import { calculateBestAndWorst, refactorData } from './util';
+import { calculateBestAndWorst, refactorData, refactorThroughput } from './util';
 
 export async function onRequest(context) {
 
@@ -30,15 +30,18 @@ export async function onRequest(context) {
 	// // before returning the response we put a clone of our response object into the cache so it can be resolved later
 	// event.waitUntil(cache.put(event.request, response.clone()))
 
-	const data = await context.env['iceperf-cache'].get(`7-day-${context.params.provider}-throughput`);
   const providerData_kv = await context.env['iceperf-cache'].get('7-day-average');
+	const throughputData_kv = await context.env['iceperf-cache'].get(`7-day-${context.params.provider}-throughput`);
 
-	const refactoredData = refactorData(JSON.parse(providerData_kv));
+	const refactoredData = refactorData(JSON.parse(providerData_kv)); // TODO can probably only refactor this provider
+	const refactoredThroughput = refactorThroughput(JSON.parse(throughputData_kv));
 
 	const response = new Response(JSON.stringify({
-		bestAndWorst: calculateBestAndWorst(refactoredData),
-		providerData: refactoredData,
-    throughput: data
+		bestAndWorstProvider: calculateBestAndWorst(refactoredData.commercial),
+		bestAndWorstOSS: calculateBestAndWorst(refactoredData.oss),
+		providerData: refactoredData.commercial,
+		ossData: refactoredData.oss,
+    throughput: refactoredThroughput,
 	}), {
 		headers: {
 			// We set a max-age of 300 seconds which is equivalent to 5 minutes.
