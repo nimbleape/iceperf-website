@@ -111,7 +111,7 @@ export function Provider({ isOSSProject }) {
         )
       })}
 
-      {throughputData && (
+      {throughputData ? (
         <div className='mt-20 w-full h-96'>
           <Chart
             style={{display: 'inline-block' }}
@@ -207,7 +207,7 @@ export function Provider({ isOSSProject }) {
             height='400px'
           />
         </div>
-      )}
+      ) : null}
     </Layout>
   )
 }
