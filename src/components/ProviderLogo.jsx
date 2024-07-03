@@ -1,23 +1,25 @@
 import PropTypes from 'prop-types'
 import CloudflareLogo from '../assets/providers/cloudflare-official.svg?react'
 import GoogleLogo from '../assets/providers/google-ar21.svg?react'
-import ExpressTurnLogo from '../assets/providers/expressturn.png?react'
+import ExpressTurnLogo from '../assets/providers/expressturn-logo21.svg?react'
 import TwilioLogo from '../assets/providers/twilio-ar21.svg?react'
 import IceCubeLogo from '../assets/icecube.svg?react'
-
+import XirsysLogo from '../assets/providers/xirsys-logo.svg?react'
 
 export function ProviderLogo({ provider }) {
   switch (provider) {
     case 'cloudflare':
-      return <CloudflareLogo />
+      return <CloudflareLogo height="66px" />
     case 'google':
-      return <GoogleLogo />
+      return <GoogleLogo height="66px" />
     case 'expressturn':
-      return <img src={ExpressTurnLogo} style={{ height: 40, maxHeight: '100%', maxWidth: '100%' }} />
+      return <ExpressTurnLogo height="66px" />
     case 'twilio':
-      return <TwilioLogo />
+      return <TwilioLogo height="66px" />
+    case 'xirsys':
+      return <XirsysLogo height="66px" />
     default:
-      return <IceCubeLogo />
+      return <IceCubeLogo height="66px" />
   }
 }
 

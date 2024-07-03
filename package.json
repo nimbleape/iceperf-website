@@ -19,6 +19,7 @@
     "react-apexcharts": "^1.4.1",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.23.0",
+    "recharts": "^2.12.7",
     "vite-plugin-cloudflare-functions": "^0.6.1",
     "vite-plugin-posthog": "^2.0.5",
     "vite-plugin-svgr": "^4.2.0"

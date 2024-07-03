@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import Chart from 'react-apexcharts';
+// import ReactApexChart from 'react-apexcharts';
 
 import { Layout } from '../layout/Layout'
 import { ProviderTitleAndBlurb } from '../components/ProviderTitleAndBlurb'
@@ -10,14 +10,77 @@ import TrendingDown from '../icons/TrendingDown';
 import { explanations, getProviderIdFromName } from '../constants'
 import { fixedDecimals } from '../util/maths';
 
+
+// import {
+//   Chart as ChartJS,
+//   CategoryScale,
+//   LinearScale,
+//   PointElement,
+//   LineElement,
+//   Title,
+//   Tooltip,
+//   Legend,
+// } from 'chart.js';
+// import { Line } from 'react-chartjs-2';
+// import faker from 'faker';
+
+// ChartJS.register(
+//   CategoryScale,
+//   LinearScale,
+//   PointElement,
+//   LineElement,
+//   Title,
+//   Tooltip,
+//   Legend
+// );
+
+// export const options = {
+//   responsive: true,
+//   interaction: {
+//     mode: 'index',
+//     intersect: false,
+//   },
+//   plugins: {
+//     legend: {
+//       position: 'top',
+//     },
+//     title: {
+//       display: true,
+//       text: 'Chart.js Line Chart',
+//     },
+//   },
+// };
+
+// const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+
+// export const graphData = {
+//   labels,
+//   datasets: [
+//     {
+//       label: 'Dataset 1',
+//       data: labels.map(() => faker.datatype.number({ min: -1000, max: 1000 })),
+//       borderColor: 'rgb(255, 99, 132)',
+//       backgroundColor: 'rgba(255, 99, 132, 0.5)',
+//     },
+//     {
+//       label: 'Dataset 2',
+//       data: labels.map(() => faker.datatype.number({ min: -1000, max: 1000 })),
+//       borderColor: 'rgb(53, 162, 235)',
+//       backgroundColor: 'rgba(53, 162, 235, 0.5)',
+//     },
+//   ],
+// };
+
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+
 export function Provider({ isOSSProject }) {
   const { name } = useParams();
 
   const [data, setData] = useState();
   const [id, setId] = useState();
-  const [throughputData, setThroughputData] = useState();
+  // const [throughputData, setThroughputData] = useState();
   const [dataSeries, setDataSeries] = useState([]);
-
+  const [chartData, setChartData] = useState(null);
 
   useEffect(() => {
     const id = getProviderIdFromName(name);
@@ -32,32 +95,136 @@ export function Provider({ isOSSProject }) {
         setData(postsResp?.providerData?.[id]?.data);
       }
 
+
       const series = [];
+
       if (postsResp.throughput) {
         const { udp, tcp, tls } = postsResp.throughput;
+        console.log(udp, tcp, tls)
         if (udp?.y?.length || tcp?.y?.length || tls?.y?.length) {
-          if (udp?.y?.length) {
-            series.push({
-              name: 'TURN - UDP',
-              data: udp.y,
-            });
-          }
-          if (tcp?.y?.length) {
-            series.push({
-              name: 'TURN - TCP',
-              data: tcp.y,
-            });
-          }
-          if (tls?.y?.length) {
-            series.push({
-              name: 'TURNS - TCP',
-              data: tls.y,
-            });
-          }
+          postsResp.throughput.xAxis.forEach((k,i) => {
+            let d = {
+              name: k
+            }
+            if (udp?.y?.length) {
+              d.udp = udp.y[i]
+              // series.push({
+              //   name: 'TURN - UDP',
+              //   data: udp.y,
+              // });
+            }
+            if (tcp?.y?.length) {
+              d.tcp = tcp.y[i]
+              // series.push({
+              //   name: 'TURN - TCP',
+              //   data: tcp.y,
+              // });
+            }
+            if (tls?.y?.length) {
+              d.tls = tls.y[i]
+
+              // series.push({
+              //   name: 'TURNS - TCP',
+              //   data: tls.y,
+              // });
+            }
+            series.push(d)
+          })
         }
       }
       setDataSeries(series);
-      setThroughputData(postsResp.throughput);
+      // setThroughputData(postsResp.throughput);
+    //   setChartData({
+    //     title: {
+    //       text: 'TURN Throughput',
+    //       style: {
+    //         fontSize: 16,
+    //         fontWeight: 'normal',
+    //         fontFamily: 'ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", Segoe UI Symbol, "Noto Color Emoji"',
+    //       }
+    //     },
+    //     chart: {
+    //       height: 400,
+    //       animations: {
+    //         enabled: false,
+    //       },
+    //       toolbar: {
+    //         show: false,
+    //         offsetY: 50,
+    //         tools: {
+    //           download: false,
+    //           selection: false,
+    //           zoom: false,
+    //           zoomin: false,
+    //           zoomout: false,
+    //           pan: false,
+    //           reset: false,
+    //         },
+    //       },
+    //     },
+    //     stroke: {
+    //       curve: 'straight',
+    //       width: 2
+    //     },
+    //     legend: {
+    //       show: true,
+    //       showForSingleSeries: true,
+    //       position: 'top',
+    //       horizontalAlign: 'right',
+    //     },
+    //     xaxis: {
+    //       type: 'numeric',
+    //       categories: postsResp.throughput.xAxis,
+    //       min: 0,
+    //       labels: {
+    //         formatter: (value) => fixedDecimals(value / 1000, 1),
+    //       },
+    //       title: {
+    //         text: 'Test time [s]',
+    //       },
+    //       crosshairs: {
+    //         show: true,
+    //       },
+    //       tooltip: {
+    //         formatter: (value) => `${fixedDecimals(value / 1000, 1)} s`,
+    //       },
+    //     },
+    //     yaxis: {
+    //       labels: {
+    //         formatter: (value) => `${value} Mb/s`,
+    //       },
+    //     },
+    //     markers: {
+    //       hover: {
+    //         size: 0
+    //       }
+    //     },
+    //     tooltip: {
+    //       x: {
+    //         show: false,
+    //       },
+    //       y: {
+    //         formatter: (value) => `${fixedDecimals(value, 2)} Mb/s`,
+    //       },
+    //       followCursor: true,
+    //     },
+    //     colors:['#F44336', '#E91E63', '#9C27B0'],
+    //     responsive: [
+    //       {
+    //         breakpoint: 1000,
+    //         options: {
+    //           plotOptions: {
+    //             bar: {
+    //               horizontal: false
+    //             }
+    //           },
+    //           legend: {
+    //             position: "bottom"
+    //           }
+    //         }
+    //       }
+    //     ]
+    //   })
     };
 
     getPosts();
@@ -129,91 +296,44 @@ export function Provider({ isOSSProject }) {
         )
       })}
 
-      {throughputData && !!dataSeries.length && (
-        <div className='mt-20 w-full h-96'>
-          <Chart
+      <div className='mt-20 w-full h-96'>
+        {/* {chartData && (
+          <ReactApexChart
             style={{display: 'inline-block' }}
-            options={{
-              title: {
-                text: 'TURN Throughput',
-                style: {
-                  fontSize: 16,
-                  fontWeight: 'normal',
-                  fontFamily: 'ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", Segoe UI Symbol, "Noto Color Emoji"',
-                }
-              },
-              chart: {
-                animations: {
-                  enabled: false,
-                },
-                toolbar: {
-                  show: false,
-                  offsetY: 50,
-                  tools: {
-                    download: false,
-                    selection: false,
-                    zoom: false,
-                    zoomin: false,
-                    zoomout: false,
-                    pan: false,
-                    reset: false,
-                  },
-                },
-              },
-              stroke: {
-                curve: 'straight',
-                width: 2
-              },
-              legend: {
-                show: true,
-                showForSingleSeries: true,
-                position: 'top',
-                horizontalAlign: 'right',
-              },
-              xaxis: {
-                type: 'numeric',
-                categories: throughputData.xAxis,
-                min: 0,
-                labels: {
-                  formatter: (value) => fixedDecimals(value / 1000, 1),
-                },
-                title: {
-                  text: 'Test time [s]',
-                },
-                crosshairs: {
-                  show: true,
-                },
-                tooltip: {
-                  formatter: (value) => `${fixedDecimals(value / 1000, 1)} s`,
-                },
-              },
-              yaxis: {
-                labels: {
-                  formatter: (value) => `${value} Mb/s`,
-                },
-              },
-              markers: {
-                hover: {
-                  size: 0
-                }
-              },
-              tooltip: {
-                x: {
-                  show: false,
-                },
-                y: {
-                  formatter: (value) => `${fixedDecimals(value, 2)} Mb/s`,
-                },
-                followCursor: true,
-              },
-            }}
+            options={chartData}
             series={dataSeries}
             type='line'
-            width='600px'
-            height='400px'
+            width='1000'
+            height='400'
           />
-        </div>
-      )}
+        )} */}
+        {/* <Line options={options} data={graphData} /> */}
+        <ResponsiveContainer width="100%" height="100%">
+          <h3>TURN Throughput</h3>
+          <LineChart
+            width={500}
+            height={300}
+            data={dataSeries}
+            margin={{
+              top: 5,
+              right: 30,
+              left: 20,
+              bottom: 5,
+            }}
+          >
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="name" type="number" interval="preserveStartEnd" tickFormatter={(value) => fixedDecimals(value / 1000, 1)} unit="s" />
+            <YAxis unit="Mb/s"/>
+            <Tooltip labelFormatter={(value) => fixedDecimals(value / 1000, 1)} formatter={(value) => `${fixedDecimals(value, 2)} Mb/s`}/>
+            <Legend verticalAlign="top" />
+            <Line type="linear" dataKey="udp" stroke="rgb(33,67,107)" dot={false} strokeWidth={3} />
+            <Line type="linear" dataKey="tcp" stroke="rgb(97,156,220)" dot={false} strokeWidth={3} />
+            <Line type="linear" dataKey="tls" stroke="rgb(14,30,47)" dot={false} strokeWidth={3} />
+
+          </LineChart>
+        </ResponsiveContainer>
+      </div>
+
     </Layout>
   )
 }
