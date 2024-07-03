@@ -71,6 +71,8 @@ export function Provider({ isOSSProject }) {
     return <></>;
   }
 
+  console.log(throughputData)
+
   return (
     <Layout>
       {/* Grid */}
