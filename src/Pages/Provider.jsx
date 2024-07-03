@@ -113,15 +113,27 @@ export function Provider({ isOSSProject }) {
           style={{display: 'inline-block' }}
           options={{
             title: {
-              text: 'Throughput'
+              text: 'TURN Throughput',
+              style: {
+                fontSize: 16,
+                fontWeight: 'normal',
+                fontFamily: 'ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", Segoe UI Symbol, "Noto Color Emoji"',
+              }
             },
             chart: {
               toolbar: {
+                show: false,
                 offsetY: 50,
+                tools: {
+                  download: false,
+                  selection: false,
+                  zoom: false,
+                  zoomin: false,
+                  zoomout: false,
+                  pan: false,
+                  reset: false,
+                },
               },
-              // sparkline: {
-              //   enabled: true
-              // }
             },
             stroke: {
               curve: 'straight',
@@ -130,15 +142,25 @@ export function Provider({ isOSSProject }) {
             legend: {
               show: true,
               showForSingleSeries: true,
+              position: 'top',
+              horizontalAlign: 'right',
             },
             xaxis: {
               type: 'numeric',
-              tickAmount: 100,
               min: 0,
-              max: throughputData.udp.x[throughputData.udp.x.length - 1],
+              categories: throughputData.udp.x,
+              labels: {
+                formatter: (value) => fixedDecimals(value / 1000, 1),
+              },
+              title: {
+                text: 'Test time [s]',
+              },
               crosshairs: {
                 show: true,
-              }
+              },
+              tooltip: {
+                formatter: (value) => `${fixedDecimals(value / 1000, 1)} s`,
+              },
             },
             yaxis: {
               labels: {
@@ -150,19 +172,28 @@ export function Provider({ isOSSProject }) {
                 size: 0
               }
             },
+            tooltip: {
+              x: {
+                show: false,
+              },
+              y: {
+                formatter: (value) => `${fixedDecimals(value, 2)} Mb/s`,
+              },
+              followCursor: true,
+            },
           }}
           series={[
             {
               name: 'TURN - UDP',
-              data: throughputData.udp.y.slice(0, -2),
+              data: throughputData.udp.y,
             },
             {
               name: 'TURN - TCP',
-              data: throughputData.tcp.y.slice(0, -2),
+              data: throughputData.tcp.y,
             },
             {
               name: 'TURNS - TCP',
-              data: throughputData.tls.y.slice(0, -2),
+              data: throughputData.tls.y,
             },
           ]}
           type='line'

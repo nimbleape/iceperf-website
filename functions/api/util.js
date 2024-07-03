@@ -220,7 +220,7 @@ export const refactorThroughput = (inputData) => {
       const latestDate = Object.keys(inputData[label]).reduce((a, b) => new Date(a) > new Date(b) ? a : b, '');
       result[protocol] = {
         date: latestDate,
-        x: Object.keys(inputData[label][latestDate]),
+        x: Object.keys(inputData[label][latestDate]).map((s) => Number(s)),
         y: Object.values(inputData[label][latestDate]),
       };
     });
