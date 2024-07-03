@@ -7,5 +7,8 @@ declare module 'vite-plugin-cloudflare-functions/client' {
     '/api/**:catchall': {
       ALL: CloudflareResponseBody<typeof import('functions/api/[[catchall]]')['onRequest']>;
     };
+    '/api/:provider': {
+      ALL: CloudflareResponseBody<typeof import('functions/api/[provider]')['onRequest']>;
+    };
   }
 }

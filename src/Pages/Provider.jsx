@@ -132,8 +132,10 @@ export function Provider({ isOSSProject }) {
               showForSingleSeries: true,
             },
             xaxis: {
-              type: 'category',
-              categories: throughputData.udp.x,
+              type: 'numeric',
+              tickAmount: 20,
+              min: 0,
+              max: throughputData.udp.x[throughputData.udp.x.length - 1],
               crosshairs: {
                 show: true,
               }
