@@ -32,10 +32,10 @@ export function Provider({ isOSSProject }) {
         setData(postsResp?.providerData?.[id]?.data);
       }
 
+      const series = [];
       if (postsResp.throughput) {
         const { udp, tcp, tls } = postsResp.throughput;
         if (udp?.y?.length || tcp?.y?.length || tls?.y?.length) {
-          const series = [];
           if (udp?.y?.length) {
             series.push({
               name: 'TURN - UDP',
@@ -54,10 +54,10 @@ export function Provider({ isOSSProject }) {
               data: tls.y,
             });
           }
-          setDataSeries(series);
-          setThroughputData(postsResp.throughput);
         }
       }
+      setDataSeries(series);
+      setThroughputData(postsResp.throughput);
     };
 
     getPosts();
