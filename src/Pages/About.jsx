@@ -1,5 +1,8 @@
 import { Layout } from '../layout/Layout'
 import { Typography } from '../components/Typography'
+import { Blocks } from "../components/Blocks"
+import { Card } from "../components/Card"
+import { Foo } from "../icons/Foo"
 
 export function About() {
   return (
@@ -12,6 +15,12 @@ export function About() {
         ICEPerf runs a series of tests with each of the TURN providers mentioned above and exports metrics to compare the results.
       </Typography>
       <Typography style='body'>Learn more on the <a className='text-ipblue-900 underline' href='https://nimblea.pe/monkey-business/2024/04/30/introducing-iceperf-com/' target='_blank'>Nimble Ape blog post.</a></Typography>
+
+      <Blocks>
+        <Card title="Latency" content="Time to first byte." icon={Foo} />
+        <Card title="Ice Candidate" content="Time to recieve an Ice Candidate" icon={Foo} />
+        <Card title="Throughput" content="Rate of data send" icon={Foo} />
+      </Blocks>
     </Layout>
   )
 }

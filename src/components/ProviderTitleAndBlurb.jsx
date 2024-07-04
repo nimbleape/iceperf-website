@@ -1,5 +1,6 @@
-import { getProviderTitleFromId, getProviderBlurbFromId } from "../constants"
 import PropTypes from "prop-types"
+import { getProviderTitleFromId, getProviderBlurbFromId } from "../constants"
+import { ProviderLogo } from "./ProviderLogo"
 
 
 export function ProviderTitleAndBlurb({ provider }) {
@@ -10,6 +11,8 @@ export function ProviderTitleAndBlurb({ provider }) {
   return (
     <div className="grid gap-12">
       <div>
+        <ProviderLogo provider={provider} height="150px" />
+
         <h2 className="text-3xl text-gray-800 font-bold lg:text-4xl dark:text-white">
           {name}
         </h2>

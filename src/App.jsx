@@ -24,8 +24,8 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
         <Route path="/results" element={<Results />} />
-        <Route path="/providers/:id" element={<Provider />} />
-        <Route path="/projects/:id" element={<Provider />} />
+        <Route path="/providers/:name" element={<Provider />} />
+        <Route path="/projects/:name" element={<Provider isOSSProject />} />
       </Routes>
       <Footer />
     </>
