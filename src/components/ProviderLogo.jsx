@@ -6,7 +6,7 @@ import TwilioLogo from '../assets/providers/twilio-ar21.svg?react'
 import IceCubeLogo from '../assets/icecube.svg?react'
 import XirsysLogo from '../assets/providers/xirsys-logo.svg?react'
 import MeteredLogo from '../assets/providers/metered-logo.png?react'
-
+import RelLogo from '../assets/providers/elixir-webrtc.svg?react'
 
 export function ProviderLogo({ provider, height }) {
   switch (provider) {
@@ -22,6 +22,9 @@ export function ProviderLogo({ provider, height }) {
       return <XirsysLogo height={height} />
     case 'metered':
         return <img src={MeteredLogo} style={{ height, maxHeight: '100%', maxWidth: '100%' }} />
+    case 'rel':
+    case 'elixir':
+        return <RelLogo height={height} />
     default:
       return <IceCubeLogo height={height} />
   }
