@@ -72,7 +72,6 @@ import { fixedDecimals } from '../util/maths';
 // };
 
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import { ProviderLogo } from '../components/ProviderLogo'
 
 export function Provider({ isOSSProject }) {
   const { name } = useParams();
@@ -247,7 +246,8 @@ export function Provider({ isOSSProject }) {
         return (
           <div key={test} className='mt-10'>
             <div>
-              <h3>{explanations[test].title}</h3>
+              <h3 className="text-2xl dark:text-white">{explanations[test].title}</h3>
+              <p className="dark:text-white"><small>{explanations[test].description}</small></p>
             </div>
             <div className='grid sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6'>
               {Object.keys(data[test]).map((protocol) => {
@@ -259,14 +259,14 @@ export function Provider({ isOSSProject }) {
                         <p className='text-xs uppercase tracking-wide text-gray-500 dark:text-neutral-500'>
                           {protocol.toUpperCase()}
                         </p>
-                        <div className='hs-tooltip'>
+                        {/* <div className='hs-tooltip'>
                           <div className='hs-tooltip-toggle'>
                             <svg className='flex-shrink-0 size-4 text-gray-500 dark:text-neutral-500' xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round'><circle cx='12' cy='12' r='10'/><path d='M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3'/><path d='M12 17h.01'/></svg>
                             <span className='hs-tooltip-content hs-tooltip-shown:opacity-100 hs-tooltip-shown:visible opacity-0 transition-opacity inline-block absolute invisible z-10 py-1 px-2 bg-gray-900 text-xs font-medium text-white rounded shadow-sm dark:bg-neutral-700' role='tooltip'>
                               {explanations[test].description}
                             </span>
                           </div>
-                        </div>
+                        </div> */}
                       </div>
 
                       <div className='mt-1 flex items-center gap-x-2'>
@@ -314,7 +314,7 @@ export function Provider({ isOSSProject }) {
         {/* <Line options={options} data={graphData} /> */}
         {dataSeries && (
           <ResponsiveContainer width="100%" height="100%">
-            <h3>TURN Throughput</h3>
+            <h3 className="text-2xl dark:text-white">TURN Throughput</h3>
             <LineChart
               width={500}
               height={300}
