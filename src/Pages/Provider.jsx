@@ -312,7 +312,7 @@ export function Provider({ isOSSProject }) {
           />
         )} */}
         {/* <Line options={options} data={graphData} /> */}
-        {dataSeries && (
+        {dataSeries.length && (
           <ResponsiveContainer width="100%" height="100%">
             <h3 className="text-2xl dark:text-white">TURN Throughput</h3>
             <LineChart
