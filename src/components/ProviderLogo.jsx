@@ -5,21 +5,25 @@ import ExpressTurnLogo from '../assets/providers/expressturn-logo21.svg?react'
 import TwilioLogo from '../assets/providers/twilio-ar21.svg?react'
 import IceCubeLogo from '../assets/icecube.svg?react'
 import XirsysLogo from '../assets/providers/xirsys-logo.svg?react'
+import MeteredLogo from '../assets/providers/metered-logo.png?react'
 
-export function ProviderLogo({ provider }) {
+
+export function ProviderLogo({ provider, height }) {
   switch (provider) {
     case 'cloudflare':
-      return <CloudflareLogo height="66px" />
+      return <CloudflareLogo height={height} />
     case 'google':
-      return <GoogleLogo height="66px" />
+      return <GoogleLogo height={height} />
     case 'expressturn':
-      return <ExpressTurnLogo height="66px" />
+      return <ExpressTurnLogo height={height} />
     case 'twilio':
-      return <TwilioLogo height="66px" />
+      return <TwilioLogo height={height} />
     case 'xirsys':
-      return <XirsysLogo height="66px" />
+      return <XirsysLogo height={height} />
+    case 'metered':
+        return <img src={MeteredLogo} style={{ height, maxHeight: '100%', maxWidth: '100%' }} />
     default:
-      return <IceCubeLogo height="66px" />
+      return <IceCubeLogo height={height} />
   }
 }
 

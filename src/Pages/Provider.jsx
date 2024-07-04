@@ -72,6 +72,7 @@ import { fixedDecimals } from '../util/maths';
 // };
 
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { ProviderLogo } from '../components/ProviderLogo'
 
 export function Provider({ isOSSProject }) {
   const { name } = useParams();
@@ -240,6 +241,9 @@ export function Provider({ isOSSProject }) {
       {/* Grid */}
       <ProviderTitleAndBlurb provider={id} />
       {Object.keys(data).map((test) => {
+        if (id === 'google' && test !== 'avgStunCandidate') {
+          return <></>;
+        }
         return (
           <div key={test} className='mt-10'>
             <div>
@@ -308,30 +312,32 @@ export function Provider({ isOSSProject }) {
           />
         )} */}
         {/* <Line options={options} data={graphData} /> */}
-        <ResponsiveContainer width="100%" height="100%">
-          <h3>TURN Throughput</h3>
-          <LineChart
-            width={500}
-            height={300}
-            data={dataSeries}
-            margin={{
-              top: 5,
-              right: 30,
-              left: 20,
-              bottom: 5,
-            }}
-          >
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" type="number" interval="preserveStartEnd" tickFormatter={(value) => fixedDecimals(value / 1000, 1)} unit="s" />
-            <YAxis unit="Mb/s"/>
-            <Tooltip labelFormatter={(value) => fixedDecimals(value / 1000, 1)} formatter={(value) => `${fixedDecimals(value, 2)} Mb/s`}/>
-            <Legend verticalAlign="top" />
-            <Line type="linear" dataKey="udp" stroke="rgb(33,67,107)" dot={false} strokeWidth={3} />
-            <Line type="linear" dataKey="tcp" stroke="rgb(97,156,220)" dot={false} strokeWidth={3} />
-            <Line type="linear" dataKey="tls" stroke="rgb(14,30,47)" dot={false} strokeWidth={3} />
+        {dataSeries && (
+          <ResponsiveContainer width="100%" height="100%">
+            <h3>TURN Throughput</h3>
+            <LineChart
+              width={500}
+              height={300}
+              data={dataSeries}
+              margin={{
+                top: 5,
+                right: 30,
+                left: 20,
+                bottom: 5,
+              }}
+            >
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="name" type="number" interval="preserveStartEnd" tickFormatter={(value) => fixedDecimals(value / 1000, 1)} unit="s" />
+              <YAxis unit="Mb/s"/>
+              <Tooltip labelFormatter={(value) => fixedDecimals(value / 1000, 1)} formatter={(value) => `${fixedDecimals(value, 2)} Mb/s`}/>
+              <Legend verticalAlign="top" />
+              <Line type="linear" dataKey="udp" stroke="rgb(33,67,107)" dot={false} strokeWidth={3} />
+              <Line type="linear" dataKey="tcp" stroke="rgb(97,156,220)" dot={false} strokeWidth={3} />
+              <Line type="linear" dataKey="tls" stroke="rgb(14,30,47)" dot={false} strokeWidth={3} />
 
-          </LineChart>
-        </ResponsiveContainer>
+            </LineChart>
+          </ResponsiveContainer>
+        )}
       </div>
 
     </Layout>
