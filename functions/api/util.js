@@ -195,57 +195,68 @@ export const refactorData = (inputData) => {
  * There is no throughput for STUN.
  */
 export const refactorThroughput = (inputData) => {
-  const result = {
-    udp: {},
-    tcp: {},
-    tls: {},
-  };
+  const result = {};
 
   if (inputData) {
-    [
-      {
-        protocol: 'udp',
-        label: 'udp - turn',
-      },
-      {
-        protocol: 'tcp',
-        label: 'tcp - turn',
-      },
-      {
-        protocol: 'tls',
-        label: 'tcp - turns',
-      },
-    ].map(({ protocol, label }) => {
-      if (!inputData[label]) return;
-      const latestDate = Object.keys(inputData[label]).reduce((a, b) => new Date(a) > new Date(b) ? a : b, '');
-      result[protocol] = {
-        date: latestDate,
-        x: Object.keys(inputData[label][latestDate]).map((s) => Number(s)),
-        y: Object.values(inputData[label][latestDate]),
-        data: Object.entries(inputData[label][latestDate]).map(([t, val]) => [Number(t), val])
-      };
-    });
+    Object.keys(inputData).forEach((testKey) => {
+      result[testKey] = {};
+      [
+        {
+          protocol: 'udp',
+          label: 'udp - stun',
+        },
+        {
+          protocol: 'udp',
+          label: 'udp - turn',
+        },
+        {
+          protocol: 'tcp',
+          label: 'tcp - turn',
+        },
+        {
+          protocol: 'tls',
+          label: 'tcp - turns',
+        },
+      ].map(({ protocol, label }) => {
+        if (!inputData[testKey][label]) return;
+
+        if (!result[testKey][protocol]) {
+          result[testKey][protocol] = {}
+        }
+        // const latestDate = Object.keys(inputData[label][key]).reduce((a, b) => new Date(a) > new Date(b) ? a : b, '');
+        Object.keys(inputData[label][testKey]).forEach((date) => {
+          result[testKey][protocol][date] = {
+            x: Object.keys(inputData[label][testKey][date]).map((s) => Number(s)),
+            y: Object.values(inputData[label][testKey][date]),
+            data: Object.entries(inputData[label][testKey][date]).map(([t, val]) => [Number(t), val])
+          };
+        })
+      });
+    })
   }
+
 
   // Align all results on the same X axis (the longer one) and fill in shorter Y arrays with `null`.
   // result.protocol.x and result.protocol.data retain the original data.
-  let xAxis = [];
-  Object.values(result).forEach((protocol) => {
-    if (protocol.x?.length > xAxis.length) {
-      xAxis = protocol.x;
-    }
-  })
-  result.xAxis = xAxis;
-
-  ['udp', 'tcp', 'tls'].map((protocol) => {
-    const { y } = result[protocol];
-    if (!y) return;
-    if (y.length < result.xAxis.length) {
-      const padLen = result.xAxis.length - y.length;
-      for (let i = 0; i < padLen; i++) {
-        y.push(null);
+  Object.keys(result).forEach((testKey) => {
+    let xAxis = [];
+    Object.values(result[testKey]).forEach((protocol) => {
+      if (protocol.x?.length > xAxis.length) {
+        xAxis = protocol.x;
       }
-    }
+    })
+    result[testKey].xAxis = xAxis;
+
+    ['udp', 'tcp', 'tls'].map((protocol) => {
+      const { y } = result[testKey][protocol];
+      if (!y) return;
+      if (y.length < result[testKey].xAxis.length) {
+        const padLen = result[testKey].xAxis.length - y.length;
+        for (let i = 0; i < padLen; i++) {
+          y.push(null);
+        }
+      }
+    })
   })
 
   return result;
