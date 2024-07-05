@@ -33,6 +33,12 @@ const icePerfTests = [
     best: 'max',
     worst: 'min',
   },
+  {
+    testName: 'throughput',
+    rawDataName: 'throughput',
+    scheme: 'turn',
+    protocols: ['udp', 'tcp', 'tls'],
+  },
 ];
 
 // Work out best/worst provider and percentages
@@ -199,8 +205,12 @@ export const refactorTrendsData = (inputData) => {
   const result = {};
 
   if (inputData) {
-    Object.keys(inputData).forEach((testKey) => {
-      result[testKey] = {};
+    // Object.keys(inputData).forEach((testKey) => {
+      icePerfTests.map(({ testName, rawDataName }) => {
+        result[testName] = {};
+        // FIXME add the relevant labels to icePerfTest
+        // otherwise we get irrelevant data
+        // like TCP and TLS data on STUN
       [
         {
           protocol: 'udp',
@@ -219,46 +229,55 @@ export const refactorTrendsData = (inputData) => {
           label: 'tcp - turns',
         },
       ].map(({ protocol, label }) => {
-        if (!inputData[testKey][label]) return;
+        if (!inputData[rawDataName]?.[label]) return;
 
-        if (!result[testKey][protocol]) {
-          result[testKey][protocol] = {}
+        if (!result[testName][protocol]) {
+          result[testName][protocol] = {}
         }
-        // const latestDate = Object.keys(inputData[label][key]).reduce((a, b) => new Date(a) > new Date(b) ? a : b, '');
-        Object.keys(inputData[label][testKey]).forEach((date) => {
-          result[testKey][protocol][date] = {
-            x: Object.keys(inputData[label][testKey][date]).map((s) => Number(s)),
-            y: Object.values(inputData[label][testKey][date]),
-            data: Object.entries(inputData[label][testKey][date]).map(([t, val]) => [Number(t), val])
-          };
+        Object.keys(inputData[rawDataName][label]).forEach((date) => {
+          if (inputData[rawDataName][label][date]) {
+            const dateMeasurement = inputData[rawDataName][label][date];
+            if (Object.prototype.isPrototypeOf.call(Object.prototype, dateMeasurement)) {
+              result[testName][protocol][date] = {
+                x: Object.keys(inputData[rawDataName][label][date]).map((s) => Number(s)),
+                y: Object.values(inputData[rawDataName][label][date]),
+                // data: Object.entries(inputData[testKey][label][date]).map(([t, val]) => [Number(t), val])
+              };
+            } else {
+              result[testName][protocol][date] = {
+                y: dateMeasurement
+              };
+            }
+          }
         })
       });
     })
   }
 
 
+  // FIXME add this back in
   // Align all results on the same X axis (the longer one) and fill in shorter Y arrays with `null`.
   // result.protocol.x and result.protocol.data retain the original data.
-  Object.keys(result).forEach((testKey) => {
-    let xAxis = [];
-    Object.values(result[testKey]).forEach((protocol) => {
-      if (protocol.x?.length > xAxis.length) {
-        xAxis = protocol.x;
-      }
-    })
-    result[testKey].xAxis = xAxis;
+  // Object.keys(result).forEach((testKey) => {
+  //   let xAxis = [];
+  //   Object.values(result[testKey]).forEach((protocol) => {
+  //     if (protocol.x?.length > xAxis.length) {
+  //       xAxis = protocol.x;
+  //     }
+  //   })
+  //   result[testKey].xAxis = xAxis;
 
-    ['udp', 'tcp', 'tls'].map((protocol) => {
-      const { y } = result[testKey][protocol];
-      if (!y) return;
-      if (y.length < result[testKey].xAxis.length) {
-        const padLen = result[testKey].xAxis.length - y.length;
-        for (let i = 0; i < padLen; i++) {
-          y.push(null);
-        }
-      }
-    })
-  })
+  //   ['udp', 'tcp', 'tls'].map((protocol) => {
+  //     const { y } = result[testKey][protocol];
+  //     if (!y) return;
+  //     if (y.length < result[testKey].xAxis.length) {
+  //       const padLen = result[testKey].xAxis.length - y.length;
+  //       for (let i = 0; i < padLen; i++) {
+  //         y.push(null);
+  //       }
+  //     }
+  //   })
+  // })
 
   return result;
 };

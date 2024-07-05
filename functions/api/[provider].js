@@ -1,4 +1,5 @@
-import { calculateBestAndWorst, refactorData, refactorThroughput } from './util';
+import { calculateBestAndWorst, refactorData, refactorTrendsData } from './util';
+import { exampleData, example7dayData } from './exampleData';
 
 export async function onRequest(context) {
 
