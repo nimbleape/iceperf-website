@@ -2,7 +2,7 @@ import { Layout } from '../layout/Layout';
 import { Typography } from '../components/Typography';
 import { Blocks } from '../components/Blocks';
 import { Card } from '../components/Card';
-import { Foo } from '../icons/Foo';
+import { Link } from '../components/Link';
 import ArrowUpDown from '../icons/ArrowUpDown';
 import Cable from '../icons/Cable';
 import Stopwatch from '../icons/Stopwatch';
@@ -50,6 +50,25 @@ export function About() {
       <Typography style='small'>
         NOTE: Tests are completed over a home broadband connection, 1 Gbps down, 100 Mbps up, hardwired. Tests are run every hour. Average results shown on this website are 7-day averages, updated hourly. Throughput trends show the latest available measurement.
       </Typography>
+
+      <Typography style='h3'>ICEPerf talks</Typography>
+      <ul className='list-disc marker:text-ipblue-800 ps-5 space-y-2'>
+        <li>
+          <Typography style='body'>
+            The team present ICEPerf at <Link href='https://www.youtube.com/watch?v=kOlibSF8PsE' target='_blank' rel='noreferrer'>JanusCon 2024</Link>.
+          </Typography>
+        </li>
+        <li>
+          <Typography style='body'>
+            Dan talks about ICEPerf as part of his <Link href='https://www.youtube.com/live/Cho556qHRaE?si=EDMBG3tBg3G41Qv1&t=17675' target='_blank' rel='noreferrer'>OpenSIPs Summit 2024 talk</Link>.
+          </Typography>
+        </li>
+        <li>
+          <Typography style='body'>
+            Dan introduces ICEPerf at <Link href='https://2024.commcon.xyz/talks/introducing-iceperfcom/' target='_blank' rel='noreferrer'>CommCon 2024</Link>.
+          </Typography>
+        </li>
+      </ul>
     </Layout>
-  )
+  );
 }
