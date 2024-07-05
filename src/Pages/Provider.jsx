@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types'
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-// import ReactApexChart from 'react-apexcharts';
 
 import { Layout } from '../layout/Layout'
 import { ProviderTitleAndBlurb } from '../components/ProviderTitleAndBlurb'
@@ -9,67 +8,6 @@ import TrendingUp from '../icons/TrendingUp';
 import TrendingDown from '../icons/TrendingDown';
 import { explanations, getProviderIdFromName } from '../constants'
 import { fixedDecimals } from '../util/maths';
-
-
-// import {
-//   Chart as ChartJS,
-//   CategoryScale,
-//   LinearScale,
-//   PointElement,
-//   LineElement,
-//   Title,
-//   Tooltip,
-//   Legend,
-// } from 'chart.js';
-// import { Line } from 'react-chartjs-2';
-// import faker from 'faker';
-
-// ChartJS.register(
-//   CategoryScale,
-//   LinearScale,
-//   PointElement,
-//   LineElement,
-//   Title,
-//   Tooltip,
-//   Legend
-// );
-
-// export const options = {
-//   responsive: true,
-//   interaction: {
-//     mode: 'index',
-//     intersect: false,
-//   },
-//   plugins: {
-//     legend: {
-//       position: 'top',
-//     },
-//     title: {
-//       display: true,
-//       text: 'Chart.js Line Chart',
-//     },
-//   },
-// };
-
-// const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
-
-// export const graphData = {
-//   labels,
-//   datasets: [
-//     {
-//       label: 'Dataset 1',
-//       data: labels.map(() => faker.datatype.number({ min: -1000, max: 1000 })),
-//       borderColor: 'rgb(255, 99, 132)',
-//       backgroundColor: 'rgba(255, 99, 132, 0.5)',
-//     },
-//     {
-//       label: 'Dataset 2',
-//       data: labels.map(() => faker.datatype.number({ min: -1000, max: 1000 })),
-//       borderColor: 'rgb(53, 162, 235)',
-//       backgroundColor: 'rgba(53, 162, 235, 0.5)',
-//     },
-//   ],
-// };
 
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
@@ -80,7 +18,6 @@ export function Provider({ isOSSProject }) {
   const [id, setId] = useState();
   // const [throughputData, setThroughputData] = useState();
   const [dataSeries, setDataSeries] = useState([]);
-  const [chartData, setChartData] = useState(null);
 
   useEffect(() => {
     const id = getProviderIdFromName(name);
@@ -134,97 +71,6 @@ export function Provider({ isOSSProject }) {
       }
       setDataSeries(series);
       // setThroughputData(postsResp.throughput);
-    //   setChartData({
-    //     title: {
-    //       text: 'TURN Throughput',
-    //       style: {
-    //         fontSize: 16,
-    //         fontWeight: 'normal',
-    //         fontFamily: 'ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", Segoe UI Symbol, "Noto Color Emoji"',
-    //       }
-    //     },
-    //     chart: {
-    //       height: 400,
-    //       animations: {
-    //         enabled: false,
-    //       },
-    //       toolbar: {
-    //         show: false,
-    //         offsetY: 50,
-    //         tools: {
-    //           download: false,
-    //           selection: false,
-    //           zoom: false,
-    //           zoomin: false,
-    //           zoomout: false,
-    //           pan: false,
-    //           reset: false,
-    //         },
-    //       },
-    //     },
-    //     stroke: {
-    //       curve: 'straight',
-    //       width: 2
-    //     },
-    //     legend: {
-    //       show: true,
-    //       showForSingleSeries: true,
-    //       position: 'top',
-    //       horizontalAlign: 'right',
-    //     },
-    //     xaxis: {
-    //       type: 'numeric',
-    //       categories: postsResp.throughput.xAxis,
-    //       min: 0,
-    //       labels: {
-    //         formatter: (value) => fixedDecimals(value / 1000, 1),
-    //       },
-    //       title: {
-    //         text: 'Test time [s]',
-    //       },
-    //       crosshairs: {
-    //         show: true,
-    //       },
-    //       tooltip: {
-    //         formatter: (value) => `${fixedDecimals(value / 1000, 1)} s`,
-    //       },
-    //     },
-    //     yaxis: {
-    //       labels: {
-    //         formatter: (value) => `${value} Mb/s`,
-    //       },
-    //     },
-    //     markers: {
-    //       hover: {
-    //         size: 0
-    //       }
-    //     },
-    //     tooltip: {
-    //       x: {
-    //         show: false,
-    //       },
-    //       y: {
-    //         formatter: (value) => `${fixedDecimals(value, 2)} Mb/s`,
-    //       },
-    //       followCursor: true,
-    //     },
-    //     colors:['#F44336', '#E91E63', '#9C27B0'],
-    //     responsive: [
-    //       {
-    //         breakpoint: 1000,
-    //         options: {
-    //           plotOptions: {
-    //             bar: {
-    //               horizontal: false
-    //             }
-    //           },
-    //           legend: {
-    //             position: "bottom"
-    //           }
-    //         }
-    //       }
-    //     ]
-    //   })
     };
 
     getPosts();
@@ -301,16 +147,6 @@ export function Provider({ isOSSProject }) {
       })}
 
       <div className='mt-20 w-full h-96'>
-        {/* {chartData && (
-          <ReactApexChart
-            style={{display: 'inline-block' }}
-            options={chartData}
-            series={dataSeries}
-            type='line'
-            width='1000'
-            height='400'
-          />
-        )} */}
         {/* <Line options={options} data={graphData} /> */}
         {!!dataSeries.length && (
           <ResponsiveContainer width="100%" height="100%">
