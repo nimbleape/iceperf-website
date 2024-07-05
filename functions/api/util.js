@@ -186,15 +186,16 @@ export const refactorData = (inputData) => {
 
 /**
  *
- * @param {*} inputData Throughput from one provider
+ * @param {*} inputData Trends from one provider
  *
- * For each schema/protocol, take the latest non-empty data.
- * Return object with the usual turn.tcp format
- * with separate arrays for X and Y axis.
+ * For each schema/protocol, take the non-empty data.
+ * Return object with the usual [test].[protocol] format
+ * with separate arrays for X and Y axis,
+ * and a Data array that contains [x, y] tuples.
  *
  * There is no throughput for STUN.
  */
-export const refactorThroughput = (inputData) => {
+export const refactorTrendsData = (inputData) => {
   const result = {};
 
   if (inputData) {

@@ -32,10 +32,9 @@ export function Provider({ isOSSProject }) {
         setData(postsResp?.providerData?.[id]?.data);
       }
 
-
       const series = [];
 
-      if (postsResp.throughput) {
+      if (postsResp.day7data.throughput) {
         const { udp, tcp, tls } = postsResp.throughput;
         console.log(udp, tcp, tls)
         if (udp?.y?.length || tcp?.y?.length || tls?.y?.length) {
@@ -70,7 +69,7 @@ export function Provider({ isOSSProject }) {
         }
       }
       setDataSeries(series);
-      // setThroughputData(postsResp.throughput);
+      // setThroughputData(postsResp.day7data.throughput);
     };
 
     getPosts();
