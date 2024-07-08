@@ -33,6 +33,12 @@ const icePerfTests = [
     best: 'max',
     worst: 'min',
   },
+  {
+    testName: 'throughput',
+    rawDataName: 'throughput',
+    scheme: 'turn',
+    protocols: ['udp', 'tcp', 'tls'],
+  },
 ];
 
 // Work out best/worst provider and percentages
@@ -186,67 +192,98 @@ export const refactorData = (inputData) => {
 
 /**
  *
- * @param {*} inputData Throughput from one provider
+ * @param {*} inputData Trends from one provider
  *
- * For each schema/protocol, take the latest non-empty data.
- * Return object with the usual turn.tcp format
- * with separate arrays for X and Y axis.
+ * For each schema/protocol, take the non-empty data.
+ * Return object with the usual [test].[protocol] format
+ * with separate arrays for X and Y axis,
+ * and a Data array that contains [x, y] tuples.
  *
  * There is no throughput for STUN.
  */
-export const refactorThroughput = (inputData) => {
-  const result = {
-    udp: {},
-    tcp: {},
-    tls: {},
-  };
-
+export const refactorTrendsData = (inputData) => {
+  const result = {};
   if (inputData) {
-    [
-      {
-        protocol: 'udp',
-        label: 'udp - turn',
-      },
-      {
-        protocol: 'tcp',
-        label: 'tcp - turn',
-      },
-      {
-        protocol: 'tls',
-        label: 'tcp - turns',
-      },
-    ].map(({ protocol, label }) => {
-      if (!inputData[label]) return;
-      const latestDate = Object.keys(inputData[label]).reduce((a, b) => new Date(a) > new Date(b) ? a : b, '');
-      result[protocol] = {
-        date: latestDate,
-        x: Object.keys(inputData[label][latestDate]).map((s) => Number(s)),
-        y: Object.values(inputData[label][latestDate]),
-        data: Object.entries(inputData[label][latestDate]).map(([t, val]) => [Number(t), val])
-      };
-    });
+    // Object.keys(inputData).forEach((testKey) => {
+      icePerfTests.map(({ testName, rawDataName, scheme, protocols }) => {
+        if (rawDataName !== "throughput") {
+          result[testName] = {};
+        }
+        protocols.forEach((protocol) => {
+          let label = `${protocol === 'tls' ? 'tcp' : protocol } - ${protocol === 'tls' ? scheme + 's' : scheme}`;
+          if (!inputData[rawDataName]?.[label]) return;
+
+          if (rawDataName !== "throughput") {
+            if (!result[testName][protocol]) {
+              result[testName][protocol] = {}
+            }
+          }
+
+          Object.keys(inputData[rawDataName][label]).forEach((date, i) => {
+            if (inputData[rawDataName][label][date]) {
+              // const dateMeasurement = inputData[rawDataName][label][date];
+              // if (Object.prototype.isPrototypeOf.call(Object.prototype, dateMeasurement)) {
+              if (rawDataName === "throughput") {
+
+                if (!result[testName]) {
+                  // console.log('created')
+                  result[testName] = []
+                }
+
+                if (!result[testName][i]) {
+                  result[testName].push({
+                    date: date,
+                    xAxis: Object.keys(inputData[rawDataName][label][date]).map((s) => Number(s))
+                  })
+                }
+
+                // console.log('test!', result[testName], i)
+
+                // console.log('test:', testName, 'date:', date, 'label:', label, 'data:', inputData[rawDataName][label][date])
+
+                result[testName][i][protocol] = Object.values(inputData[rawDataName][label][date])
+                // const throughputResult = {
+                //   x: ,
+                //   y: ,
+                //   data: Object.entries(inputData[rawDataName][label][date]).map(([t, val]) => [Number(t), val])
+                // };
+              } else {
+                result[testName][protocol]= {
+                  x: Object.keys(inputData[rawDataName][label]),
+                  y: Object.values(inputData[rawDataName][label]),
+                  // data: Object.entries(inputData[rawDataName][label]).map(([t, val]) => [t, val])
+                };
+              }
+            }
+          })
+        });
+    })
   }
 
+
+  // FIXME add this back in
   // Align all results on the same X axis (the longer one) and fill in shorter Y arrays with `null`.
   // result.protocol.x and result.protocol.data retain the original data.
-  let xAxis = [];
-  Object.values(result).forEach((protocol) => {
-    if (protocol.x?.length > xAxis.length) {
-      xAxis = protocol.x;
-    }
-  })
-  result.xAxis = xAxis;
+  // Object.keys(result).forEach((testKey) => {
+  //   let xAxis = [];
+  //   Object.values(result[testKey]).forEach((protocol) => {
+  //     if (protocol.x?.length > xAxis.length) {
+  //       xAxis = protocol.x;
+  //     }
+  //   })
+  //   result[testKey].xAxis = xAxis;
 
-  ['udp', 'tcp', 'tls'].map((protocol) => {
-    const { y } = result[protocol];
-    if (!y) return;
-    if (y.length < result.xAxis.length) {
-      const padLen = result.xAxis.length - y.length;
-      for (let i = 0; i < padLen; i++) {
-        y.push(null);
-      }
-    }
-  })
+  //   ['udp', 'tcp', 'tls'].map((protocol) => {
+  //     const { y } = result[testKey][protocol];
+  //     if (!y) return;
+  //     if (y.length < result[testKey].xAxis.length) {
+  //       const padLen = result[testKey].xAxis.length - y.length;
+  //       for (let i = 0; i < padLen; i++) {
+  //         y.push(null);
+  //       }
+  //     }
+  //   })
+  // })
 
   return result;
 };
