@@ -57,7 +57,7 @@ export function Provider({ isOSSProject }) {
       }
 
       for (const testName in avgData) {
-        if (testName === 'throughtput') continue;
+        if (testName === 'throughput') continue;
         for (const protocol in avgData[testName]) {
           if (postsResp.day7data[testName][protocol]) {
             avgData[testName][protocol].trend = [];
