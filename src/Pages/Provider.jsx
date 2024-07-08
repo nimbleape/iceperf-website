@@ -35,29 +35,29 @@ export function Provider({ isOSSProject }) {
       const series = [];
 
       if (postsResp.day7data.throughput) {
-        const { udp, tcp, tls } = postsResp.throughput;
-        console.log(udp, tcp, tls)
-        if (udp?.y?.length || tcp?.y?.length || tls?.y?.length) {
-          postsResp.throughput.xAxis.forEach((k,i) => {
+        const num = 10
+        const { udp, tcp, tls } = postsResp.day7data.throughput[num];
+        if (udp?.length || tcp?.length || tls?.length) {
+          postsResp.day7data.throughput[num].xAxis.forEach((k,i) => {
             let d = {
               name: k
             }
-            if (udp?.y?.length) {
-              d.udp = udp.y[i]
+            if (udp?.length) {
+              d.udp = udp[i]
               // series.push({
               //   name: 'TURN - UDP',
               //   data: udp.y,
               // });
             }
-            if (tcp?.y?.length) {
-              d.tcp = tcp.y[i]
+            if (tcp?.length) {
+              d.tcp = tcp[i]
               // series.push({
               //   name: 'TURN - TCP',
               //   data: tcp.y,
               // });
             }
-            if (tls?.y?.length) {
-              d.tls = tls.y[i]
+            if (tls?.length) {
+              d.tls = tls[i]
 
               // series.push({
               //   name: 'TURNS - TCP',
@@ -85,14 +85,14 @@ export function Provider({ isOSSProject }) {
       {/* Grid */}
       <ProviderTitleAndBlurb provider={id} />
       {Object.keys(data).map((test) => {
-        if (id === 'google' && test !== 'avgStunCandidate') {
+        if ((id === 'google' && test !== 'avgStunCandidate') || test === "throughput") {
           return <></>;
         }
         return (
           <div key={test} className='mt-10'>
             <div>
-              <h3 className="text-2xl dark:text-white">{explanations[test].title}</h3>
-              <p className="dark:text-white"><small>{explanations[test].description}</small></p>
+              <h3 className="text-2xl dark:text-white">{explanations[test]?.title}</h3>
+              <p className="dark:text-white"><small>{explanations[test]?.description}</small></p>
             </div>
             <div className='grid sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6'>
               {Object.keys(data[test]).map((protocol) => {

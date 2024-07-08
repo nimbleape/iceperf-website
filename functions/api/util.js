@@ -203,54 +203,60 @@ export const refactorData = (inputData) => {
  */
 export const refactorTrendsData = (inputData) => {
   const result = {};
-
   if (inputData) {
     // Object.keys(inputData).forEach((testKey) => {
-      icePerfTests.map(({ testName, rawDataName }) => {
-        result[testName] = {};
-        // FIXME add the relevant labels to icePerfTest
-        // otherwise we get irrelevant data
-        // like TCP and TLS data on STUN
-      [
-        {
-          protocol: 'udp',
-          label: 'udp - stun',
-        },
-        {
-          protocol: 'udp',
-          label: 'udp - turn',
-        },
-        {
-          protocol: 'tcp',
-          label: 'tcp - turn',
-        },
-        {
-          protocol: 'tls',
-          label: 'tcp - turns',
-        },
-      ].map(({ protocol, label }) => {
-        if (!inputData[rawDataName]?.[label]) return;
-
-        if (!result[testName][protocol]) {
-          result[testName][protocol] = {}
+      icePerfTests.map(({ testName, rawDataName, scheme, protocols }) => {
+        if (rawDataName !== "throughput") {
+          result[testName] = {};
         }
-        Object.keys(inputData[rawDataName][label]).forEach((date) => {
-          if (inputData[rawDataName][label][date]) {
-            const dateMeasurement = inputData[rawDataName][label][date];
-            if (Object.prototype.isPrototypeOf.call(Object.prototype, dateMeasurement)) {
-              result[testName][protocol][date] = {
-                x: Object.keys(inputData[rawDataName][label][date]).map((s) => Number(s)),
-                y: Object.values(inputData[rawDataName][label][date]),
-                // data: Object.entries(inputData[testKey][label][date]).map(([t, val]) => [Number(t), val])
-              };
-            } else {
-              result[testName][protocol][date] = {
-                y: dateMeasurement
-              };
+        protocols.forEach((protocol) => {
+          let label = `${protocol} - ${scheme}`;
+          if (!inputData[rawDataName]?.[label]) return;
+
+          if (rawDataName !== "throughput") {
+            if (!result[testName][protocol]) {
+              result[testName][protocol] = {}
             }
           }
-        })
-      });
+
+          Object.keys(inputData[rawDataName][label]).forEach((date, i) => {
+            if (inputData[rawDataName][label][date]) {
+              // const dateMeasurement = inputData[rawDataName][label][date];
+              // if (Object.prototype.isPrototypeOf.call(Object.prototype, dateMeasurement)) {
+              if (rawDataName === "throughput") {
+
+                if (!result[testName]) {
+                  // console.log('created')
+                  result[testName] = []
+                }
+
+                if (!result[testName][i]) {
+                  result[testName].push({
+                    date: date,
+                    xAxis: Object.keys(inputData[rawDataName][label][date]).map((s) => Number(s))
+                  })
+                }
+
+                // console.log('test!', result[testName], i)
+
+                // console.log('test:', testName, 'date:', date, 'label:', label, 'data:', inputData[rawDataName][label][date])
+
+                result[testName][i][protocol] = Object.values(inputData[rawDataName][label][date])
+                // const throughputResult = {
+                //   x: ,
+                //   y: ,
+                //   data: Object.entries(inputData[rawDataName][label][date]).map(([t, val]) => [Number(t), val])
+                // };
+              } else {
+                result[testName][protocol]= {
+                  x: Object.keys(inputData[rawDataName][label]),
+                  y: Object.values(inputData[rawDataName][label]),
+                  data: Object.entries(inputData[rawDataName][label]).map(([t, val]) => [t, val])
+                };
+              }
+            }
+          })
+        });
     })
   }
 
