@@ -210,7 +210,7 @@ export const refactorTrendsData = (inputData) => {
           result[testName] = {};
         }
         protocols.forEach((protocol) => {
-          let label = `${protocol} - ${scheme}`;
+          let label = `${protocol === 'tls' ? 'tcp' : protocol } - ${protocol === 'tls' ? scheme + 's' : scheme}`;
           if (!inputData[rawDataName]?.[label]) return;
 
           if (rawDataName !== "throughput") {
