@@ -34,8 +34,8 @@ export function Provider({ isOSSProject }) {
 
       const series = [];
 
-      if (postsResp.day7data.throughput) {
-        const num = 10
+      if (postsResp.day7data.throughput?.length) {
+        const num = postsResp.day7data.throughput.length - 1;
         const { udp, tcp, tls } = postsResp.day7data.throughput[num];
         if (udp?.length || tcp?.length || tls?.length) {
           postsResp.day7data.throughput[num].xAxis.forEach((k,i) => {

@@ -251,7 +251,7 @@ export const refactorTrendsData = (inputData) => {
                 result[testName][protocol]= {
                   x: Object.keys(inputData[rawDataName][label]),
                   y: Object.values(inputData[rawDataName][label]),
-                  data: Object.entries(inputData[rawDataName][label]).map(([t, val]) => [t, val])
+                  // data: Object.entries(inputData[rawDataName][label]).map(([t, val]) => [t, val])
                 };
               }
             }
