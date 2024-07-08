@@ -26,10 +26,9 @@ export function Provider({ isOSSProject }) {
       const resp = await fetch(`/api/${id}`);
       const postsResp = await resp.json();
 
+      let avgData = postsResp?.providerData?.[id]?.data;
       if (isOSSProject) {
-        setData(postsResp?.ossData?.[id]?.data);
-      } else {
-        setData(postsResp?.providerData?.[id]?.data);
+        avgData = postsResp?.ossData?.[id]?.data;
       }
 
       const series = [];
@@ -44,30 +43,33 @@ export function Provider({ isOSSProject }) {
             }
             if (udp?.length) {
               d.udp = udp[i]
-              // series.push({
-              //   name: 'TURN - UDP',
-              //   data: udp.y,
-              // });
             }
             if (tcp?.length) {
               d.tcp = tcp[i]
-              // series.push({
-              //   name: 'TURN - TCP',
-              //   data: tcp.y,
-              // });
             }
             if (tls?.length) {
               d.tls = tls[i]
-
-              // series.push({
-              //   name: 'TURNS - TCP',
-              //   data: tls.y,
-              // });
             }
             series.push(d)
           })
         }
       }
+
+      for (const testName in avgData) {
+        if (testName === 'throughtput') continue;
+        for (const protocol in avgData[testName]) {
+          if (postsResp.day7data[testName][protocol]) {
+            avgData[testName][protocol].trend = [];
+            postsResp.day7data[testName][protocol].x.forEach((date, i) => {
+              avgData[testName][protocol].trend.push({
+                name: date,
+                value: postsResp.day7data[testName][protocol].y[i],
+              });
+            });
+          }
+        }
+      }
+      setData(avgData);
       setDataSeries(series);
       // setThroughputData(postsResp.day7data.throughput);
     };
@@ -80,21 +82,23 @@ export function Provider({ isOSSProject }) {
     return <></>;
   }
 
+  console.log(data)
+
   return (
     <Layout>
       {/* Grid */}
       <ProviderTitleAndBlurb provider={id} />
       {Object.keys(data).map((test) => {
-        if ((id === 'google' && test !== 'avgStunCandidate') || test === "throughput") {
+        if ((id === 'google' && test !== 'avgStunCandidate') || test === 'throughput') {
           return <></>;
         }
         return (
           <div key={test} className='mt-10'>
             <div>
-              <h3 className="text-2xl dark:text-white">{explanations[test]?.title}</h3>
-              <p className="dark:text-white"><small>{explanations[test]?.description}</small></p>
+              <h3 className='text-2xl dark:text-white'>{explanations[test]?.title}</h3>
+              <p className='dark:text-white'><small>{explanations[test]?.description}</small></p>
             </div>
-            <div className='grid sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6'>
+            <div className='grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6'>
               {Object.keys(data[test]).map((protocol) => {
                 // Card
                 return (
@@ -135,6 +139,30 @@ export function Provider({ isOSSProject }) {
                           </span>
                         )}
                       </div>
+
+                      {!!data[test][protocol].trend?.length && (
+                        <div className='mt-4 w-full h-36'>
+                          <ResponsiveContainer width='100%' height='100%'>
+                            <LineChart
+                              width={500}
+                              height={300}
+                              data={data[test][protocol].trend}
+                              margin={{
+                                top: 5,
+                                right: 5,
+                                left: 5,
+                                bottom: 5,
+                              }}
+                            >
+                              <CartesianGrid strokeDasharray='3 3' />
+                              <XAxis dataKey='name' type='category' />
+                              <YAxis unit={explanations[test].measure} />
+                              <Tooltip formatter={(value) => `${fixedDecimals(value, 1)}`}/>
+                              <Line type='linear' dataKey='value' stroke='rgb(33,67,107)' dot={false} strokeWidth={2} />
+                            </LineChart>
+                          </ResponsiveContainer>
+                        </div>
+                      )}
                     </div>
                   </div>
                 )
@@ -146,10 +174,9 @@ export function Provider({ isOSSProject }) {
       })}
 
       <div className='mt-20 w-full h-96'>
-        {/* <Line options={options} data={graphData} /> */}
         {!!dataSeries.length && (
-          <ResponsiveContainer width="100%" height="100%">
-            <h3 className="text-2xl dark:text-white">TURN Throughput</h3>
+          <ResponsiveContainer width='100%' height='100%'>
+            <h3 className='text-2xl dark:text-white'>TURN Throughput</h3>
             <LineChart
               width={500}
               height={300}
@@ -161,14 +188,14 @@ export function Provider({ isOSSProject }) {
                 bottom: 5,
               }}
             >
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" type="number" interval="preserveStartEnd" tickFormatter={(value) => fixedDecimals(value / 1000, 1)} unit="s" />
-              <YAxis unit="Mb/s"/>
+              <CartesianGrid strokeDasharray='3 3' />
+              <XAxis dataKey='name' type='number' interval='preserveStartEnd' tickFormatter={(value) => fixedDecimals(value / 1000, 1)} unit='s' />
+              <YAxis unit='Mb/s'/>
               <Tooltip labelFormatter={(value) => fixedDecimals(value / 1000, 1)} formatter={(value) => `${fixedDecimals(value, 2)} Mb/s`}/>
-              <Legend verticalAlign="top" />
-              <Line type="linear" dataKey="udp" stroke="rgb(33,67,107)" dot={false} strokeWidth={3} />
-              <Line type="linear" dataKey="tcp" stroke="rgb(97,156,220)" dot={false} strokeWidth={3} />
-              <Line type="linear" dataKey="tls" stroke="rgb(14,30,47)" dot={false} strokeWidth={3} />
+              <Legend verticalAlign='top' />
+              <Line type='linear' dataKey='udp' stroke='rgb(33,67,107)' dot={false} strokeWidth={3} />
+              <Line type='linear' dataKey='tcp' stroke='rgb(97,156,220)' dot={false} strokeWidth={3} />
+              <Line type='linear' dataKey='tls' stroke='rgb(14,30,47)' dot={false} strokeWidth={3} />
 
             </LineChart>
           </ResponsiveContainer>
