@@ -64,7 +64,7 @@ export function Provider({ isOSSProject }) {
             postsResp.day7data[testName][protocol].x?.forEach((date, i) => {
               avgData[testName][protocol].trend.push({
                 name: date,
-                value: postsResp.day7data[testName][protocol].y[i],
+                value: postsResp.day7data[testName][protocol].y?.[i],
               });
             });
           }
