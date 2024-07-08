@@ -83,8 +83,6 @@ export function Provider({ isOSSProject }) {
     return <></>;
   }
 
-  console.log(data)
-
   return (
     <Layout>
       {/* Grid */}
