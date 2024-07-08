@@ -1,12 +1,13 @@
-import PropTypes from 'prop-types'
-import { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import PropTypes from 'prop-types';
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 
 import { Layout } from '../layout/Layout'
-import { ProviderTitleAndBlurb } from '../components/ProviderTitleAndBlurb'
+import { ProviderTitleAndBlurb } from '../components/ProviderTitleAndBlurb';
+import { Typography } from '../components/Typography';
 import TrendingUp from '../icons/TrendingUp';
 import TrendingDown from '../icons/TrendingDown';
-import { explanations, getProviderIdFromName } from '../constants'
+import { explanations, getProviderIdFromName } from '../constants';
 import { fixedDecimals } from '../util/maths';
 
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
@@ -60,7 +61,7 @@ export function Provider({ isOSSProject }) {
         for (const protocol in avgData[testName]) {
           if (postsResp.day7data[testName][protocol]) {
             avgData[testName][protocol].trend = [];
-            postsResp.day7data[testName][protocol].x.forEach((date, i) => {
+            postsResp.day7data[testName][protocol].x?.forEach((date, i) => {
               avgData[testName][protocol].trend.push({
                 name: date,
                 value: postsResp.day7data[testName][protocol].y[i],
