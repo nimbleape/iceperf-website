@@ -39,6 +39,14 @@ const icePerfTests = [
     scheme: 'turn',
     protocols: ['udp', 'tcp', 'tls'],
   },
+  {
+    testName: 'avgApiResponseTime',
+    rawDataName: 'apiResponseTime',
+    scheme: null,
+    protocols: null,
+    best: 'min',
+    worst: 'max',
+  },
 ];
 
 // Work out best/worst provider and percentages
@@ -77,6 +85,35 @@ export const calculateBestAndWorst = (providerData) => {
   };
 
   icePerfTests.map(({ testName, protocols, best, worst }) => {
+
+    if (protocols === null) {
+      if (!bestAndWorst[testName]) {
+        bestAndWorst[testName] = {};
+      }
+
+      for (const provider in providerData) {
+        if (!providerData[provider].data[testName]?.value) {
+          continue;
+        }
+
+        bestAndWorst[testName].best = compareFunc[best](
+          bestAndWorst[testName].best,
+          {
+            name: provider,
+            value: providerData[provider].data[testName].value,
+          },
+        );
+        bestAndWorst[testName].worst = compareFunc[worst](
+          bestAndWorst[testName].worst,
+          {
+            name: provider,
+            value: providerData[provider].data[testName].value,
+          },
+        );
+      }
+      return
+    }
+
     protocols.map((protocol) => {
       for (const provider in providerData) {
         if (!providerData[provider].data[testName]?.[protocol]?.value) {
@@ -110,6 +147,16 @@ export const calculateBestAndWorst = (providerData) => {
   // calculate percentages off the best
   Array.from(Object.values(providerData)).map(({ data }) => {
     Array.from(Object.entries(data)).map(([testName, results]) => {
+
+      if (testName === "avgApiResponseTime") {
+        if (!results?.value) {
+          return;
+        }
+        const { value: benchmark } = bestAndWorst[testName].best;
+        results.offsetFromBestPercent = (results.value - benchmark) / benchmark * 100;
+        return;
+      }
+
       const protocols = Array.from(Object.keys(results));
       protocols.map((protocol) => {
         if (!results[protocol]?.value) {
@@ -162,15 +209,25 @@ export const refactorData = (inputData) => {
 
   providers.map((provider) => {
     const providerDataArr = Array.from(Object.values(inputData[provider]));
+
     const providerData = { stun: {}, turn: {}};
     providerData.stun.udp = providerDataArr.find(({ scheme, protocol }) => scheme === 'stun' && protocol === 'udp');
     providerData.turn.udp = providerDataArr.find(({ scheme, protocol }) => scheme === 'turn' && protocol === 'udp');
     providerData.turn.tcp = providerDataArr.find(({ scheme, protocol }) => scheme === 'turn' && protocol === 'tcp');
     providerData.turn.tls = providerDataArr.find(({ scheme, protocol }) => scheme === 'turns' && protocol === 'tcp');
+    providerData.apiResponseTime = providerDataArr.find(({ apiResponseTime }) => apiResponseTime !== undefined);
 
     const data = {};
     icePerfTests.map(({ testName, scheme, protocols, rawDataName }) => {
       data[testName] = {};
+
+      if (protocols === null) {
+        data[testName] = {
+          value: providerData[rawDataName]?.apiResponseTime
+        };
+        return;
+      }
+
       protocols.map((p) => {
         data[testName][p] = {
           value: providerData[scheme]?.[p]?.[rawDataName],
@@ -209,6 +266,18 @@ export const refactorTrendsData = (inputData) => {
         if (rawDataName !== "throughput") {
           result[testName] = {};
         }
+
+        if (protocols === null) {
+          if (!inputData[rawDataName]) return;
+          result[testName] = {
+            x: Object.keys(inputData[rawDataName]),
+            y: Object.values(inputData[rawDataName]),
+            // data: Object.entries(inputData[rawDataName][label]).map(([t, val]) => [t, val])
+          };
+
+          return;
+        }
+
         protocols.forEach((protocol) => {
           let label = `${protocol === 'tls' ? 'tcp' : protocol } - ${protocol === 'tls' ? scheme + 's' : scheme}`;
           if (!inputData[rawDataName]?.[label]) return;
