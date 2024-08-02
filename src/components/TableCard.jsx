@@ -12,6 +12,42 @@ export function TableCard({ title, description, field, providerData, bestAndWors
     return <></>;
   }
 
+  const generateColumns = (key, data, provider) => {
+    let textColorClass = 'text-gray-800 dark:text-white';
+    if (bestAndWorst && (key == 'avgApiResponseTime' ? bestAndWorst?.best?.name === provider : bestAndWorst[key]?.best?.name === provider)) {
+      textColorClass = 'text-greenGood dark:text-greenGood-dark font-semibold';
+    } else if (bestAndWorst && (key == 'avgApiResponseTime' ? bestAndWorst?.worst?.name === provider : bestAndWorst[key]?.worst?.name === provider)) {
+      textColorClass = 'text-redBad dark:text-redBad-dark font-semibold';
+    }
+
+    return (
+      <td key={key} className='size-px whitespace-nowrap px-6 py-3'>
+        <span className={`text-sm ${textColorClass}`}>
+          {data?.value ? `${fixedDecimals(data.value, 1)} ${explanations[field].measure}` : 'N/A'}
+        </span>
+        {!!data?.offsetFromBestPercent && (
+          <span className={`flex items-center gap-x-1 ${textColorClass}`}>
+            {data.offsetFromBestPercent > 0 ? <TrendingUp /> : <TrendingDown />}
+            <span className='inline-block text-xs'>
+              {data.offsetFromBestPercent > 0 && '+'}
+              {Math.ceil(data.offsetFromBestPercent)}%
+            </span>
+          </span>
+        )}
+      </td>
+    )
+  }
+
+  const generateColumnHeaders = (i) => {
+    return (
+      <th key={i} scope='col' className='px-6 py-3 text-start whitespace-nowrap'>
+        <span className='text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-neutral-200'>
+          {i}
+        </span>
+      </th>
+    )
+  }
+
   return (
     <div className='max-w-full py-10 lg:py-14 mx-auto'>
       {/* Card */}
@@ -43,14 +79,10 @@ export function TableCard({ title, description, field, providerData, bestAndWors
                       </span>
                     </th>
 
-                    {Object.keys(providerData.cloudflare).map((i) => {
-                      return (
-                        <th key={i} scope='col' className='px-6 py-3 text-start whitespace-nowrap'>
-                          <span className='text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-neutral-200'>
-                            {i}
-                          </span>
-                        </th>
-                      )
+                    {field === 'avgApiResponseTime' ? (
+                      generateColumnHeaders('Response Time')
+                    ) : Object.keys(providerData.cloudflare).map((i) => {
+                      return generateColumnHeaders(i)
                     })}
 
                     {/* <th scope='col' className='px-6 py-3 text-start whitespace-nowrap'>
@@ -85,30 +117,13 @@ export function TableCard({ title, description, field, providerData, bestAndWors
                             {/* <span className='text-xs text-gray-500 dark:text-neutral-500'>ETH</span> */}
                           </div>
                         </td>
-                        {Object.keys(data).map((protocol) => {
-                          let textColorClass = 'text-gray-800 dark:text-white';
-                          if (bestAndWorst && bestAndWorst[protocol]?.best?.name === provider) {
-                            textColorClass = 'text-greenGood dark:text-greenGood-dark font-semibold';
-                          } else if (bestAndWorst && bestAndWorst[protocol]?.worst?.name === provider) {
-                            textColorClass = 'text-redBad dark:text-redBad-dark font-semibold';
-                          }
-                          return (
-                            <td key={protocol} className='size-px whitespace-nowrap px-6 py-3'>
-                              <span className={`text-sm ${textColorClass}`}>
-                                {data[protocol]?.value ? `${fixedDecimals(data[protocol].value, 1)} ${explanations[field].measure}` : 'N/A'}
-                              </span>
-                              {!!data[protocol]?.offsetFromBestPercent && (
-                                <span className={`flex items-center gap-x-1 ${textColorClass}`}>
-                                  {data[protocol].offsetFromBestPercent > 0 ? <TrendingUp /> : <TrendingDown />}
-                                  <span className='inline-block text-xs'>
-                                    {data[protocol].offsetFromBestPercent > 0 && '+'}
-                                    {Math.ceil(data[protocol].offsetFromBestPercent)}%
-                                  </span>
-                                </span>
-                              )}
-                            </td>
-                          )
-                        })}
+                        {field === 'avgApiResponseTime' ? (
+                          generateColumns('avgApiResponseTime', data, provider)
+                        ) : (
+                          Object.keys(data).map((protocol) => {
+                            return generateColumns(protocol, data[protocol], provider)
+                          }))
+                        }
                         {/* <td className='size-px whitespace-nowrap px-6 py-3'>
                           <Chart
                             style={{display: 'inline-block'}}

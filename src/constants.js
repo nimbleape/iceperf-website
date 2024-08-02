@@ -34,9 +34,14 @@ export const providersList = {
     description: '',
     isOSSProject: true,
   },
+  rel: {
+    name: 'Rel',
+    description: '',
+    isOSSProject: true,
+  },
 };
 
-export const fields = ['avgTurnLatency', 'maxTurnThroughput', 'avgTurnCandidate', 'avgStunCandidate'];
+export const fields = ['avgTurnLatency', 'maxTurnThroughput', 'avgTurnCandidate', 'avgStunCandidate', 'avgApiResponseTime'];
 
 export const explanations = {
   avgTurnLatency: {
@@ -57,6 +62,11 @@ export const explanations = {
   avgStunCandidate: {
     title: "Average STUN Candidate Latency",
     description: "The average time to get a STUN candidate from the server",
+    measure: "ms"
+  },
+  avgApiResponseTime: {
+    title: "Average API Response Time",
+    description: "The average time to get a list of Ice Servers from the Provider's API",
     measure: "ms"
   },
 }
