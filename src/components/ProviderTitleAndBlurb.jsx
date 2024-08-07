@@ -3,7 +3,7 @@ import { getProviderTitleFromId, getProviderBlurbFromId } from "../constants"
 import { ProviderLogo } from "./ProviderLogo"
 
 
-export function ProviderTitleAndBlurb({ provider }) {
+export function ProviderTitleAndBlurb({ provider = '' }) {
   const name = getProviderTitleFromId(provider)
   const blurb = getProviderBlurbFromId(provider)
 
@@ -23,10 +23,6 @@ export function ProviderTitleAndBlurb({ provider }) {
     </div>
   )
 }
-
-ProviderTitleAndBlurb.defaultProps = {
-  provider: ''
-};
 
 ProviderTitleAndBlurb.propTypes = {
   provider: PropTypes.string,

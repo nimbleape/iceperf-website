@@ -1,7 +1,7 @@
 import { twMerge } from 'tailwind-merge';
 import PropTypes from 'prop-types';
 
-const Stopwatch = ({ className }) => (
+const Stopwatch = ({ className = '' }) => (
   <svg
     className={twMerge('inline-block size-4 self-center', className)}
     xmlns='http://www.w3.org/2000/svg'
@@ -24,8 +24,4 @@ export default Stopwatch;
 
 Stopwatch.propTypes = {
   className: PropTypes.string,
-};
-
-Stopwatch.defaultProps = {
-  className: '',
 };

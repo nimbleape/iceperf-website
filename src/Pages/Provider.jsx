@@ -4,7 +4,6 @@ import { useParams } from 'react-router-dom';
 
 import { Layout } from '../layout/Layout'
 import { ProviderTitleAndBlurb } from '../components/ProviderTitleAndBlurb';
-import { Typography } from '../components/Typography';
 import TrendingUp from '../icons/TrendingUp';
 import TrendingDown from '../icons/TrendingDown';
 import { explanations, getProviderIdFromName } from '../constants';
@@ -13,9 +12,9 @@ import { fixedDecimals } from '../util/maths';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 
-function DataCard({ title, key, data, test }) {
+function DataCard({ title = '', keyName = '', data = null, test = '' }) {
   return (
-    <div key={key} className='flex flex-col bg-white border shadow-sm rounded-xl dark:bg-neutral-800 dark:border-neutral-700'>
+    <div key={keyName} className='flex flex-col bg-white border shadow-sm rounded-xl dark:bg-neutral-800 dark:border-neutral-700'>
       <div className='p-4 md:p-5'>
         <div className='flex items-center gap-x-2'>
           <p className='text-xs uppercase tracking-wide text-gray-500 dark:text-neutral-500'>
@@ -81,22 +80,14 @@ function DataCard({ title, key, data, test }) {
   )
 }
 
-DataCard.defaultProps = {
-  title: '',
-  data: {},
-  test: ''
-};
-
 DataCard.propTypes = {
   title: PropTypes.string,
   data: PropTypes.object,
   test: PropTypes.string,
-  key: PropTypes.string
+  keyName: PropTypes.string
 };
 
-
-
-export function Provider({ isOSSProject }) {
+export function Provider({ isOSSProject = false }) {
   const { name } = useParams();
 
   const [data, setData] = useState();
@@ -108,7 +99,7 @@ export function Provider({ isOSSProject }) {
     const id = getProviderIdFromName(name);
 
     const getPosts = async () => {
-      const resp = await fetch(`/api/${id}`);
+      const resp = await fetch(`${import.meta.env.VITE_API_BASE_URI}/api/provider/${id}`);
       const postsResp = await resp.json();
 
       let avgData = postsResp?.providerData?.[id]?.data;
@@ -199,7 +190,7 @@ export function Provider({ isOSSProject }) {
       <ProviderTitleAndBlurb provider={id} />
       {Object.keys(data).map((test) => {
         if ((id === 'google' && test !== 'avgStunCandidate') || test === 'throughput') {
-          return <></>;
+          return null;
         }
         return (
           <div key={test} className='mt-10'>
@@ -253,12 +244,6 @@ export function Provider({ isOSSProject }) {
   )
 }
 
-
-
-Provider.defaultProps = {
-  isOSSProject: false,
-};
-
 Provider.propTypes = {
-  isOSSProject: PropTypes.boolean,
+  isOSSProject: PropTypes.bool,
 };

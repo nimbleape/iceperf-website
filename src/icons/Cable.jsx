@@ -1,7 +1,7 @@
 import { twMerge } from 'tailwind-merge';
 import PropTypes from 'prop-types';
 
-const Cable = ({ className }) => (
+const Cable = ({ className = '' }) => (
   <svg
     className={twMerge('inline-block size-4 self-center', className)}
     xmlns='http://www.w3.org/2000/svg'
@@ -26,8 +26,4 @@ export default Cable;
 
 Cable.propTypes = {
   className: PropTypes.string,
-};
-
-Cable.defaultProps = {
-  className: '',
 };

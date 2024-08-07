@@ -6,7 +6,7 @@ import TrendingDown from '../icons/TrendingDown';
 import { explanations, getProviderTitleFromId } from '../constants'
 import { fixedDecimals } from '../util/maths';
 
-export function TableCard({ title, description, field, providerData, bestAndWorst }) {
+export function TableCard({ title = '', description = '', field = '', providerData = null, bestAndWorst = null }) {
 
   if (!title || !field || !providerData) {
     return <></>;
@@ -192,14 +192,6 @@ export function TableCard({ title, description, field, providerData, bestAndWors
     </div>
   )
 }
-
-TableCard.defaultProps = {
-  title: '',
-  description: '',
-  field: '',
-  providerData: null,
-  bestAndWorst: null,
-};
 
 TableCard.propTypes = {
   title: PropTypes.string,

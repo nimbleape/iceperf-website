@@ -1,7 +1,7 @@
 import { twMerge } from 'tailwind-merge';
 import PropTypes from 'prop-types';
 
-const ArrowUpDown = ({ className }) => (
+const ArrowUpDown = ({ className = '' }) => (
   <svg
     className={twMerge('inline-block size-4 self-center', className)}
     xmlns='http://www.w3.org/2000/svg'
@@ -25,8 +25,4 @@ export default ArrowUpDown;
 
 ArrowUpDown.propTypes = {
   className: PropTypes.string,
-};
-
-ArrowUpDown.defaultProps = {
-  className: '',
 };

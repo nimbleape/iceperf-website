@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 
-export function NavMenu({ children, label }) {
+export function NavMenu({ children = null, label = '' }) {
   return (
     <div className="hs-dropdown [--strategy:static] sm:[--strategy:fixed] [--adaptive:none] sm:[--trigger:hover] sm:py-4">
       <button type="button" className="flex items-center w-full text-gray-800 hover:text-gray-500 font-medium dark:text-neutral-200 dark:hover:text-neutral-400">
@@ -14,12 +14,7 @@ export function NavMenu({ children, label }) {
   )
 }
 
-NavMenu.defaultProps = {
-  children: null,
-  label: ''
-};
-
 NavMenu.propTypes = {
   label: PropTypes.string,
-  children: PropTypes.func
+  children: PropTypes.array
 };

@@ -8,7 +8,7 @@ import XirsysLogo from '../assets/providers/xirsys-logo.svg?react'
 import MeteredLogo from '../assets/providers/metered-logo.png?react'
 import RelLogo from '../assets/providers/elixir-webrtc.svg?react'
 
-export function ProviderLogo({ provider, height }) {
+export function ProviderLogo({ provider = '', height = null }) {
   switch (provider) {
     case 'cloudflare':
       return <CloudflareLogo height={height} />
@@ -30,10 +30,7 @@ export function ProviderLogo({ provider, height }) {
   }
 }
 
-ProviderLogo.defaultProps = {
-  provider: ''
-};
-
 ProviderLogo.propTypes = {
   provider: PropTypes.string,
+  height: PropTypes.string,
 };

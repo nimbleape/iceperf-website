@@ -7,4 +7,7 @@ compatibility_date = "2024-04-22"
 [[kv_namespaces]]
 binding = "iceperf-cache"
 id = "aa575584b93c47298f2901efb92d7d72"
-preview_id = "19cf2c87584a4bcbbdc22a99f288f938"
+preview_id = "aa575584b93c47298f2901efb92d7d72"
+
+[vars]
+VITE_API_BASE_URI="https://api.iceperf.com"

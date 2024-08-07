@@ -9,7 +9,7 @@ export function Results() {
 
   useEffect(() => {
     const getPosts = async () => {
-      const resp = await fetch('/api/results');
+      const resp = await fetch(`${import.meta.env.VITE_API_BASE_URI}/api/results`);
       const postsResp = await resp.json();
       // rearrange data this way:
       /*

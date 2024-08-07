@@ -1,7 +1,7 @@
 import { NavLink } from "react-router-dom"
 import PropTypes from "prop-types";
 
-export function NavItem({ to, label, current }) {
+export function NavItem({ to = '', label = '', current = false }) {
   if (current) {
     return (
       <NavLink className="" to={to} aria-current="page">{label}</NavLink>
@@ -19,12 +19,6 @@ export function NavItem({ to, label, current }) {
     </NavLink>
   )
 }
-
-NavItem.defaultProps = {
-  label: '',
-  to: '',
-  current: false
-};
 
 NavItem.propTypes = {
   label: PropTypes.string,

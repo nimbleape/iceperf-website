@@ -3,7 +3,7 @@ import Logo from '../assets/iceperfLogo.svg?react'
 import LogoWithoutWords from '../assets/iceperfLogoWithoutWords.svg?react'
 import LogoSide from '../assets/iceperfLogoSide.svg?react'
 
-export function IcePerfLogo({kind}) {
+export function IcePerfLogo({kind = ''}) {
 
   if (kind == "side") {
     return (<LogoSide />)
@@ -14,10 +14,6 @@ export function IcePerfLogo({kind}) {
   }
   return <Logo />
 }
-
-IcePerfLogo.defaultProps = {
-  kind: '',
-};
 
 IcePerfLogo.propTypes = {
   kind: PropTypes.string,
