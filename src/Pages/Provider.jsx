@@ -6,19 +6,33 @@ import { Layout } from '../layout/Layout'
 import { ProviderTitleAndBlurb } from '../components/ProviderTitleAndBlurb';
 import TrendingUp from '../icons/TrendingUp';
 import TrendingDown from '../icons/TrendingDown';
-import { explanations, getProviderIdFromName } from '../constants';
+import { explanations, getProviderIdFromName, providersList } from '../constants';
 import { fixedDecimals } from '../util/maths';
 
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 
-function DataCard({ title = '', keyName = '', data = null, test = '' }) {
+function DataCard({ title = '', keyName = '', data = null, test = '', rawData = null, protocol = '' }) {
+
+  let minVal = '';
+  let maxVal = '';
+
+  if (explanations[test].min) {
+    minVal = protocol != '' ? rawData[explanations[test]?.min?.field][protocol].value : ("value" in rawData[explanations[test]?.min?.field] ? rawData[explanations[test]?.min?.field].value : rawData[explanations[test]?.min?.field]);
+  }
+
+  if (explanations[test].max) {
+    maxVal = protocol != '' ? rawData[explanations[test]?.max?.field][protocol].value : ("value" in rawData[explanations[test]?.max?.field] ? rawData[explanations[test]?.max?.field].value : rawData[explanations[test]?.max?.field]);
+  }
+
+  // console.log(test, data.trend);
+
   return (
     <div key={keyName} className='flex flex-col bg-white border shadow-sm rounded-xl dark:bg-neutral-800 dark:border-neutral-700'>
       <div className='p-4 md:p-5'>
         <div className='flex items-center gap-x-2'>
           <p className='text-xs uppercase tracking-wide text-gray-500 dark:text-neutral-500'>
-            {title.toUpperCase()}
+            {title.toUpperCase()} {minVal != '' ? `min:${minVal} | max:${maxVal}` : ''}
           </p>
           {/* <div className='hs-tooltip'>
             <div className='hs-tooltip-toggle'>
@@ -70,7 +84,19 @@ function DataCard({ title = '', keyName = '', data = null, test = '' }) {
                 <XAxis dataKey='name' type='category' />
                 <YAxis unit={explanations[test].measure} />
                 <Tooltip formatter={(value) => `${fixedDecimals(value, 1)}`}/>
-                <Line type='linear' dataKey='value' stroke='rgb(33,67,107)' dot={false} strokeWidth={2} />
+                {/* {test === 'avgApiResponseTime' ? (
+                  <>
+                    <Line type='linear' connectNulls dataKey='noNode' stroke='rgb(33,67,107)' dot={false} strokeWidth={2} />
+                    <Line type='linear' connectNulls dataKey='1' stroke='red' dot={false} strokeWidth={1} />
+                    <Line type='linear' connectNulls dataKey='2' stroke='green' dot={false} strokeWidth={1} />
+                    <Line type='linear' connectNulls dataKey='3' stroke='yellow' dot={false} strokeWidth={1} />
+                    <Line type='linear' connectNulls dataKey='4' stroke='pink' dot={false} strokeWidth={1} />
+                    <Line type='linear' connectNulls dataKey='5' stroke='orange' dot={false} strokeWidth={1} />
+                    <Line type='linear' connectNulls dataKey='6' stroke='purple' dot={false} strokeWidth={1} />
+                  </>
+                ) : ( */}
+                  <Line type='linear' connectNulls dataKey='value' stroke='rgb(33,67,107)' dot={false} strokeWidth={1} />
+                {/* )} */}
               </LineChart>
             </ResponsiveContainer>
           </div>
@@ -83,8 +109,10 @@ function DataCard({ title = '', keyName = '', data = null, test = '' }) {
 DataCard.propTypes = {
   title: PropTypes.string,
   data: PropTypes.object,
+  rawData: PropTypes.object,
   test: PropTypes.string,
-  keyName: PropTypes.string
+  keyName: PropTypes.string,
+  protocol: PropTypes.string,
 };
 
 export function Provider({ isOSSProject = false }) {
@@ -111,13 +139,32 @@ export function Provider({ isOSSProject = false }) {
 
       if (postsResp.day7data.throughput?.length) {
         let num = postsResp.day7data.throughput.length - 1;
+        let providerConstants = providersList[id];
         let udp, tcp, tls, xAxis;
         // Loop backwards until you find an item with data
         while (num >= 0) {
             const currentItem = postsResp.day7data.throughput[num];
 
+            const needsUdp = providerConstants.throughputFields?.includes('udp')
+            const needsTcp = providerConstants.throughputFields?.includes('tcp')
+            const needsTls = providerConstants.throughputFields?.includes('tls')
+
+            let fulfilsNeed = true;
+
+            if (!(needsUdp && currentItem.udp && currentItem?.udp?.length != 0)) {
+              fulfilsNeed = false
+            }
+
+            if (!(needsTcp && currentItem.tcp && currentItem?.tcp?.length != 0)) {
+              fulfilsNeed = false
+            }
+
+            if (!(needsTls && currentItem.tls && currentItem?.tls?.length != 0)) {
+              fulfilsNeed = false
+            }
+
             // Check if the current item has data (you can adjust this check as needed)
-            if ((currentItem?.udp?.length || currentItem?.tcp?.length || currentItem?.tls?.length) && currentItem?.xAxis?.length) {
+            if (fulfilsNeed && currentItem?.xAxis?.length) {
                 ({ udp, tcp, tls, xAxis } = currentItem);
                 break;
             }
@@ -160,7 +207,7 @@ export function Provider({ isOSSProject = false }) {
         }
 
         for (const protocol in avgData[testName]) {
-          if (postsResp.day7data[testName][protocol]) {
+          if (postsResp.day7data?.[testName]?.[protocol]) {
             avgData[testName][protocol].trend = [];
             postsResp.day7data[testName][protocol].x?.forEach((date, i) => {
               avgData[testName][protocol].trend.push({
@@ -183,12 +230,11 @@ export function Provider({ isOSSProject = false }) {
   if (!data) {
     return <></>;
   }
-
   return (
     <Layout>
       {/* Grid */}
       <ProviderTitleAndBlurb provider={id} />
-      {Object.keys(data).map((test) => {
+      {Object.keys(explanations).map((test) => {
         if ((id === 'google' && test !== 'avgStunCandidate') || test === 'throughput') {
           return null;
         }
@@ -200,10 +246,10 @@ export function Provider({ isOSSProject = false }) {
             </div>
             <div className='grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6'>
               {test === 'avgApiResponseTime' ? (
-                <DataCard key={test} title="" data={data[test]} test={test} />
+                <DataCard key={test} title="" data={data[test]} test={test} rawData={data} />
               ) : Object.keys(data[test]).map((protocol) => {
                 // Card
-                return <DataCard key={protocol} title={protocol} data={data[test][protocol]} test={test} />
+                return <DataCard key={protocol} title={protocol} data={data[test][protocol]} protocol={protocol} rawData={data} test={test} />
                 // End Card
               })}
             </div>

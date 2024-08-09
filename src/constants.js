@@ -3,41 +3,44 @@ export const providersList = {
     name: 'Cloudflare',
     description: '',
     isOSSProject: false,
+    throughputFields: ['tcp', 'tls', 'udp']
+
   },
   xirsys: {
     name: 'Xirsys',
     description: '',
     isOSSProject: false,
+    throughputFields: ['tcp', 'tls', 'udp']
   },
   twilio: {
     name: 'Twilio',
     description: '',
     isOSSProject: false,
+    throughputFields: ['tcp', 'tls', 'udp']
   },
   metered: {
     name: 'Metered',
     description: '',
     isOSSProject: false,
+    throughputFields: ['tcp', 'tls', 'udp']
   },
   expressturn: {
     name: 'ExpressTURN',
     description: '',
     isOSSProject: false,
+    throughputFields: ['tcp', 'udp']
   },
   google: {
     name: 'Google',
     description: '',
     isOSSProject: false,
-  },
-  elixir: {
-    name: 'Rel',
-    description: '',
-    isOSSProject: true,
+    throughputFields: null
   },
   rel: {
     name: 'Rel',
     description: '',
     isOSSProject: true,
+    throughputFields: ['udp']
   },
 };
 
@@ -47,7 +50,13 @@ export const explanations = {
   avgTurnLatency: {
     title: "Average TURN Latency",
     description: "The average time to first byte through a TURN server",
-    measure: "ms"
+    measure: "ms",
+    min: {
+      field: 'minTurnLatency'
+    },
+    max: {
+      field: 'maxTurnLatency'
+    }
   },
   maxTurnThroughput: {
     title: "Max TURN Throughput",
@@ -57,17 +66,35 @@ export const explanations = {
   avgTurnCandidate: {
     title: "Average TURN Candidate Latency",
     description: "The average time to get a Relay candidate from the server",
-    measure: "ms"
+    measure: "ms",
+    min: {
+      field: 'minTurnCandidate'
+    },
+    max: {
+      field: 'maxTurnCandidate'
+    }
   },
   avgStunCandidate: {
     title: "Average STUN Candidate Latency",
     description: "The average time to get a STUN candidate from the server",
-    measure: "ms"
+    measure: "ms",
+    min: {
+      field: 'minStunCandidate'
+    },
+    max: {
+      field: 'maxStunCandidate'
+    }
   },
   avgApiResponseTime: {
     title: "Average API Response Time",
     description: "The average time to get a list of Ice Servers from the Provider's API",
-    measure: "ms"
+    measure: "ms",
+    min: {
+      field: 'minApiResponseTime'
+    },
+    max: {
+      field: 'maxApiResponseTime'
+    }
   },
 }
 
