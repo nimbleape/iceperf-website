@@ -1,10 +1,17 @@
 import PropTypes from 'prop-types'
+import { BarChart, Bar, Rectangle, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { ProviderLogo } from '../components/ProviderLogo'
 // import Chart from 'react-apexcharts';
 import TrendingUp from '../icons/TrendingUp';
 import TrendingDown from '../icons/TrendingDown';
 import { explanations, getProviderTitleFromId } from '../constants'
 import { fixedDecimals } from '../util/maths';
+
+const colours = {
+  udp: 'rgb(33,67,107)',
+  tcp: 'rgb(97,156,220)',
+  tls: 'rgb(14,30,47)',
+};
 
 export function TableCard({ title = '', description = '', field = '', providerData = null, bestAndWorst = null }) {
 
@@ -47,6 +54,22 @@ export function TableCard({ title = '', description = '', field = '', providerDa
       </th>
     )
   }
+
+  const barChartData = Object.keys(providerData).map((providerName) => {
+    let d = {
+      name: providerName,
+    }
+
+    if ( providerData[providerName].udp) {
+      Object.keys(providerData[providerName]).forEach((p) => {
+        d[p] = providerData[providerName][p]?.value;
+      })
+    } else {
+      d.apiResponseTime = providerData[providerName]?.value;
+    }
+
+    return d;
+  })
 
   return (
     <div className='max-w-full py-10 lg:py-14 mx-auto'>
@@ -187,6 +210,27 @@ export function TableCard({ title = '', description = '', field = '', providerDa
             </div>
           </div>
         </div>
+        <div className='mt-20 w-full h-96'>
+        <ResponsiveContainer width='100%' height='100%'>
+          <BarChart
+            data={barChartData}
+          >
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="name" />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            {providerData.cloudflare?.udp && Object.keys(providerData.cloudflare).map((i, index) => (
+              <Bar key={index} dataKey={i} fill={colours[i]} />
+            ))}
+
+            {!providerData.cloudflare?.udp && (
+              <Bar dataKey="apiResponseTime" fill={colours.udp} />
+            )}
+
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
       </div>
       {/* End Card */}
     </div>

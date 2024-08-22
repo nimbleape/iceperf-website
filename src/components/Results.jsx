@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { TableCard } from '../components/TableCard';
 import { Layout } from '../layout/Layout';
-import { explanations, fields } from "../constants"
+import { explanations } from "../constants"
 
 export function Results() {
   const [providerData, setProviderData] = useState();
@@ -38,7 +38,7 @@ export function Results() {
       }
 
       const providerResults = {};
-      fields.forEach((field) => {
+      Object.keys(explanations).forEach((field) => {
         providerResults[field] = {};
         Object.keys(postsResp.providerData).forEach((provider) => {
           providerResults[field][provider] = postsResp.providerData[provider].data[field];
@@ -57,7 +57,7 @@ export function Results() {
 
   return (
     <Layout>
-      {fields.map((field) => {
+      {Object.keys(explanations).map((field) => {
         const metric = explanations[field];
         return (
         <TableCard

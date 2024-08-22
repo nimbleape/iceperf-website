@@ -44,9 +44,54 @@ export const providersList = {
   },
 };
 
-export const fields = ['avgTurnLatency', 'maxTurnThroughput', 'avgTurnCandidate', 'avgStunCandidate', 'avgApiResponseTime'];
+// export const fields = ['avgTurnLatency', 'maxTurnThroughput', 'avgTurnCandidate', 'avgStunCandidate', 'avgApiResponseTime', 'avgTurnTimeToConnectedState', 'avgStunTimeToConnectedState'];
 
 export const explanations = {
+  avgStunCandidate: {
+    title: "Average STUN Candidate Latency",
+    description: "The average time to get a STUN candidate from the server",
+    measure: "ms",
+    min: {
+      field: 'minStunCandidate'
+    },
+    max: {
+      field: 'maxStunCandidate'
+    }
+  },
+  avgTurnCandidate: {
+    title: "Average TURN Candidate Latency",
+    description: "The average time to get a Relay candidate from the server",
+    measure: "ms",
+    min: {
+      field: 'minTurnCandidate'
+    },
+    max: {
+      field: 'maxTurnCandidate'
+    }
+  },
+  avgStunTimeToConnectedState: {
+    title: "Average Time to Connected State (STUN)",
+    description: "The average time to a connected state",
+    measure: "ms",
+    min: {
+      field: 'minStunTimeToConnectedState'
+    },
+    max: {
+      field: 'maxStunTimeToConnectedState'
+    }
+  },
+  avgTurnTimeToConnectedState: {
+    title: "Average Time to Connected State (TURN)",
+    description: "The average time to a connected state",
+    measure: "ms",
+    min: {
+      field: 'minTurnTimeToConnectedState'
+    },
+    max: {
+      field: 'maxTurnTimeToConnectedState'
+    }
+  },
+
   avgTurnLatency: {
     title: "Average TURN Latency",
     description: "The average time to first byte through a TURN server",
@@ -62,28 +107,6 @@ export const explanations = {
     title: "Max TURN Throughput",
     description: "The max amount of throughput through a TURN server",
     measure: "Mb/s"
-  },
-  avgTurnCandidate: {
-    title: "Average TURN Candidate Latency",
-    description: "The average time to get a Relay candidate from the server",
-    measure: "ms",
-    min: {
-      field: 'minTurnCandidate'
-    },
-    max: {
-      field: 'maxTurnCandidate'
-    }
-  },
-  avgStunCandidate: {
-    title: "Average STUN Candidate Latency",
-    description: "The average time to get a STUN candidate from the server",
-    measure: "ms",
-    min: {
-      field: 'minStunCandidate'
-    },
-    max: {
-      field: 'maxStunCandidate'
-    }
   },
   avgApiResponseTime: {
     title: "Average API Response Time",
