@@ -30,7 +30,7 @@ export function TableCard({ title = '', description = '', field = '', providerDa
     return (
       <td key={key} className='size-px whitespace-nowrap px-6 py-3'>
         <span className={`text-sm ${textColorClass}`}>
-          {data?.value ? `${fixedDecimals(data.value, 1)} ${explanations[field].measure}` : 'N/A'}
+          {data?.value ? `${fixedDecimals(data.value, 1)}` : 'N/A'}
         </span>
         {!!data?.offsetFromBestPercent && (
           <span className={`flex items-center gap-x-1 ${textColorClass}`}>
@@ -49,7 +49,7 @@ export function TableCard({ title = '', description = '', field = '', providerDa
     return (
       <th key={i} scope='col' className='px-6 py-3 text-start whitespace-nowrap'>
         <span className='text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-neutral-200'>
-          {i}
+          {i} ({explanations[field].measure})
         </span>
       </th>
     )
@@ -93,10 +93,10 @@ export function TableCard({ title = '', description = '', field = '', providerDa
               <table className='min-w-full divide-y divide-gray-200 dark:divide-neutral-700'>
                 <thead className='bg-gray-50 dark:bg-neutral-800'>
                   <tr>
-                    <th scope='col' className='px-6 py-3 text-start whitespace-nowrap min-w-64'>
+                    <th scope='col' className='px-6 py-3 text-start whitespace-nowrap max-w-30 hidden sm:table-cell'>
                       &nbsp;
                     </th>
-                    <th scope='col' className='px-6 py-3 text-start whitespace-nowrap min-w-64'>
+                    <th scope='col' className='px-6 py-3 text-start whitespace-nowrap min-w-30'>
                       <span className='text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-neutral-200'>
                         Provider
                       </span>
@@ -127,7 +127,7 @@ export function TableCard({ title = '', description = '', field = '', providerDa
 
                     return (
                       <tr key={provider} className='max-h-16'>
-                        <td className='size-px whitespace-nowrap px-6 py-3'>
+                        <td className='size-px whitespace-nowrap px-6 py-3 hidden sm:table-cell'>
                           <div className='flex items-center gap-x-3 max-h-14'>
                             <ProviderLogo provider={lcp} height="66px"/>
                           </div>
@@ -217,7 +217,7 @@ export function TableCard({ title = '', description = '', field = '', providerDa
           >
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="name" />
-            <YAxis />
+            <YAxis tickFormatter={(i) => (`${i}${explanations[field].measure}`)}/>
             <Tooltip />
             <Legend />
             {providerData.cloudflare?.udp && Object.keys(providerData.cloudflare).map((i, index) => (
