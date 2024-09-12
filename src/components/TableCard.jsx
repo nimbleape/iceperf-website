@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types'
-import { BarChart, Bar, Rectangle, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { ProviderLogo } from '../components/ProviderLogo'
+
 // import Chart from 'react-apexcharts';
 import TrendingUp from '../icons/TrendingUp';
 import TrendingDown from '../icons/TrendingDown';
@@ -56,6 +57,10 @@ export function TableCard({ title = '', description = '', field = '', providerDa
   }
 
   const barChartData = Object.keys(providerData).map((providerName) => {
+    if (providerName === 'google' && !['avgStunTimeToConnectedState', 'avgStunCandidate'].includes(field)) {
+      return null
+    }
+
     let d = {
       name: providerName,
     }
@@ -122,6 +127,10 @@ export function TableCard({ title = '', description = '', field = '', providerDa
                     const data = providerData[lcp];
 
                     if (!data) {
+                      return null
+                    }
+
+                    if (lcp === 'google' && !['avgStunTimeToConnectedState', 'avgStunCandidate'].includes(field)) {
                       return null
                     }
 
@@ -213,13 +222,14 @@ export function TableCard({ title = '', description = '', field = '', providerDa
         <div className='mt-20 w-full h-96'>
         <ResponsiveContainer width='100%' height='100%'>
           <BarChart
-            data={barChartData}
+            data={barChartData.filter(i => i !== null)}
+            overflow="visible"
           >
             <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" />
+            <XAxis dataKey="name" angle={45} dx={15} dy={20}/>
             <YAxis tickFormatter={(i) => (`${i}${explanations[field].measure}`)}/>
             <Tooltip />
-            <Legend />
+            <Legend verticalAlign="top"/>
             {providerData.cloudflare?.udp && Object.keys(providerData.cloudflare).map((i, index) => (
               <Bar key={index} dataKey={i} fill={colours[i]} />
             ))}

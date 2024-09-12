@@ -45,10 +45,20 @@ export function About() {
           content='Once the connection via a TURN server is established, the Offerer agent starts sending 1-MB packets to the Answerer through the data channel, as quickly as possible. The throughput is the calculated rate of packets received by the Answerer.'
           icon={<ArrowUpDown className='flex-shrink-0 size-6 text-blue-600 dark:text-blue-400' />}
         />
+        <Card
+          title='Time to Connected State'
+          content='How quickly can we get into a connected state. This does not include the time to get TURN credentials from their API currently.'
+          icon={<ArrowUpDown className='flex-shrink-0 size-6 text-blue-600 dark:text-blue-400' />}
+        />
+        <Card
+          title='API response time'
+          content='How quickly do we get a response from their API for TURN credentials. This is generally done on every session initialisation and so delays here can delay setting up your session.'
+          icon={<ArrowUpDown className='flex-shrink-0 size-6 text-blue-600 dark:text-blue-400' />}
+        />
       </Blocks>
 
       <Typography style='small'>
-        NOTE: Tests are completed over a home broadband connection, 1 Gbps down, 100 Mbps up, hardwired. Tests are run every hour. Average results shown on this website are 7-day averages, updated hourly. Throughput trends show the latest available measurement.
+        NOTE: Tests are completed over a home broadband connection, hardwired from various nodes across Europe and North America. Tests are run every 60 minutes on each node. Average results shown on this website are 7-day averages, updated every 5 minutes. Throughput trends show the latest available measurement.
       </Typography>
 
       <Typography style='h3'>ICEPerf talks</Typography>

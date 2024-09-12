@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-
 import { Layout } from '../layout/Layout'
 import { ProviderTitleAndBlurb } from '../components/ProviderTitleAndBlurb';
 import TrendingUp from '../icons/TrendingUp';
@@ -79,9 +78,10 @@ function DataCard({ title = '', keyName = '', data = null, test = '', rawData = 
                   left: 5,
                   bottom: 5,
                 }}
+                overflow="visible"
               >
                 <CartesianGrid strokeDasharray='3 3' />
-                <XAxis dataKey='name' type='category' />
+                <XAxis dataKey='name' type='category' hide={true} />
                 <YAxis unit={explanations[test].measure} />
                 <Tooltip formatter={(value) => `${fixedDecimals(value, 1)}`}/>
                 {/* {test === 'avgApiResponseTime' ? (
@@ -141,9 +141,11 @@ export function Provider({ isOSSProject = false }) {
         let num = postsResp.day7data.throughput.length - 1;
         let providerConstants = providersList[id];
         let udp, tcp, tls, xAxis;
+        let instantUdp, instantTcp, instantTls;
         // Loop backwards until you find an item with data
         while (num >= 0) {
             const currentItem = postsResp.day7data.throughput[num];
+            const currentInstantItem = postsResp.day7data?.instantThroughput[num];
 
             const needsUdp = providerConstants.throughputFields?.includes('udp')
             const needsTcp = providerConstants.throughputFields?.includes('tcp')
@@ -151,21 +153,36 @@ export function Provider({ isOSSProject = false }) {
 
             let fulfilsNeed = true;
 
-            if (!(needsUdp && currentItem.udp && currentItem?.udp?.length != 0)) {
+            if (needsUdp && !(currentItem.udp && currentItem?.udp?.length != 0)) {
               fulfilsNeed = false
             }
 
-            if (!(needsTcp && currentItem.tcp && currentItem?.tcp?.length != 0)) {
+            if (needsTcp && !(currentItem.tcp && currentItem?.tcp?.length != 0)) {
               fulfilsNeed = false
             }
 
-            if (!(needsTls && currentItem.tls && currentItem?.tls?.length != 0)) {
+            if (needsTls && !(currentItem.tls && currentItem?.tls?.length != 0)) {
+              fulfilsNeed = false
+            }
+
+            if (!(needsUdp && currentInstantItem?.udp && currentInstantItem?.udp?.length != 0)) {
+              fulfilsNeed = false
+            }
+
+            if (!(needsTcp && currentInstantItem?.tcp && currentInstantItem?.tcp?.length != 0)) {
+              fulfilsNeed = false
+            }
+
+            if (!(needsTls && currentInstantItem?.tls && currentInstantItem?.tls?.length != 0)) {
               fulfilsNeed = false
             }
 
             // Check if the current item has data (you can adjust this check as needed)
             if (fulfilsNeed && currentItem?.xAxis?.length) {
                 ({ udp, tcp, tls, xAxis } = currentItem);
+                if (postsResp.day7data?.instantThroughput) {
+                  ({ udp: instantUdp, tcp: instantTcp, tls: instantTls, xAxis } = currentInstantItem);
+                }
                 break;
             }
 
@@ -186,13 +203,24 @@ export function Provider({ isOSSProject = false }) {
             if (tls?.length) {
               d.tls = tls[i]
             }
+
+            if (instantUdp?.length) {
+              d.instantUdp = instantUdp[i]
+            }
+            if (instantTcp?.length) {
+              d.instantTcp = instantTcp[i]
+            }
+            if (instantTls?.length) {
+              d.instantTls = instantTls[i]
+            }
+
             series.push(d)
           })
         }
       }
 
       for (const testName in avgData) {
-        if (testName === 'throughput') continue;
+        if (testName === 'throughput' || testName === 'instantThroughput') continue;
 
         if (testName === 'avgApiResponseTime') {
           if (postsResp.day7data[testName]) {
@@ -280,6 +308,10 @@ export function Provider({ isOSSProject = false }) {
               <Line type='linear' dataKey='udp' stroke='rgb(33,67,107)' dot={false} strokeWidth={3} />
               <Line type='linear' dataKey='tcp' stroke='rgb(97,156,220)' dot={false} strokeWidth={3} />
               <Line type='linear' dataKey='tls' stroke='rgb(14,30,47)' dot={false} strokeWidth={3} />
+
+              <Line type='linear' dataKey='instantUdp' stroke='rgb(33,67,107)' dot={false} strokeWidth={1} />
+              <Line type='linear' dataKey='instantTcp' stroke='rgb(97,156,220)' dot={false} strokeWidth={1} />
+              <Line type='linear' dataKey='instantTls' stroke='rgb(14,30,47)' dot={false} strokeWidth={1} />
 
             </LineChart>
           </ResponsiveContainer>
