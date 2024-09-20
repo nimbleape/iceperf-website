@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Layout } from '../layout/Layout'
 import { ProviderTitleAndBlurb } from '../components/ProviderTitleAndBlurb';
+import { FeaturesTable } from '../components/FeaturesTable';
 import TrendingUp from '../icons/TrendingUp';
 import TrendingDown from '../icons/TrendingDown';
 import { explanations, getProviderIdFromName, providersList } from '../constants';
@@ -262,6 +263,7 @@ export function Provider({ isOSSProject = false }) {
     <Layout>
       {/* Grid */}
       <ProviderTitleAndBlurb provider={id} />
+      <FeaturesTable provider={id} />
       {Object.keys(explanations).map((test) => {
         if ((id === 'google' && test !== 'avgStunCandidate') || test === 'throughput') {
           return null;

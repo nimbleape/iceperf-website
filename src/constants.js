@@ -2,23 +2,67 @@ export const providersList = {
   cloudflare: {
     name: 'Cloudflare',
     description: `
-Cloudflare is a global leader in internet security and performance, with over 300 points of presence worldwide. Their Calls product supports a global TURN network. Pricing for Cloudflare's TURN service is straightforward, with charges based on usage: $0.05 per real-time GB on egress only. Cloudflare Calls has a 1TB free allowance.
+Cloudflare is a global leader in internet security and performance, with over 300 points of presence worldwide. Their Calls product supports a global TURN network. Pricing for Cloudflare's TURN service is straightforward, with charges based on usage: $0.05 per real-time GB on egress to a turn client only. Cloudflare Calls has a combined 1TB free allowance.
 
 Cloudflare offers a TURN credential API as well as analytics on usage via their analytics graphql API.
 
 For more details, visit Cloudflare's [TURN documentation](https://developers.cloudflare.com/calls/turn/)
 
+Cloudflare are adding new features to their service all the time. Features such as being able to set a custom identifier on a turn credential make reporting on a specific user's usage easier.
+
+Cloudlfare's TURN service is currently in beta. Cloudflare's TURN service does not utilise their nodes in China. Users in China would connect to a node outside of China.
+
 We test Cloudflare's TURN service using their 1TB free allowance.`,
     isOSSProject: false,
     throughputFields: ['tcp', 'tls', 'udp'],
     features: {
-      '2fa': true,
-      'analysis-api': true,
+      'ipv6-candidates': false,
+      '2fa': {
+        types: ['totp', 'passkey', 'security-key'],
+        bool: true
+      },
+      'analysis-api': {
+        bool: true,
+        value: "Updated after 30s"
+      },
       'credential-api': true,
+      'revoke-api-credential': true,
       'shared-secret-auth': false,
-      'free-tier': true,
-      locations: "300+",
-    }
+      'free-tier': {
+        bool: true,
+        value: '1TB'
+      },
+      locations: {
+        link: 'https://www.cloudflare.com/en-gb/network/',
+        text: "300+"
+      },
+      'location-based-routing': true,
+      'pay-per-gb': true,
+      'overage': {
+        value: '0.05',
+        currency: '$'
+      },
+      'billing-model': 'egress-to-turn-client',
+      'firewall-busting-ports': {
+        bool: true,
+        ports: {
+          'tcp': 80,
+          'tls': 443,
+          'udp': 53
+        }
+      },
+      'whitelabel-own-domain': {
+        protocols: ['udp', 'tcp'],
+        bool: true,
+      },
+      'documented-ips': {
+        bool: true,
+        link: 'https://developers.cloudflare.com/calls/turn/faq/#i-need-to-allowlist-whitelist-cloudflare-calls-turn-ip-addresses-which-ip-addresses-should-i-use'
+      },
+      'documentation-url': {
+        link: 'https://developers.cloudflare.com/calls/turn'
+      }
+    },
   },
   xirsys: {
     name: 'Xirsys',
@@ -30,7 +74,53 @@ Xirsys offer a 500 MB free tier, capped to a single region. Their plans range fr
 We test Xirsys with a gisted Elite Plan.
 `,
     isOSSProject: false,
-    throughputFields: ['tcp', 'tls', 'udp']
+    throughputFields: ['tcp', 'tls', 'udp'],
+    features: {
+      'ipv6-candidates': false,
+      '2fa': {
+        bool: false
+      },
+      'analysis-api': {
+        bool: true,
+        value: "Updated after 15s"
+      },
+      'credential-api': true,
+      'revoke-api-credential': false,
+      'shared-secret-auth': false,
+      'free-tier': {
+        bool: true,
+        value: '500MB'
+      },
+      locations: {
+        link: 'https://xirsys.com/pricing/',
+        text: "11"
+      },
+      'location-based-routing': true,
+      'pay-per-gb': false,
+      'overage': {
+        value: '0.50 - 0.09',
+        currency: '$'
+      },
+      'billing-model': 'TBC',
+      'firewall-busting-ports': {
+        bool: true,
+        ports: {
+          'tcp': 80,
+          'tls': 443,
+          'udp': 80
+        }
+      },
+      'whitelabel-own-domain': {
+        bool: false,
+      },
+      'documented-ips': {
+        bool: true,
+        link: 'https://docs.xirsys.com/?pg=ip-whitelist'
+      },
+      'documentation-url': {
+        link: 'https://docs.xirsys.com/'
+      }
+    },
   },
   twilio: {
     name: 'Twilio',
@@ -43,7 +133,52 @@ Their pricing varies depending on which location your data is relayed through. T
 
 We test Twilio with gifted credit.`,
     isOSSProject: false,
-    throughputFields: ['tcp', 'tls', 'udp']
+    throughputFields: ['tcp', 'tls', 'udp'],
+    features: {
+      'ipv6-candidates': false,
+      '2fa': {
+        bool: true,
+        types: ['totp'],
+      },
+      'analysis-api': {
+        bool: true,
+        value: "Unknown",
+        link: "https://www.twilio.com/docs/usage/api/usage-record"
+      },
+      'credential-api': true,
+      'revoke-api-credential': false,
+      'shared-secret-auth': false,
+      'free-tier': {
+        bool: false,
+      },
+      locations: {
+        link: 'https://www.twilio.com/docs/stun-turn/regions',
+        text: "9"
+      },
+      'location-based-routing': true,
+      'pay-per-gb': true,
+      'overage': {
+        value: '0.40 - 0.80',
+        currency: '$'
+      },
+      'billing-model': 'TBC',
+      'firewall-busting-ports': {
+        bool: true,
+        ports: {
+          'tls': 443,
+        }
+      },
+      'whitelabel-own-domain': {
+        bool: false,
+      },
+      'documented-ips': {
+        bool: true,
+        link: 'https://www.twilio.com/docs/stun-turn/regions'
+      },
+      'documentation-url': {
+        link: 'https://www.twilio.com/docs/stun-turn'
+      }
+    },
   },
   metered: {
     name: 'Metered',
@@ -52,7 +187,53 @@ We test Twilio with gifted credit.`,
 
 Metered offers a 500 MB free tier without overages. Their plans range from $99 per month to $499 per month with overage pricing. Their overage pricing ranges from $0.40/GB to $0.10/GB.`,
     isOSSProject: false,
-    throughputFields: ['tcp', 'tls', 'udp']
+    throughputFields: ['tcp', 'tls', 'udp'],
+    features: {
+      'ipv6-candidates': false,
+      '2fa': {
+        bool: false
+      },
+      'analysis-api': {
+        bool: true,
+        value: "Updated after TBC",
+        link: "https://www.metered.ca/docs/turn-rest-api/get-current-usage-by-user/"
+      },
+      'credential-api': true,
+      'revoke-api-credential': true,
+      'shared-secret-auth': false,
+      'free-tier': {
+        bool: true,
+        value: '500MB'
+      },
+      locations: {
+        link: 'https://www.metered.ca/docs/turnserver-guides/turnserver-regions',
+        text: "22"
+      },
+      'location-based-routing': true,
+      'pay-per-gb': false,
+      'overage': {
+        value: '0.40 - 0.10',
+        currency: '$'
+      },
+      'billing-model': 'TBC',
+      'firewall-busting-ports': {
+        bool: true,
+        ports: {
+          'tcp': 80,
+          'tls': 443,
+          'udp': 80
+        }
+      },
+      'whitelabel-own-domain': {
+        bool: false,
+      },
+      'documented-ips': {
+        bool: false,
+      },
+      'documentation-url': {
+        link: 'https://www.metered.ca/docs/turn-rest-api/get-credential'
+      }
+    },
   },
   expressturn: {
     name: 'ExpressTURN',
@@ -65,7 +246,46 @@ ExpressTURN's pricing is very simple. They offer a free tier. Their Premium tier
 
 We test ExpressTURN with a gifted Premium tier.`,
     isOSSProject: false,
-    throughputFields: ['tcp', 'udp']
+    throughputFields: ['tcp', 'udp'],
+    features: {
+      'ipv6-candidates': false,
+      '2fa': {
+        bool: false
+      },
+      'analysis-api': {
+        bool: false,
+      },
+      'credential-api': false,
+      'revoke-api-credential': true,
+      'shared-secret-auth': true,
+      'free-tier': {
+        bool: true,
+        value: '1TB'
+      },
+      locations: {
+        text: "11"
+      },
+      'location-based-routing': false,
+      'pay-per-gb': false,
+      'billing-model': 'TBC',
+      'firewall-busting-ports': {
+        bool: true,
+        ports: {
+          'tcp': 80,
+          'tls': 443,
+          'udp': 80
+        }
+      },
+      'whitelabel-own-domain': {
+        bool: false,
+      },
+      'documented-ips': {
+        bool: false,
+      },
+      'documentation-url': {
+        link: 'https://www.expressturn.com/#faq'
+      }
+    },
   },
   google: {
     name: 'Google',
@@ -88,6 +308,52 @@ For more details, check the [GitHub repository](https://github.com/elixir-webrtc
   },
 };
 
+export const features = {
+  'ipv6-candidates': false,
+  '2fa': false,
+  'analysis-api': false,
+  'credential-api': false,
+  'revoke-api-credential': false,
+  'shared-secret-auth': false,
+  'free-tier': false,
+  locations: "0",
+  'location-based-routing': false,
+  'pay-per-gb': false,
+  'overage': {
+    value: '0',
+    currency: '$'
+  },
+  'billing-model': '',
+  'firewall-busting-ports': {},
+  'whitelabel-own-domain': [],
+  'documented-ips': false,
+};
+
+export const featureTranslation = {
+  'ipv6-candidates': 'IPv6 Candidates',
+  '2fa': 'Portal Two-factor authentication',
+  'analysis-api': 'Usage API',
+  'credential-api': 'Credential Creation API',
+  'revoke-api-credential': 'Credential Revocation API',
+  'shared-secret-auth': 'Shared Secret Credential Creation',
+  'free-tier': 'Free Tier',
+  locations: "Locations",
+  'location-based-routing': 'Location based routing',
+  'pay-per-gb': 'No Subscription, pay per GB used',
+  'overage': 'Overage fee',
+  'billing-model': 'Billing Model',
+  'firewall-busting-ports': 'Firewall busting ports available',
+  'whitelabel-own-domain': 'Whitelabel TURN domain',
+  'documented-ips': 'Documented IP addresses',
+  'documentation-url': 'Documentation URL'
+}
+
+export const featureValueTranslations = {
+  'billing-model': {
+    'TBC': 'TBC',
+    'egress-to-turn-client': 'Data billed on egress from Provider towards a turn client'
+  }
+}
 // export const fields = ['avgTurnLatency', 'maxTurnThroughput', 'avgTurnCandidate', 'avgStunCandidate', 'avgApiResponseTime', 'avgTurnTimeToConnectedState', 'avgStunTimeToConnectedState'];
 
 export const explanations = {
@@ -177,6 +443,10 @@ export function getProviderTitleFromId(id) {
 
 export function getProviderBlurbFromId(id) {
   return providersList[id]?.description || '';
+}
+
+export function getProviderFeaturesFromId(id) {
+  return providersList[id]?.features || null;
 }
 
 // This solves the problem of Rel being called elixir in the data

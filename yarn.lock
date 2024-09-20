@@ -3034,6 +3034,7 @@ __metadata:
     eslint-plugin-react-hooks: "npm:^4.6.0"
     eslint-plugin-react-refresh: "npm:^0.4.6"
     itty-router: "npm:^5.0.17"
+    lucide-react: "npm:^0.441.0"
     postcss: "npm:^8.4.38"
     preline: "npm:^2.1.0"
     react: "npm:^18.2.0"
@@ -3697,6 +3698,15 @@ __metadata:
   dependencies:
     yallist: "npm:^3.0.2"
   checksum: 10c0/89b2ef2ef45f543011e38737b8a8622a2f8998cddf0e5437174ef8f1f70a8b9d14a918ab3e232cb3ba343b7abddffa667f0b59075b2b80e6b4d63c3de6127482
+  languageName: node
+  linkType: hard
+
+"lucide-react@npm:^0.441.0":
+  version: 0.441.0
+  resolution: "lucide-react@npm:0.441.0"
+  peerDependencies:
+    react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0-rc
+  checksum: 10c0/3c8bc83cb72b5fa7b391cdce32b25c2212ff2fd3b66f6e989f130d9e53c69ac4cc9782ae499d639026357c5cc5e280b8ae91fd81743b14ffc98d940b6d5c17c2
   languageName: node
   linkType: hard
 
