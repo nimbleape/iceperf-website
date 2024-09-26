@@ -1,5 +1,4 @@
 import image from '../assets/icononly.png'
-import { Button } from './Button'
 
 export function Hero() {
   return (

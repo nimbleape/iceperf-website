@@ -12,7 +12,9 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <React.StrictMode>
-    <AuthKitProvider clientId={import.meta.env.VITE_WORKOS_CLIENT_ID}>
+    <AuthKitProvider
+      clientId={import.meta.env.VITE_WORKOS_CLIENT_ID}
+    >
       <BrowserRouter basename="/">
         <App />
       </BrowserRouter>
