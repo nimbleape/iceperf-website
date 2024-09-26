@@ -10,7 +10,6 @@ import { About } from './Pages/About';
 import { Results } from './Pages/Results';
 import { Provider } from './Pages/Provider';
 import { Login } from './Pages/Login';
-import { Signup } from './Pages/Signup';
 
 function App() {
   const location = useLocation();
@@ -27,7 +26,6 @@ function App() {
         <Route path='/about' element={<About />} />
         <Route path='/results' element={<Results />} />
         <Route path='/login' element={<Login />} />
-        <Route path='/signup' element={<Signup />} />
         <Route path='/providers/:name' element={<Provider />} />
         <Route path='/projects/:name' element={<Provider isOSSProject />} />
       </Routes>
