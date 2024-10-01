@@ -4,6 +4,7 @@ import 'preline/preline';
 
 import { Header } from './components/Header';
 import { Footer } from './components/Footer';
+import { ProtectedRoute } from './components/ProtectedRoute';
 // import { Coverpage } from './Pages/Coverpage';
 import { Home } from './Pages/Home';
 import { About } from './Pages/About';
@@ -27,9 +28,9 @@ function App() {
         <Route path='/about' element={<About />} />
         <Route path='/results' element={<Results />} />
         <Route path='/login' element={<Login />} />
-        <Route path='/settings' element={<Settings />} />
         <Route path='/providers/:name' element={<Provider />} />
         <Route path='/projects/:name' element={<Provider isOSSProject />} />
+        <Route path='/settings' element={<ProtectedRoute> <Settings /> </ProtectedRoute>} />
       </Routes>
       <Footer />
     </>
