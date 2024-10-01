@@ -7,6 +7,8 @@ import { NavMenuItem } from './NavMenuItem';
 import { NavMenu } from './NavMenu';
 import { NavItem } from './NavItem';
 
+import UserIcon from '../icons/User';
+
 import { providers, projects } from '../constants';
 import { IcePerfLogo } from './IcePerfLogo';
 
@@ -29,7 +31,12 @@ export function Header() {
             </div>
             {!!user && (
               <div className='ml-4 sm:hidden'>
-                <NavItem label='Settings' to='/settings' />
+                <Link
+                  className='size-9 flex justify-center items-center text-sm font-semibold rounded-lg border border-gray-200 text-gray-800 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-white dark:border-neutral-700 dark:hover:bg-neutral-700'
+                  to='/settings'
+                >
+                  <UserIcon />
+                </Link>
               </div>
             )}
           </div>
@@ -70,7 +77,12 @@ export function Header() {
         </div>
         {!!user && (
           <div className='ml-4 hidden sm:block'>
-            <NavItem label='Settings' to='/settings' />
+            <Link
+              className='size-9 flex justify-center items-center text-sm font-semibold rounded-lg border border-gray-200 text-gray-800 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-white dark:border-neutral-700 dark:hover:bg-neutral-700'
+              to='/settings'
+            >
+              <UserIcon />
+            </Link>
           </div>
         )}
       </nav>
