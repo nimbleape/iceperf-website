@@ -1193,6 +1193,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@workos-inc/authkit-js@npm:0.5":
+  version: 0.5.1
+  resolution: "@workos-inc/authkit-js@npm:0.5.1"
+  checksum: 10c0/0eef62a927e5642f063eb2703460711c39d264894e4168b09327fb989eae88e9da845a98da5a8db95018505102714b70cfbb4f6aedd02a8d6058db035743f5e5
+  languageName: node
+  linkType: hard
+
+"@workos-inc/authkit-react@npm:^0.5.1":
+  version: 0.5.1
+  resolution: "@workos-inc/authkit-react@npm:0.5.1"
+  dependencies:
+    "@workos-inc/authkit-js": "npm:0.5"
+  peerDependencies:
+    react: ">=17"
+  checksum: 10c0/cee76f761b0492d71ec317ed0615c9e34e16423c57d87c822c9a1776c934711be5e6f0712ca5deeca3d934fb7b45fadb6aaeeefed608486a15eb6f0a307e07cd
+  languageName: node
+  linkType: hard
+
 "@yr/monotone-cubic-spline@npm:^1.0.3":
   version: 1.0.3
   resolution: "@yr/monotone-cubic-spline@npm:1.0.3"
@@ -3027,6 +3045,7 @@ __metadata:
     "@types/react": "npm:^18.2.66"
     "@types/react-dom": "npm:^18.2.22"
     "@vitejs/plugin-react": "npm:^4.2.1"
+    "@workos-inc/authkit-react": "npm:^0.5.1"
     apexcharts: "npm:^3.49.0"
     autoprefixer: "npm:^10.4.19"
     eslint: "npm:^8.57.0"

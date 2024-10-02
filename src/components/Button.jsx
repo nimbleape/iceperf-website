@@ -1,17 +1,22 @@
-import { Link } from "react-router-dom"
-import PropTypes from "prop-types"
+import PropTypes from 'prop-types';
+import { twMerge } from 'tailwind-merge';
 
-export function Button({ to = '', label = '', icon = null }) {
+export const Button = ({ children = null, onClick = ()=>{}, className = '', disabled = false }) => {
   return (
-    <Link className="py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-ipblue-900 text-white hover:bg-ipblue-800 disabled:opacity-50 disabled:pointer-events-none" to={to}>
-      {label}
-      {icon ? icon : null}
-    </Link>
+    <button
+      type='button'
+      className={twMerge('text-sm px-4 py-2 font-semibold rounded-lg border border-gray-200 text-gray-800 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-white dark:border-neutral-700 dark:hover:bg-neutral-700', className)}
+      onClick={onClick}
+      disabled={disabled}
+    >
+        {children}
+    </button>
   )
 }
 
 Button.propTypes = {
-  label: PropTypes.string,
-  to: PropTypes.string,
-  icon: PropTypes.node
+  children: PropTypes.func,
+  onClick: PropTypes.func,
+  className: PropTypes.string,
+  disabled: PropTypes.bool,
 };
