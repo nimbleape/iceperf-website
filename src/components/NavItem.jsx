@@ -1,22 +1,21 @@
-import { NavLink } from 'react-router-dom'
+import { Link } from '@tanstack/react-router'
 import PropTypes from 'prop-types';
 
 export function NavItem({ to = '', label = '', current = false }) {
   if (current) {
     return (
-      <NavLink className='' to={to} aria-current='page'>{label}</NavLink>
+      <Link className='' to={to} aria-current='page'>{label}</Link>
     )
   }
   return (
-    <NavLink
-      className={({ isActive }) => {
-        return isActive ? 'font-medium sm:py-6 text-ipblue-800' : 'font-medium text-gray-800 hover:text-gray-500 sm:py-6 dark:text-neutral-200 dark:hover:text-neutral-400';
-      }}
+    <Link
+      activeProps={{ className: 'font-medium sm:py-6 text-ipblue-800' }}
+      inactiveProps={{ className: 'font-medium text-gray-800 hover:text-gray-500 sm:py-6 dark:text-neutral-200 dark:hover:text-neutral-400' }}
       to={to}
       aria-current='page'
     >
       {label}
-    </NavLink>
+    </Link>
   )
 }
 

@@ -12,5 +12,5 @@ export const ListGroup = ({ className = '', children = null, ...rest }) => (
 
 ListGroup.propTypes = {
   className: PropTypes.string,
-  children: PropTypes.func,
+  children: PropTypes.node,
 };

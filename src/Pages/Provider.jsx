@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
-import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { useParams } from '@tanstack/react-router';
 import { Layout } from '../layout/Layout'
 import { ProviderTitleAndBlurb } from '../components/ProviderTitleAndBlurb';
 import { FeaturesTable } from '../components/FeaturesTable';
@@ -122,38 +123,29 @@ DataCard.propTypes = {
 };
 
 export function Provider({ isOSSProject = false, isPrivate = false }) {
-  const { name } = useParams();
-
-  const [data, setData] = useState();
-  const [id, setId] = useState();
-  // const [throughputData, setThroughputData] = useState();
-  const [dataSeries, setDataSeries] = useState([]);
+  const { name } = useParams({ strict: false });
+  const id = isPrivate ? 'your-network' : getProviderIdFromName(name);
 
   const { user } = useUserContext();
 
-  useEffect(() => {
-    const id = isPrivate ? 'your-network' : getProviderIdFromName(name);
-
-    const getPosts = async () => {
+  const { data: queryData, error } = useQuery({
+    queryKey: ['provider', id, isPrivate, !!user?.accessToken],
+    queryFn: async () => {
       let resp;
-      try {
-        if (isPrivate) {
-          const opts = user?.accessToken ? { headers: { Authorization: `Bearer ${user.accessToken}` } } : null;
-          resp = await fetch(`${import.meta.env.VITE_API_BASE_URI}/api/provider/private`, opts);
-        } else {
-          resp = await fetch(`${import.meta.env.VITE_API_BASE_URI}/api/provider/${id}`);
-        }
-        if (!resp?.ok) {
-          throw new Error('Not ok response');
-        }
-      } catch (err) {
-        console.error('Error fetching data');
+      if (isPrivate) {
+        const opts = user?.accessToken ? { headers: { Authorization: `Bearer ${user.accessToken}` } } : undefined;
+        resp = await fetch(`${import.meta.env.VITE_API_BASE_URI}/api/provider/private`, opts);
+      } else {
+        resp = await fetch(`${import.meta.env.VITE_API_BASE_URI}/api/provider/${id}`);
+      }
+      if (!resp?.ok) {
+        throw new Error('Not ok response');
       }
 
       const postsResp = await resp.json();
 
       if (!postsResp?.day7data) {
-        return;
+        return null;
       }
 
       let avgData = postsResp?.providerData?.[id]?.data;
@@ -274,14 +266,18 @@ export function Provider({ isOSSProject = false, isPrivate = false }) {
           }
         }
       }
-      setData(avgData);
-      setDataSeries(series);
-      // setThroughputData(postsResp.day7data.throughput);
-    };
+      return { data: avgData, dataSeries: series };
+    },
+  });
 
-    getPosts();
-    setId(id);
-  }, [name, isOSSProject, isPrivate, user])
+  useEffect(() => {
+    if (error) {
+      console.error('Error fetching data');
+    }
+  }, [error]);
+
+  const data = queryData?.data;
+  const dataSeries = queryData?.dataSeries ?? [];
 
   if (!data) {
     return (

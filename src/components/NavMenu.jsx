@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom'
+import { Link } from '@tanstack/react-router'
 
 export function NavMenu({ children = null, label = '', to }) {
   return (

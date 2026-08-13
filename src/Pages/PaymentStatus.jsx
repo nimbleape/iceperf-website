@@ -1,13 +1,13 @@
-import { useSearchParams } from 'react-router-dom';
+import { useSearch } from '@tanstack/react-router';
 
 import { Layout } from '../layout/Layout';
 import { Link } from '../components/Link';
 import { Typography } from '../components/Typography';
 
 export const PaymentStatus = () => {
-  const [ params ] = useSearchParams();
-  const isSuccess = params.get('success')?.toLowerCase() === 'true';
-  const isCanceled = params.get('canceled')?.toLowerCase() === 'true';
+  const search = useSearch({ strict: false });
+  const isSuccess = String(search.success).toLowerCase() === 'true';
+  const isCanceled = String(search.canceled).toLowerCase() === 'true';
 
   if (isSuccess) {
     return (

@@ -1,11 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { BrowserRouter } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { RouterProvider, createRouter } from '@tanstack/react-router';
 import { AuthKitProvider } from '@workos-inc/authkit-react';
 import { UserContextProvider } from './contexts/userContext';
 
+import { routeTree } from './routeTree.gen';
+
 import './index.css';
-import App from './App';
+
+const queryClient = new QueryClient();
+const router = createRouter({ routeTree });
 
 const root = ReactDOM.createRoot(
   document.getElementById('root')
@@ -17,11 +23,12 @@ root.render(
       clientId={import.meta.env.VITE_WORKOS_CLIENT_ID}
       devMode={true}
     >
-      <UserContextProvider>
-        <BrowserRouter basename="/">
-          <App />
-        </BrowserRouter>
-      </UserContextProvider>
+      <QueryClientProvider client={queryClient}>
+        <UserContextProvider>
+          <RouterProvider router={router} />
+        </UserContextProvider>
+        {import.meta.env.DEV && <ReactQueryDevtools initialIsOpen={false} />}
+      </QueryClientProvider>
     </AuthKitProvider>
   </React.StrictMode>
 );

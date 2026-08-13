@@ -22,5 +22,5 @@ export const ListGroupItem = ({ className = '', title = '', children = null, ...
 ListGroupItem.propTypes = {
   className: PropTypes.string,
   title: PropTypes.string,
-  children: PropTypes.func,
+  children: PropTypes.node,
 };

@@ -42,7 +42,7 @@ export const TableRow = ({ className, id, items }) => (
 );
 
 Table.propTypes = {
-  children: PropTypes.func,
+  children: PropTypes.node,
   className: PropTypes.string,
   header: PropTypes.array,
 };

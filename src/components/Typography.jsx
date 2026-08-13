@@ -51,5 +51,5 @@ export const Typography = ({ style, children, className }) => {
 Typography.propTypes = {
   style: PropTypes.string,
   className: PropTypes.string,
-  children: PropTypes.func,
+  children: PropTypes.node,
 };
