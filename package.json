@@ -12,6 +12,8 @@
   "dependencies": {
     "@headlessui/react": "^1.7.19",
     "@heroicons/react": "^2.1.3",
+    "@tanstack/react-query": "^5.101.4",
+    "@tanstack/react-router": "^1.170.27",
     "@workos-inc/authkit-react": "^0.7.0",
     "apexcharts": "^3.49.0",
     "itty-router": "^5.0.17",
@@ -22,8 +24,7 @@
     "react-apexcharts": "^1.4.1",
     "react-dom": "^18.2.0",
     "react-markdown": "^9.0.1",
-    "react-router-dom": "^6.23.0",
-    "recharts": "^2.12.7",
+    "recharts": "^2.15.4",
     "remark-gfm": "^4.0.0",
     "tailwind-merge": "^2.3.0",
     "vite-plugin-cloudflare-functions": "^0.6.1",
@@ -33,6 +34,9 @@
   "devDependencies": {
     "@tailwindcss/forms": "^0.5.7",
     "@tailwindcss/typography": "^0.5.14",
+    "@tanstack/react-query-devtools": "^5.101.4",
+    "@tanstack/react-router-devtools": "^1.167.1",
+    "@tanstack/router-plugin": "^1.168.30",
     "@types/react": "^18.2.66",
     "@types/react-dom": "^18.2.22",
     "@vitejs/plugin-react": "^4.2.1",

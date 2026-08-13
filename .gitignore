@@ -25,3 +25,6 @@ dist-ssr
 *.sw?
 .wrangler
 .testing
+
+# TanStack Router generated route tree
+src/routeTree.gen.ts

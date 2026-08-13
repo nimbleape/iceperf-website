@@ -1,4 +1,5 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState } from 'react';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import PropTypes from 'prop-types';
 
 import { Button } from '../components/Button';
@@ -28,60 +29,49 @@ const defaultCredentialsInput = {
 
 export function Settings() {
   const [showCredentialsInput, setShowCredentialsInput] = useState(false);
-  const [isSaving, setIsSaving] = useState(false);
-  const [iceCredentialsList, setIceCredentialsList] = useState([]);
   const [iceCredentialsInput, setIceCredentialsInput] = useState({ ...defaultCredentialsInput });
-  const [canAddStunServer, setCanAddStunServer] = useState(false);
-  const [canAddTurnServer, setCanAddTurnServer] = useState(false);
 
   const { isLoading, signOut, user } = useUserContext();
   const customerPortalLink = import.meta.env.VITE_STRIPE_CUSTOMER_PORTAL_URL;
+  const queryClient = useQueryClient();
 
-  const getPrivateCredentials = useCallback(async () => {
-    try {
+  const { data: iceCredentialsList = [] } = useQuery({
+    queryKey: ['turn-credentials', user?.id],
+    queryFn: async () => {
       const resp = await fetch(`${import.meta.env.VITE_API_BASE_URI}/api/get-turn-credentials/${user.id}`);
       const { credentials } = await resp.json();
 
-      if (credentials.success) {
-        setIceCredentialsList(credentials.results);
-
-        // check what credentials can still be added
-        const credUrls = credentials.results.map(({ url }) => url);
-        const hasStun = credUrls.some((url) => {
-          const info = new URL(url);
-          const scheme = info.protocol.slice(0, -1); // Remove the trailing ':' from protocol
-          return scheme === 'stun' || scheme === 'stuns';
-        });
-        const hasTurn = credUrls.some((url) => {
-          const info = new URL(url);
-          const scheme = info.protocol.slice(0, -1);
-          return scheme === 'turn' || scheme === 'turns';
-        });
-        setCanAddStunServer(!hasStun);
-        setCanAddTurnServer(!hasTurn);
-      } else {
+      if (!credentials.success) {
         throw new Error(credentials.err);
       }
-    } catch (err) {
-      console.error(err);
-    }
-  }, [user?.id]);
 
-  useEffect(() => {
-    if (!user) {
-      return;
-    }
-    getPrivateCredentials();
-  }, [user, getPrivateCredentials]);
+      return credentials.results;
+    },
+    enabled: !!user,
+  });
+
+  // check what credentials can still be added
+  const credUrls = iceCredentialsList.map(({ url }) => url);
+  const canAddStunServer = !credUrls.some((url) => {
+    const info = new URL(url);
+    const scheme = info.protocol.slice(0, -1); // Remove the trailing ':' from protocol
+    return scheme === 'stun' || scheme === 'stuns';
+  });
+  const canAddTurnServer = !credUrls.some((url) => {
+    const info = new URL(url);
+    const scheme = info.protocol.slice(0, -1);
+    return scheme === 'turn' || scheme === 'turns';
+  });
 
   const cancelCredsInput = () => {
     setShowCredentialsInput(false);
     setIceCredentialsInput({ ...defaultCredentialsInput });
   };
 
-  const saveCredsInput = async (urls) => {
-    setIsSaving(true);
-    try {
+  const invalidateCredentials = () => queryClient.invalidateQueries({ queryKey: ['turn-credentials', user?.id] });
+
+  const saveMutation = useMutation({
+    mutationFn: async (urls) => {
       const { username, password, requestUrl, apiKey } = iceCredentialsInput;
       const resp = await fetch(
         `${import.meta.env.VITE_API_BASE_URI}/api/add-turn-credentials/${user.id}`,
@@ -97,36 +87,33 @@ export function Settings() {
         },
       );
       const result = await resp.json();
-      if (result.success) {
-        await getPrivateCredentials();
-      } else {
+      if (!result.success) {
         throw new Error(result.err);
       }
-    } catch (err) {
-      console.error(err);
-    } finally {
-      cancelCredsInput();
-      setIsSaving(false);
-    }
-  };
+      return result;
+    },
+    onSuccess: invalidateCredentials,
+    onError: (err) => console.error(err),
+    onSettled: cancelCredsInput,
+  });
 
-  const deleteTurnCredential = async (id) => {
-    setIsSaving(true);
-    try {
+  const deleteMutation = useMutation({
+    mutationFn: async (id) => {
       const resp = await fetch(`${import.meta.env.VITE_API_BASE_URI}/api/delete-turn-credentials/${user.id}/${id}`);
       const result = await resp.json();
-      if (result.success) {
-        await getPrivateCredentials();
-      } else {
+      if (!result.success) {
         throw new Error(result.err);
       }
-    } catch (err) {
-      console.error(err);
-    } finally {
-      cancelCredsInput();
-      setIsSaving(false);
-    }
-  }
+      return result;
+    },
+    onSuccess: invalidateCredentials,
+    onError: (err) => console.error(err),
+    onSettled: cancelCredsInput,
+  });
+
+  const isSaving = saveMutation.isPending || deleteMutation.isPending;
+  const saveCredsInput = (urls) => saveMutation.mutate(urls);
+  const deleteTurnCredential = (id) => deleteMutation.mutate(id);
 
   return (
     <Layout>

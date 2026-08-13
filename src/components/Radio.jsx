@@ -39,7 +39,7 @@ const RadioGroup = ({ className = '', children }) => (
 
 RadioGroup.propTypes = {
   className: PropTypes.string,
-  children: PropTypes.func,
+  children: PropTypes.node,
 };
 
 export { Radio, RadioGroup };

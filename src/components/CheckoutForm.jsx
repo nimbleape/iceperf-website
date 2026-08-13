@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation } from '@tanstack/react-router';
 import PropTypes from 'prop-types'
 import { twMerge } from 'tailwind-merge';
 
@@ -61,7 +61,7 @@ export const CheckoutForm = ({ className = '' }) => {
           <div className='mt-6 flex flex-col justify-center md:flex-row w-full'>
             <Button
               className='my-2 md:mx-4 w-full md:w-40'
-              onClick={() => signIn({ context: location.search, state: { returnTo: location.pathname } })}
+              onClick={() => signIn({ context: location.searchStr, state: { returnTo: location.pathname } })}
               disabled={isLoading}
             >
               Login

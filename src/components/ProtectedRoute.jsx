@@ -1,4 +1,4 @@
-import { Navigate } from 'react-router-dom';
+import { Navigate } from '@tanstack/react-router';
 import PropTypes from 'prop-types';
 
 import { useAuth } from '@workos-inc/authkit-react';
@@ -12,5 +12,5 @@ export const ProtectedRoute = ({ children }) => {
 };
 
 ProtectedRoute.propTypes = {
-  children: PropTypes.func,
+  children: PropTypes.node,
 };

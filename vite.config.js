@@ -4,6 +4,7 @@ import { vitePostHog } from "vite-plugin-posthog";
 import tailwindcss from 'tailwindcss'
 import svgr from "vite-plugin-svgr";
 import CloudflarePagesFunctions from 'vite-plugin-cloudflare-functions';
+import { tanstackRouter } from '@tanstack/router-plugin/vite';
 
 
 // https://vitejs.dev/config/
@@ -17,6 +18,12 @@ export default ({ mode }) => {
       },
     },
     plugins: [
+      tanstackRouter({
+        target: 'react',
+        autoCodeSplitting: true,
+        routesDirectory: './src/routes',
+        generatedRouteTree: './src/routeTree.gen.ts',
+      }),
       react(),
       svgr(),
       CloudflarePagesFunctions(),

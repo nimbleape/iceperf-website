@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { PropTypes } from 'prop-types';
 
 import { TableCard } from '../components/TableCard';
@@ -12,15 +12,12 @@ import { explanations } from "../constants"
 import { useUserContext } from '../contexts/userContext';
 
 export function Results({ select = 'all' }) {
-  const [providerData, setProviderData] = useState();
-  const [privateData, setPrivateData] = useState();
-  const [bestAndWorst, setBestAndWorst] = useState();
-
   const { user } = useUserContext();
 
-  useEffect(() => {
-    const getPosts = async () => {
-      const opts = user?.accessToken ? { headers: { Authorization: `Bearer ${user.accessToken}` } } : null;
+  const { data } = useQuery({
+    queryKey: ['results', select, !!user?.accessToken],
+    queryFn: async () => {
+      const opts = user?.accessToken ? { headers: { Authorization: `Bearer ${user.accessToken}` } } : undefined;
       const resp = await fetch(`${import.meta.env.VITE_API_BASE_URI}/api/results/${select}`, opts);
       const postsResp = await resp.json();
       // rearrange data this way:
@@ -46,7 +43,7 @@ export function Results({ select = 'all' }) {
         }
       */
       if (!postsResp?.providerData) {
-        return;
+        return null;
       }
 
       const providerResults = {};
@@ -68,17 +65,20 @@ export function Results({ select = 'all' }) {
           });
         }
       });
-      setProviderData(providerResults);
-      setPrivateData(postsResp.privateData);
-      setBestAndWorst(postsResp.bestAndWorst);
-    };
 
-    getPosts();
-  }, [user, select]);
+      return {
+        providerData: providerResults,
+        privateData: postsResp.privateData,
+        bestAndWorst: postsResp.bestAndWorst,
+      };
+    },
+  });
 
-  if (!providerData) {
+  if (!data?.providerData) {
     return <></>;
   }
+
+  const { providerData, privateData, bestAndWorst } = data;
 
   return (
     <Layout>

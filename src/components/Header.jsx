@@ -1,4 +1,4 @@
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation } from '@tanstack/react-router';
 
 import { Button } from '../components/Button';
 import { HamburgerButton } from '../components/HamburgerButton';
@@ -16,7 +16,6 @@ import { useUserContext } from '../contexts/userContext';
 export function Header() {
   const { user, isLoading, signIn, signUp } = useUserContext();
   const location = useLocation();
-  const searchParams = new URLSearchParams(location.search)
 
   return (
     <header className='flex flex-wrap sm:justify-start sm:flex-col z-50 w-full bg-white border-b border-gray-200 text-sm pb-2 sm:pb-0 dark:bg-neutral-800 dark:border-neutral-700'>
@@ -73,7 +72,7 @@ export function Header() {
               <>
                 <Button
                   onClick={() => signIn({
-                    context: searchParams.get('context') ?? undefined,
+                    context: location.search.context ?? undefined,
                     state: { returnTo: location.pathname },
                   })}
                   disabled={isLoading}
